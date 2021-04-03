@@ -1,4 +1,4 @@
-# UCO-Disability-Map-Service
+# UCO-Campus-Map-Service
 
 UCO Spring 2021 Software Engineering I Group Project.
 
