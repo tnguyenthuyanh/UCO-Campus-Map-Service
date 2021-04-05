@@ -51,9 +51,33 @@
     </style>
     <script>
         function initMap() {
+            const zoomLvl = 19;
+
+            const UCO_BOUNDS = {
+                north: -97.47141461743557,
+                south: -97.47154865441024,
+                west: 35.656448308469805,
+                east: 35.65577977364835,
+            };
+
+            // center of UCO Nigh Center 
+            //  35.655077197908156, -97.47145029368437
+            const UCO_NIGH_CENTER = {
+                lat: 35.655077197908156,
+                lng: -97.47145029368437,
+            }
+
+
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: 16,
-                center: { lat: 35.6585, lng: -97.4698 },
+                zoom: zoomLvl,
+                center: UCO_NIGH_CENTER,
+                minZoom: zoomLvl,
+                maxZoom: zoomLvl + 3,
+                //TODO: restriction to UCO BOUNDS not working
+                restriction: {
+                    latLngBounds: UCO_BOUNDS,
+                    strictBounds: true,
+                },
             });
             const geocoder = new google.maps.Geocoder();
             const infowindow = new google.maps.InfoWindow();
