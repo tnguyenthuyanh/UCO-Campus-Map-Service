@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/mainpage.css">
+    <title>UCO Campus Map Service</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script src="scripts/mainpage.js"></script>
+    <script>
+        function initMap();
+        function geocodeLatLng(geocoder, map, infowindow);
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <div class="inner-header">
+            <div class="searchbars-container">
+                <form>
+                    <label for="startBar">Start Location: </label>
+                    <input type="text" id="startBar" name="startBar"><br>
+                    <label for="endBar">End Location: </label>
+                    <input type="text" id="endBar" name="endBar"><br>
+                </form>
+            </div>
+            <div class="button-container">
+                <button class="switchroutes-btn">Switch<br />Start/End</button>
+            </div>
+            <div class="button-container">
+                <button class="directions-btn">Get Directions</button>
+            </div>
+        </div>
+    </div>
+    <div class="map-body">
+        <div id="map"></div>
+    </div>
+
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIwzALxUPNbatRBj3Xi1Uhp0fFzwWNBkE&callback=initMap&libraries=&v=weekly"
+        async=""></script>
+</body>
+
+</html>
