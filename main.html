@@ -2,54 +2,10 @@
 <html>
 
 <head>
+    <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/mainpage.css">
     <title>Reverse Geocoding</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <style type="text/css">
-        /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
-        #map {
-            height: 100%;
-        }
-
-        /* Optional: Makes the sample page fill the window. */
-        html,
-
-        body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        #floating-panel {
-            position: absolute;
-            top: 10px;
-            left: 25%;
-            z-index: 5;
-            background-color: #fff;
-            padding: 5px;
-            border: 1px solid #999;
-            text-align: center;
-            font-family: "Roboto", "sans-serif";
-            line-height: 30px;
-            padding-left: 10px;
-        }
-
-        #floating-panel {
-            position: absolute;
-            top: 5px;
-            left: 50%;
-            margin-left: -180px;
-            width: 350px;
-            z-index: 5;
-            background-color: #fff;
-            padding: 5px;
-            border: 1px solid #999;
-        }
-
-        #latlng {
-            width: 225px;
-        }
-    </style>
     <script>
         function initMap() {
             const zoomLvl = 17;
@@ -116,11 +72,27 @@
 </head>
 
 <body>
-    <div id="floating-panel">
-        <input id="latlng" type="text" value="35.6585,-97.4698" />
-        <input id="submit" type="button" value="Reverse Geocode" />
+    <div class="header">
+        <div class="inner-header">
+            <div class="searchbars-container">
+                <form>
+                    <label for="startBar">Start Location: </label>
+                    <input type="text" id="startBar" name="startBar"><br>
+                    <label for="endBar">End Location: </label>
+                    <input type="text" id="endBar" name="endBar"><br>
+                </form>
+            </div>
+            <div class="button-container">
+                <button class="switchroutes-btn">Switch<br />Start/End</button>
+            </div>
+            <div class="button-container">
+                <button class="directions-btn">Get Directions</button>
+            </div>
+        </div>
     </div>
-    <div id="map"></div>
+    <div class="map-body">
+        <div id="map"></div>
+    </div>
 
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
