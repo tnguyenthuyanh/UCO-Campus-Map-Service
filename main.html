@@ -13,6 +13,7 @@
 
         /* Optional: Makes the sample page fill the window. */
         html,
+
         body {
             height: 100%;
             margin: 0;
@@ -51,7 +52,7 @@
     </style>
     <script>
         function initMap() {
-            const zoomLvl = 19;
+            const zoomLvl = 17;
 
             const UCO_BOUNDS = {
                 north: -97.47141461743557,
@@ -69,15 +70,15 @@
 
 
             const map = new google.maps.Map(document.getElementById("map"), {
-                zoom: zoomLvl,
-                center: UCO_NIGH_CENTER,
-                minZoom: zoomLvl,
-                maxZoom: zoomLvl + 3,
                 //TODO: restriction to UCO BOUNDS not working
                 restriction: {
                     latLngBounds: UCO_BOUNDS,
                     strictBounds: true,
                 },
+                zoom: zoomLvl,
+                center: UCO_NIGH_CENTER,
+                minZoom: zoomLvl,
+                maxZoom: zoomLvl + 3,
             });
             const geocoder = new google.maps.Geocoder();
             const infowindow = new google.maps.InfoWindow();
