@@ -7,7 +7,6 @@ function initMap() {
 		west: 35.656448308469805,
 		east: 35.65577977364835,
 	};
-
 	// center of UCO Nigh Center 
 	//  35.655077197908156, -97.47145029368437
 	const UCO_NIGH_CENTER = {
@@ -15,6 +14,9 @@ function initMap() {
 		lng: -97.47145029368437,
 	}
 
+	// initializing google maps route/directions variables
+	var directionsService = new google.maps.DirectionsService;
+	var directionsDisplay = new google.maps.DirectionsRenderer;
 
 	const map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
@@ -27,11 +29,39 @@ function initMap() {
 		minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
 	});
+
+	// creating auto complete var
+	var autocomplete = new google.maps.places.Autocomplete()
+
+	// assigning defined map to the directionsDisplay
+	directionsDisplay.setMap(map);
+	document.getElementById('startBar').addEventListener('change', onChangeHandler);
+	document.getElementById('endBar').addEventListener('change', onChangeHandler);
+
 	const geocoder = new google.maps.Geocoder();
 	const infowindow = new google.maps.InfoWindow();
 	document.getElementById("submit").addEventListener("click", () => {
 		geocodeLatLng(geocoder, map, infowindow);
 	});
+}
+
+// handled when listener is changed
+function onChangeHandler() {
+	calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function calculateAndDisplayRoute(directionService, directionsDisplay) {
+	directionService.route({
+		origin: document.getElementById('starBar').value,
+		destination: document.getElementById('endBar').value,
+		travelMode: google.maps.TravelMode['WALKING'],
+	}, function (response, status) {
+		if (status === 'OK')
+			directionsDisplay.setDirections(response);
+		else
+			window.alert('Directions request failed due to ' + status);
+	}
+	);
 }
 
 function geocodeLatLng(geocoder, map, infowindow) {
