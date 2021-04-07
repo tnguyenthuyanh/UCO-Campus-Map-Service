@@ -21,7 +21,12 @@ function initMap() {
 	const map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
 		restriction: {
-			latLngBounds: UCO_BOUNDS,
+			latLngBounds: {
+				north: 98.47141,
+				south: 97.47154,
+				west: 35.65644,
+				east: 35.65577,
+			},
 			strictBounds: true,
 		},
 		zoom: zoomLvl,
@@ -30,8 +35,38 @@ function initMap() {
 		maxZoom: zoomLvl + 3,
 	});
 
-	// creating auto complete var
-	var autocomplete = new google.maps.places.Autocomplete()
+	// auto complete options
+	const autocompleteOptions = {
+		componentRestrictions: { country: "us" },
+		fields: ["formatted_address", "geometry", "name"],
+		origin: map.getCenter(),
+		strictBounds: true,
+		types: ["establishment"],
+	};
+
+	// creating auto complete for start
+	var autocompleteStart = new google.maps.places.Autocomplete(
+		document.getElementById('startBar'),
+		autocompleteOptions,
+	);
+	// autocompleteStart.bindTo("bounds", map);
+
+	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
+		var near_place = autocompleteStart.getPlace();
+	});
+
+
+	// creating auto complete for end
+	var autocompleteEnd = new google.maps.places.Autocomplete(
+		document.getElementById('endBar'),
+		autocompleteOptions
+	);
+	autocompleteEnd.bindTo("bounds", map);
+
+	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
+		var near_place = autocompleteEnd.getPlace();
+	});
+
 
 	// assigning defined map to the directionsDisplay
 	directionsDisplay.setMap(map);
@@ -44,6 +79,8 @@ function initMap() {
 		geocodeLatLng(geocoder, map, infowindow);
 	});
 }
+
+// function initautocompleteStart()
 
 // handled when listener is changed
 function onChangeHandler() {
