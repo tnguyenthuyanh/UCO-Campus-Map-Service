@@ -106,6 +106,13 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	);
 }
 
+function swapStartEnd() {
+	let temp = document.getElementById('startBar').value;
+	document.getElementById('startBar').value = document.getElementById('endBar').value;
+	document.getElementById('endBar').value = temp;
+}
+
+
 function geocodeLatLng(geocoder, map, infowindow) {
 	const input = document.getElementById("latlng").value;
 	const latlngStr = input.split(",", 2);
