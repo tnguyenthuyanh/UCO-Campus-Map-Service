@@ -1,3 +1,6 @@
+let directionsService;
+let directionsDisplay;
+
 function initMap() {
 	const zoomLvl = 17;
 
@@ -13,10 +16,6 @@ function initMap() {
 		lat: 35.655077197908156,
 		lng: -97.47145029368437,
 	}
-
-	// initializing google maps route/directions variables
-	var directionsService = new google.maps.DirectionsService;
-	var directionsDisplay = new google.maps.DirectionsRenderer;
 
 	const map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
@@ -35,6 +34,7 @@ function initMap() {
 		maxZoom: zoomLvl + 3,
 	});
 
+	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
 	const autocompleteOptions = {
 		componentRestrictions: { country: "us" },
@@ -49,48 +49,53 @@ function initMap() {
 		document.getElementById('startBar'),
 		autocompleteOptions,
 	);
-	// autocompleteStart.bindTo("bounds", map);
-
-	google.maps.event.addListener(autocompleteStart, 'place_changed', function () {
-		var near_place = autocompleteStart.getPlace();
-	});
-
-
-	// creating auto complete for end
+	autocompleteStart.bindTo("bounds", map);
+	// creating auto complete for end	
 	var autocompleteEnd = new google.maps.places.Autocomplete(
 		document.getElementById('endBar'),
 		autocompleteOptions
 	);
 	autocompleteEnd.bindTo("bounds", map);
+	/* ******************************************************************************************** */
 
-	google.maps.event.addListener(autocompleteEnd, 'place_changed', function () {
-		var near_place = autocompleteEnd.getPlace();
-	});
+	/* **************************************** DIRECTIONS **************************************** */
 
+	// initializing google maps route/directions variables
+	directionsService = new google.maps.DirectionsService();
+	directionsDisplay = new google.maps.DirectionsRenderer();
 
 	// assigning defined map to the directionsDisplay
 	directionsDisplay.setMap(map);
-	document.getElementById('startBar').addEventListener('change', onChangeHandler);
-	document.getElementById('endBar').addEventListener('change', onChangeHandler);
 
 	const geocoder = new google.maps.Geocoder();
 	const infowindow = new google.maps.InfoWindow();
 	document.getElementById("submit").addEventListener("click", () => {
 		geocodeLatLng(geocoder, map, infowindow);
 	});
+
+	/* ******************************************************************************************** */
 }
 
-// function initautocompleteStart()
-
-// handled when listener is changed
-function onChangeHandler() {
+function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
 }
 
 function calculateAndDisplayRoute(directionService, directionsDisplay) {
+
+	let startLoc = document.getElementById('startBar').value;
+	let endLoc = document.getElementById('endBar').value;
+
+	// error handling
+	if (startLoc.trim() == "" || endLoc.trim() == "") {
+		// let msgStart = startLoc.trim();
+		// let msgEnd = endLoc.trim();
+		window.alert('Please enter a location!');
+		return;
+	}
+
 	directionService.route({
-		origin: document.getElementById('starBar').value,
-		destination: document.getElementById('endBar').value,
+		origin: startLoc,
+		destination: endLoc,
 		travelMode: google.maps.TravelMode['WALKING'],
 	}, function (response, status) {
 		if (status === 'OK')
@@ -100,6 +105,13 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	}
 	);
 }
+
+function swapStartEnd() {
+	let temp = document.getElementById('startBar').value;
+	document.getElementById('startBar').value = document.getElementById('endBar').value;
+	document.getElementById('endBar').value = temp;
+}
+
 
 function geocodeLatLng(geocoder, map, infowindow) {
 	const input = document.getElementById("latlng").value;
