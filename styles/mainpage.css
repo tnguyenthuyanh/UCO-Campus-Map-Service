@@ -6,8 +6,7 @@
 
 /* Optional: Makes the sample page fill the window. */
 .html,
-
-.body {
+body {
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -15,7 +14,8 @@
 
 /* TODO: map body fills to rest of screen, not fixed size */
 .map-body {
-	height: 451px;
+	width: 100%;
+	height:calc(100vh - 110px); /* viewport height - header height) */
 }
 
 .header {
@@ -35,20 +35,14 @@
 
 input[type=text] {
 	background-color:#87CEFF;
-	width: 250px;
-	padding: 8px 4px;
+	width: 500px;
+	padding: 8px 0px;
 	margin: 8px;
 	border: none;
 	box-sizing: border-box;
 	border-bottom: 2px solid rgb(70, 70, 70);
 	outline: none;
 }
-
-input[type=text]:focus {
-	border: 2px solid rgb(70, 70, 70);
-	-webkit-transition: 0.3s;
-	transition: 0.3s;
-  }
 
 .searchbars-container {
 	height: 100%;
