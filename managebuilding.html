@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>
+        Mangage Buildings Info
+    </title>
+    <link rel="stylesheet" type="text/css" href="styles/managebuilding.css">
+
+
+<body>
+    Edit Building Database:
+    <br><br>
+    Building Code <input id="BuildCodeBox" type="text" oninput="UpdateB(this.value,'bcode')"> (docID) <br><br>
+    <button id="retrieveBldBtn">Retrieve</button>
+    <br><br>
+
+    <hr>
+
+    Building Name <input id="BuildNameBox" type="text" oninput="UpdateB(this.value,'bname')"> <br><br>
+    Latitude <input id="BLatBox" type="text" oninput="UpdateB(this.value,'blat')"> <br><br>
+    Longitude <input id="BLngBox" type="text" oninput="UpdateB(this.value,'blng')"> <br><br>
+    <button id="addBldBtn">Add</button>
+
+    <button id="updateBldBtn">Update</button>
+    <button id="deleteBldBtn">Delete</button>
+    <hr>
+    <br>
+    <button id="resetBValueBtn">Reset</button>
+    <br><br><br><br><br><br>
+
+    <hr>
+
+    Edit Doors Database:
+    <br><br>
+    Building Code <input id="DBldCodeBox" type="text" oninput="UpdateD(this.value,'dcode')"> (docID) <br><br>
+
+
+    <hr>
+    Latitude <input id="DLatBox" type="text" oninput="UpdateD(this.value,'dlat')"> <br><br>
+    Longitude <input id="DLngBox" type="text" oninput="UpdateD(this.value,'dlng')"> <br><br>
+    <button id="addDoorBtn">Add</button>
+    <br><br>
+    <button id="retrieveDoorBtn">Retrieve (N/A)</button>
+    <button id="updateDoorBtn">Update (N/A)</button>
+    <button id="deleteDoorBtn">Delete (N/A)</button>
+    <hr>
+    <br>
+    <button id="resetDValueBtn">Reset</button>
+
+
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+    <!-- <script src=></script> -->
+    <script src="scripts/managebuilding.js"></script>
+</body>
+</head>
+
+</html>
