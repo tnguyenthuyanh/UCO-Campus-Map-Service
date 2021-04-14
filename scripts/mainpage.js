@@ -86,9 +86,8 @@ function initMap() {
 async function displayCampusBuildingMarkers(map) {
 	var allBuildings = await Retrieve_All_Buildings();
 
-	console.log(allBuildings);
-
-
+	// creating infowindow for markers
+	const infoWindow = new google.maps.InfoWindow();
 
 	for (let i = 0; i < allBuildings.length; i++) {
 		let myLatLng = {
@@ -96,11 +95,18 @@ async function displayCampusBuildingMarkers(map) {
 			lng: allBuildings[i].Longitude
 		};
 
-		new google.maps.Marker({
+		const marker = new google.maps.Marker({
 			position: myLatLng,
 			map,
 			title: allBuildings[i].BuildingName,
 			icon: ucoLogo,
+			optimized: false,
+		});
+
+		marker.addListener("click", () => {
+			infoWindow.close();
+			infoWindow.setContent(marker.getTitle());
+			infoWindow.open(marker.getMap(), marker);
 		});
 	}
 }
