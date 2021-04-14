@@ -57,8 +57,8 @@ input[type=text] {
 
 .switchroutes-btn {
 	outline: none;
-	height: 50%;
-	margin-top: 22%;
+	height: 56px;
+	margin-top: 16%;
 	margin-left: 10px;
 	background-color: rgb(70, 70, 70);
 	border: none;
@@ -75,8 +75,8 @@ input[type=text] {
 
 .directions-btn {
 	outline: none;
-	height: 60px;
-	margin-top: 16%;
+	height: 56px;
+	margin-top: 12%;
 	margin-left: 15px;
 	background-color: rgb(70, 70, 70);
 	border: none;
@@ -85,6 +85,31 @@ input[type=text] {
   	font-size: 16px; 
   	cursor: pointer;
 	border-radius: 12px;
+}
+
+.wheelchair-checkbox {
+	position: absolute;
+	top: 8.6%;
+	left: 56.5%;
+	background-color: black;
+}
+
+.wheelchair-checkbox:after {
+	left: 9px;
+	top: 5px;
+	width: 5px;
+	height: 10px;
+	border: solid white;
+	border-width: 0 3px 3px 0;
+	-webkit-transform: rotate(45deg);
+	-ms-transform: rotate(45deg);
+	transform: rotate(45deg);
+}
+
+.wheelchair-checkbox-label {
+	position: absolute;
+	top: 8.6%;
+	left: 57.7%;
 }
 
 .directions-btn:hover {

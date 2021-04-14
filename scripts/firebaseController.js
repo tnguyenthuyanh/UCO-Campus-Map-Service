@@ -62,6 +62,11 @@ function Retrieve_Building() {
     })
 }
 
+// Retrieve all buildings in collection "UCOBuildings"
+async function Retrieve_All_Buildings() {
+    const snapshot = await cloudDB.collection('UCOBuildings').get()
+    return snapshot.docs.map(doc => doc.data());
+}
 
 // Update building
 function Update_Fields_inDoc() {
