@@ -1,5 +1,10 @@
+"use strict";
+
 let directionsService;
 let directionsDisplay;
+
+// UCO LOGO For custom markers
+const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
 
 function initMap() {
 	const zoomLvl = 17;
@@ -59,7 +64,6 @@ function initMap() {
 	/* ******************************************************************************************** */
 
 	/* **************************************** DIRECTIONS **************************************** */
-
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
@@ -67,14 +71,40 @@ function initMap() {
 	// assigning defined map to the directionsDisplay
 	directionsDisplay.setMap(map);
 
-	const geocoder = new google.maps.Geocoder();
-	const infowindow = new google.maps.InfoWindow();
-	document.getElementById("submit").addEventListener("click", () => {
-		geocodeLatLng(geocoder, map, infowindow);
-	});
-
+	// const geocoder = new google.maps.Geocoder();
+	// const infowindow = new google.maps.InfoWindow();
+	// document.getElementById("submit").addEventListener("click", () => {
+	// 	geocodeLatLng(geocoder, map, infowindow);
+	// });
 	/* ******************************************************************************************** */
+
+	displayCampusBuildingMarkers(map);
 }
+
+/* ************************************* Display Campus Building Markers ***************************************** */
+
+async function displayCampusBuildingMarkers(map) {
+	var allBuildings = await Retrieve_All_Buildings();
+
+	console.log(allBuildings);
+
+
+
+	for (let i = 0; i < allBuildings.length; i++) {
+		let myLatLng = {
+			lat: allBuildings[i].Latitude,
+			lng: allBuildings[i].Longitude
+		};
+
+		new google.maps.Marker({
+			position: myLatLng,
+			map,
+			title: allBuildings[i].BuildingName,
+			icon: ucoLogo,
+		});
+	}
+}
+/* *************************************************************************************************************** */
 
 function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
@@ -92,6 +122,9 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		window.alert('Please enter a location!');
 		return;
 	}
+
+	// let travelMode = document.getElementById('wheelchair-checkbox').checked ? ''
+
 
 	directionService.route({
 		origin: startLoc,
