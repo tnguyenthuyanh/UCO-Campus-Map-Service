@@ -6,9 +6,13 @@ let directionsDisplay;
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
 
-function initMap() {
-	const zoomLvl = 17;
+/* ************************************************************************************************************* */
+/* ******************************************* MAP INITIALIZATION ********************************************** */
+/* ************************************************************************************************************* */
 
+function initMap() {
+	/* ***************** MAP SETTINGS ***************** */
+	const zoomLvl = 17;
 	const UCO_BOUNDS = {
 		north: -97.47141461743557,
 		south: -97.47154865441024,
@@ -20,17 +24,14 @@ function initMap() {
 	const UCO_NIGH_CENTER = {
 		lat: 35.655077197908156,
 		lng: -97.47145029368437,
-	}
+	} // initMap()
+	/* ************************************************ */
 
+	/* *************************************** Creation of Map *************************************** */
 	const map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
 		restriction: {
-			latLngBounds: {
-				north: 98.47141,
-				south: 97.47154,
-				west: 35.65644,
-				east: 35.65577,
-			},
+			latLngBounds: UCO_BOUNDS,
 			strictBounds: true,
 		},
 		zoom: zoomLvl,
@@ -38,6 +39,9 @@ function initMap() {
 		minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
 	});
+	/* *********************************************************************************************** */
+
+
 
 	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
@@ -63,6 +67,7 @@ function initMap() {
 	autocompleteEnd.bindTo("bounds", map);
 	/* ******************************************************************************************** */
 
+
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
@@ -79,12 +84,25 @@ function initMap() {
 	/* ******************************************************************************************** */
 
 	displayCampusBuildingMarkers(map);
-}
+} // initMap()
+/* ************************************************************************************************************* */
 
+
+
+
+/* *************************************************************************************************************** */
 /* ************************************* Display Campus Building Markers ***************************************** */
+/* *************************************************************************************************************** */
 
+
+var allBuildings;
 async function displayCampusBuildingMarkers(map) {
-	var allBuildings = await Retrieve_All_Buildings();
+	let button;
+	let markerId;
+	let buildingName;
+
+	// From Firebase Controller
+	allBuildings = await Retrieve_All_Buildings();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
@@ -105,23 +123,55 @@ async function displayCampusBuildingMarkers(map) {
 
 		marker.addListener("click", () => {
 			infoWindow.close();
-			infoWindow.setContent(marker.getTitle());
+			infoWindow.setContent('<div style="text-align: center">' +
+				`<button id="set-start-btn" buildingName="${marker.title}" markerId="${marker.id}"> Start </button>` +
+				'<div class="divider"/></div>' +
+				`<button id="set-end-btn" buildingName="${marker.title}" markerId="${marker.id}"> End </button>` +
+				'</div>'
+			);
 			infoWindow.open(marker.getMap(), marker);
 		});
+
+		google.maps.event.addListener(infoWindow, 'domready', function () {
+			if (document.getElementById('set-start-btn')) {
+
+				button = document.getElementById('set-start-btn');
+				markerId = parseInt(button.getAttribute('markerId'));
+				buildingName = button.getAttribute('buildingName');
+				button.onclick = function () {
+					setStart(buildingName);
+				};
+			}
+			if (document.getElementById('set-end-btn')) {
+
+				button = document.getElementById('set-end-btn');
+				markerId = parseInt(button.getAttribute('markerId'));
+				buildingName = button.getAttribute('buildingName');
+				button.onclick = function () {
+					setEnd(buildingName);
+				};
+			}
+		});
 	}
-}
+} // displayCampusBuildingMarkers(map)
 /* *************************************************************************************************************** */
+
+
+/* ***************************************************************************************************** */
+/* ************************************* Generating Directions ***************************************** */
+/* ***************************************************************************************************** */
 
 function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
-}
+} // getDirections()
 
 function calculateAndDisplayRoute(directionService, directionsDisplay) {
 
+	// grabbing data from start and end search bar
 	let startLoc = document.getElementById('startBar').value;
 	let endLoc = document.getElementById('endBar').value;
 
-	// error handling
+	// error handling for empty search bars
 	if (startLoc.trim() == "" || endLoc.trim() == "") {
 		// let msgStart = startLoc.trim();
 		// let msgEnd = endLoc.trim();
@@ -129,13 +179,28 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		return;
 	}
 
-	// let travelMode = document.getElementById('wheelchair-checkbox').checked ? ''
+	// checking if provided start/end is a UCO custom marker
+	// TODO: also check if provided start/end is a USER custom marker
+	allBuildings.forEach(e => {
+		if (e.BuildingName == startLoc)
+			startLoc = {
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
+		if (e.BuildingName == endLoc)
+			endLoc = {
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
+	});
 
+	// TODO: provide wheel chair accessible routes
 
 	directionService.route({
 		origin: startLoc,
 		destination: endLoc,
 		travelMode: google.maps.TravelMode['WALKING'],
+		provideRouteAlternatives: true,
 	}, function (response, status) {
 		if (status === 'OK')
 			directionsDisplay.setDirections(response);
@@ -143,13 +208,31 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 			window.alert('Directions request failed due to ' + status);
 	}
 	);
-}
+} // calculateAndDisplayRoute(directionService, directionsDisplay)
+
+/* ***************************************************************************************************** */
+
+
+
+/* ********************************************************************************************************** */
+/* ************************************* Start/End Field Management ***************************************** */
+/* ********************************************************************************************************** */
 
 function swapStartEnd() {
 	let temp = document.getElementById('startBar').value;
 	document.getElementById('startBar').value = document.getElementById('endBar').value;
 	document.getElementById('endBar').value = temp;
+} // swapStartEnd()
+
+
+function setStart(buildingStartName) {
+	document.getElementById('startBar').value = buildingStartName;
 }
+
+function setEnd(buildingEndName) {
+	document.getElementById('endBar').value = buildingEndName;
+}
+/* ********************************************************************************************************** */
 
 
 function geocodeLatLng(geocoder, map, infowindow) {
@@ -176,4 +259,4 @@ function geocodeLatLng(geocoder, map, infowindow) {
 			window.alert("Geocoder failed due to: " + status);
 		}
 	});
-}
+} // geocodeLatLng(geocoder, map, infowindow)
