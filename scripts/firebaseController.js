@@ -64,7 +64,12 @@ function retrieveBuilding() {
 
 // Retrieve all buildings in collection "UCOBuildings"
 async function retrieveAllBuildings() {
-    const snapshot = await cloudDB.collection('UCOBuildings').get()
+    const snapshot = await cloudDB.collection('UCOBuildings').get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
+async function retrieveAllBuildingAutos() {
+    const snapshot = await cloudDB.collection('Doors').get();
     return snapshot.docs.map(doc => doc.data());
 }
 
