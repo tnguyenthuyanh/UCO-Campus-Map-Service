@@ -96,6 +96,7 @@ function initMap() {
 
 
 var allBuildings;
+var allBuildingAutos;
 async function displayCampusBuildingMarkers(map) {
 	let button;
 	let markerId;
@@ -103,6 +104,7 @@ async function displayCampusBuildingMarkers(map) {
 
 	// From Firebase Controller
 	allBuildings = await retrieveAllBuildings();
+	allBuildingAutos = await retallBuildingAutos();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
@@ -182,23 +184,49 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	// checking if provided start/end is a UCO custom marker
 	// TODO: also check if provided start/end is a USER custom marker
 	allBuildings.forEach(e => {
-		if (e.BuildingName == startLoc)
+		if (e.buildingName == startLoc)
 			startLoc = {
-				lat: e.Latitude,
-				lng: e.Longitude,
-			}
-		if (e.BuildingName == endLoc)
+				buildingCode = e.buildingCode,
+				lat: e.latitude,
+				lng: e.longitude,
+			};
+		if (e.buildingName == endLoc)
 			endLoc = {
-				lat: e.Latitude,
-				lng: e.Longitude,
-			}
+				buildingCode = e.buildingCode,
+				lat: e.latitude,
+				lng: e.longitude,
+			};
 	});
 
 	// TODO: provide wheel chair accessible routes
 
+	// if wheel chair mode, change destination to automatic doors.
+	if (document.getElementById('wheelChairBox').checked == true) {
+		allBuildingAutos.forEach(e => {
+			if (startLoc.buildingCode == e.buildingCode)
+				startLoc = {
+					buildingCode = e.buildingCode,
+					lat: e.latitude,
+					lng: e.longitude,
+				};
+			if (endLoc.buildingCode == e.buildingCode)
+				endLoc = {
+					buildingCode = e.buildingCode,
+					lat: e.latitude,
+					lng: e.longitude,
+				};
+		});
+	}
+
 	directionService.route({
-		origin: startLoc,
-		destination: endLoc,
+		origin: {
+			lat: startLoc.lat,
+			lng: startLoc.lng,
+		},
+		destination: {
+			lat: endLoc.lat,
+			lng: endLoc.lng,
+		},
 		travelMode: google.maps.TravelMode['WALKING'],
 		provideRouteAlternatives: true,
 	}, function (response, status) {
