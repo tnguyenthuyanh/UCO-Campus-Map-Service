@@ -97,6 +97,11 @@ function initMap() {
 
 var allBuildings;
 async function displayCampusBuildingMarkers(map) {
+	let button;
+	let markerId;
+	let buildingName;
+
+	// From Firebase Controller
 	allBuildings = await Retrieve_All_Buildings();
 
 	// creating infowindow for markers
@@ -118,8 +123,34 @@ async function displayCampusBuildingMarkers(map) {
 
 		marker.addListener("click", () => {
 			infoWindow.close();
-			infoWindow.setContent(marker.getTitle());
+			infoWindow.setContent('<div style="text-align: center">' +
+				`<button id="set-start-btn" buildingName="${marker.title}" markerId="${marker.id}"> Start </button>` +
+				'<div class="divider"/></div>' +
+				`<button id="set-end-btn" buildingName="${marker.title}" markerId="${marker.id}"> End </button>` +
+				'</div>'
+			);
 			infoWindow.open(marker.getMap(), marker);
+		});
+
+		google.maps.event.addListener(infoWindow, 'domready', function () {
+			if (document.getElementById('set-start-btn')) {
+
+				button = document.getElementById('set-start-btn');
+				markerId = parseInt(button.getAttribute('markerId'));
+				buildingName = button.getAttribute('buildingName');
+				button.onclick = function () {
+					setStart(buildingName);
+				};
+			}
+			if (document.getElementById('set-end-btn')) {
+
+				button = document.getElementById('set-end-btn');
+				markerId = parseInt(button.getAttribute('markerId'));
+				buildingName = button.getAttribute('buildingName');
+				button.onclick = function () {
+					setEnd(buildingName);
+				};
+			}
 		});
 	}
 } // displayCampusBuildingMarkers(map)
@@ -183,6 +214,9 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 
 
 
+/* ********************************************************************************************************** */
+/* ************************************* Start/End Field Management ***************************************** */
+/* ********************************************************************************************************** */
 
 function swapStartEnd() {
 	let temp = document.getElementById('startBar').value;
@@ -191,6 +225,14 @@ function swapStartEnd() {
 } // swapStartEnd()
 
 
+function setStart(buildingStartName) {
+	document.getElementById('startBar').value = buildingStartName;
+}
+
+function setEnd(buildingEndName) {
+	document.getElementById('endBar').value = buildingEndName;
+}
+/* ********************************************************************************************************** */
 
 
 function geocodeLatLng(geocoder, map, infowindow) {
