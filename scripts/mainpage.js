@@ -102,7 +102,7 @@ async function displayCampusBuildingMarkers(map) {
 	let buildingName;
 
 	// From Firebase Controller
-	allBuildings = await Retrieve_All_Buildings();
+	allBuildings = await retrieveAllBuildings();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();

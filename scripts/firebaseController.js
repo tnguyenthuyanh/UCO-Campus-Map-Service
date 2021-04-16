@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 let cloudDB = firebase.firestore();
 
 // Add buidling
-function Add_Building_WithAutoID() { // Auto generate ID for doc
+function addBuildingWithAutoID() { // Auto generate ID for doc
     cloudDB.collection("UCOBuildings").add(
         {
             BuildingName: bName,
@@ -30,7 +30,7 @@ function Add_Building_WithAutoID() { // Auto generate ID for doc
     })
 }
 
-function Add_Building_WithID() { // Use custom ID for doc
+function addBuildingWithID() { // Use custom ID for doc
     cloudDB.collection("UCOBuildings").doc(bCode).set(
         {
             BuildingName: bName,
@@ -46,7 +46,7 @@ function Add_Building_WithID() { // Use custom ID for doc
 
 }
 // Retrieve building
-function Retrieve_Building() {
+function retrieveBuilding() {
     cloudDB.collection("UCOBuildings").doc(bCode).get(
     ).then(function (doc) {
         if (doc.exists) {
@@ -63,13 +63,13 @@ function Retrieve_Building() {
 }
 
 // Retrieve all buildings in collection "UCOBuildings"
-async function Retrieve_All_Buildings() {
+async function retrieveAllBuildings() {
     const snapshot = await cloudDB.collection('UCOBuildings').get()
     return snapshot.docs.map(doc => doc.data());
 }
 
 // Update building
-function Update_Fields_inDoc() {
+function updateFieldsInDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).update(
         {
             BuildingName: bName,
@@ -85,7 +85,7 @@ function Update_Fields_inDoc() {
 }
 
 // Delete building
-function Delete_Doc() {
+function deleteDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).delete()
         .then(function (docRef) {
             console.log("Deleted doc with ID  ", bCode);
@@ -95,7 +95,7 @@ function Delete_Doc() {
 }
 
 // Add door
-function Add_Door_WithAutoID() { // Auto generate ID for doc
+function addDoorWithAutoID() { // Auto generate ID for doc
     cloudDB.collection("Doors").add(
         {
             BuildingCode: dBldCode,

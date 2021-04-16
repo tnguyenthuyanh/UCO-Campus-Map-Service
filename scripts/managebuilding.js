@@ -52,18 +52,18 @@ function UpdateD(val, type) {
 //-------- Event buttons -----------//
 
 document.getElementById('addBldBtn').onclick = function () {
-    // Add_Building_WithAutoID();
-    Add_Building_WithID();
+    // addBuildingWithAutoID();
+    addBuildingWithID();
     Reset_Building_Value();
 }
 document.getElementById('retrieveBldBtn').onclick = function () {
-    Retrieve_Building();
+    retrieveBuilding();
 }
 document.getElementById('updateBldBtn').onclick = function () {
-    Update_Fields_inDoc();
+    updateFieldsInDoc();
 }
 document.getElementById('deleteBldBtn').onclick = function () {
-    Delete_Doc();
+    deleteDoc();
 }
 
 document.getElementById('resetBValueBtn').onclick = function () {
@@ -71,7 +71,7 @@ document.getElementById('resetBValueBtn').onclick = function () {
 }
 
 document.getElementById('addDoorBtn').onclick = function () {
-    Add_Door_WithAutoID();
+    addDoorWithAutoID();
     Reset_Door_Value();
 }
 
