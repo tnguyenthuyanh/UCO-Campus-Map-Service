@@ -306,6 +306,7 @@ function initProfile() {
 	firebase.auth().onAuthStateChanged(function (user) {
 		// console.log(user.uid);
 		if (uid != null && user) // If user or admin
+			// user activities loaded in here, such as retrieving user info, user's saved locations
 			getUserProfile(uid);
 		if (uid == "guest" || user.uid == null) { // If guest
 			document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
