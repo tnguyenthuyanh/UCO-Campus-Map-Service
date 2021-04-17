@@ -1,7 +1,13 @@
 "use strict";
 
-let directionsService;
-let directionsDisplay;
+var directionsService;
+var directionsDisplay;
+var map;
+
+var allBuildings;
+var allBuildingAutos;
+var allStairs;
+
 
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
@@ -28,7 +34,7 @@ function initMap() {
 	/* ************************************************ */
 
 	/* *************************************** Creation of Map *************************************** */
-	const map = new google.maps.Map(document.getElementById("map"), {
+	map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
 		restriction: {
 			latLngBounds: UCO_BOUNDS,
@@ -71,10 +77,10 @@ function initMap() {
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
-	directionsDisplay = new google.maps.DirectionsRenderer();
+	// directionsDisplay = new google.maps.DirectionsRenderer();
 
 	// assigning defined map to the directionsDisplay
-	directionsDisplay.setMap(map);
+	// directionsDisplay.setMap(map);
 
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
@@ -91,9 +97,6 @@ function initMap() {
 /* ************************************* Display Campus Building Markers ***************************************** */
 /* *************************************************************************************************************** */
 
-
-var allBuildings;
-var allBuildingAutos;
 async function displayCampusBuildingMarkers(map) {
 	let button;
 	let markerId;
@@ -102,6 +105,7 @@ async function displayCampusBuildingMarkers(map) {
 	// From Firebase Controller
 	allBuildings = await Retrieve_All_Buildings();
 	allBuildingAutos = await retrieveAllBuildingAutos();
+	allStairs = await getAllStairs();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
@@ -164,7 +168,7 @@ function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
 } // getDirections()
 
-function calculateAndDisplayRoute(directionService, directionsDisplay) {
+function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 	// grabbing data from start and end search bar
 	let startLoc = document.getElementById('startBar').value;
@@ -219,7 +223,7 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		});
 	}
 
-	directionService.route({
+	directionsService.route({
 		origin: {
 			lat: startLoc.lat,
 			lng: startLoc.lng,
@@ -231,8 +235,20 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		travelMode: google.maps.TravelMode['WALKING'],
 		provideRouteAlternatives: true,
 	}, function (response, status) {
-		if (status === 'OK')
-			directionsDisplay.setDirections(response);
+		if (status === 'OK') {
+
+			var isLocationOnEdge = google.maps.geometry.poly.isLocationOnEdge;
+
+			for (var i = 0, len = response.routes.length; i < len; i++) {
+				// check if route passes through all stairs locations pulled from firebase
+				//		if it doesn not, end look  and display route.
+				new google.maps.DirectionsRenderer({
+					map: map,
+					directions: response,
+					routeIndex: i,
+				});
+			}
+		}
 		else
 			window.alert('Directions request failed due to ' + status);
 	}
@@ -264,31 +280,9 @@ function setEnd(buildingEndName) {
 /* ********************************************************************************************************** */
 
 
-function geocodeLatLng(geocoder, map, infowindow) {
-	const input = document.getElementById("latlng").value;
-	const latlngStr = input.split(",", 2);
-	const latlng = {
-		lat: parseFloat(latlngStr[0]),
-		lng: parseFloat(latlngStr[1]),
-	};
-	geocoder.geocode({ location: latlng }, (results, status) => {
-		if (status === "OK") {
-			if (results[0]) {
-				map.setZoom(16);
-				const marker = new google.maps.Marker({
-					position: latlng,
-					map: map,
-				});
-				infowindow.setContent(results[0].formatted_address);
-				infowindow.open(map, marker);
-			} else {
-				window.alert("No results found");
-			}
-		} else {
-			window.alert("Geocoder failed due to: " + status);
-		}
-	});
-} // geocodeLatLng(geocoder, map, infowindow)
+/* ********************************************************************************************* */
+/* ************************************* Profile Login ***************************************** */
+/* ********************************************************************************************* */
 
 function initProfile() {
 	/** ************************************************* INSIDE HTML BODY ********************************************/
@@ -324,10 +318,7 @@ function initProfile() {
 			getSideNavItems.append(signUp);
 		}
 	});
-
-
 }
-
 
 async function getUserProfile(uid) {
 	/** These code to stop users from using return button in the browser */
@@ -370,5 +361,5 @@ async function getUserProfile(uid) {
 	};
 	logOut.href = "";
 	getSideNavItems.append(logOut);
-
 }
+/* ********************************************************************************************* */

@@ -46,6 +46,28 @@ function Add_Building_WithID() { // Use custom ID for doc
     })
 
 }
+
+// Add stairs
+function Add_Stairs() { // Use custom ID for doc
+    cloudDB.collection("Stairs").add(
+        {
+            Latitude: Number(sLat),
+            Longitude: Number(sLng),
+        }
+    ).then(function () {
+        console.log("DocID  ", bCode);
+    }).catch(function (e) {
+        console.error("Error adding", e);
+    });
+}
+
+async function getAllStairs() {
+    const snapshot = await cloudDB.collection('Stairs').get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
+
+
 // Retrieve building
 function Retrieve_Building() {
     cloudDB.collection("UCOBuildings").doc(bCode).get(
