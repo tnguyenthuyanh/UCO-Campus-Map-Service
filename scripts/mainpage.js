@@ -329,10 +329,12 @@ function initProfile() {
 
 
 async function getUserProfile(uid) {
-	window.history.pushState(null, "", window.location.href);
-	window.onpopstate = function () {
-		this.window.history.pushState(null, "", window.location.href);
-	}
+	/** These code to stop users from using return button in the browser */
+	// window.history.pushState(null, "", window.location.href);
+	// window.onpopstate = function () {
+	// 	this.window.history.pushState(null, "", window.location.href);
+	// }
+	/** *******************************************************************/
 
 	var user = await Get_One_Profile(uid);
 	console.log(user);
