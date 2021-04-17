@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html>
 
 <head>
     <link rel="stylesheet" type="text/css" href="styles/mainpage.css">
     <title>UCO Campus Map Service</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="scripts/mainpage.js"></script>
-    <script>
-        initMap();
-        geocodeLatLng(geocoder, map, infowindow);
-    </script>
+
 </head>
 
 <body>
+    <div id="mySidenav" class="sidenav">
+        <h1 id="nameTitle"></h1>
+        <h3 id="emailTitle"></h3>
+        <br><br>
+        <header>Menu</header>
+        <a href="javascript:void(0)" class="closebtn" id="closeNav">&times;</a>
+        <div id="sideNavItems"></div>
+        <br><br>
+        <a id="about" href="#">About</a>
+    </div>
+    <span style="font-size:30px;cursor:pointer;font-weight: bold;" id="openNav">&#9776; Menu</span>
     <div class="header">
         <div class="inner-header">
             <div class="searchbars-container">

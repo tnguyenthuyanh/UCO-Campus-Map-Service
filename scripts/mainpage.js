@@ -76,14 +76,11 @@ function initMap() {
 	// assigning defined map to the directionsDisplay
 	directionsDisplay.setMap(map);
 
-	// const geocoder = new google.maps.Geocoder();
-	// const infowindow = new google.maps.InfoWindow();
-	// document.getElementById("submit").addEventListener("click", () => {
-	// 	geocodeLatLng(geocoder, map, infowindow);
-	// });
 	/* ******************************************************************************************** */
-
 	displayCampusBuildingMarkers(map);
+
+	/* ****************** This initilizes guest / user / admin access inside header drawer ************ */
+	initProfile();
 } // initMap()
 /* ************************************************************************************************************* */
 
@@ -292,3 +289,72 @@ function geocodeLatLng(geocoder, map, infowindow) {
 		}
 	});
 } // geocodeLatLng(geocoder, map, infowindow)
+
+function initProfile() {
+	/** ************************************************* INSIDE HTML BODY ********************************************/
+	// Header Drawer
+	document.getElementById('openNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "300px";
+	}
+	document.getElementById('closeNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "0";
+	}
+
+	// Find if one user is logging in
+	const urlParam = new URLSearchParams(window.location.search);
+	const uid = urlParam.get('user');
+	if (uid != null)
+		getUserProfile(uid);
+	else {
+		// Create Sign Up Inside Drawer
+		document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
+		var getSideNavItems = document.getElementById("sideNavItems");
+		var signUp = document.createElement("a");
+		signUp.appendChild(document.createTextNode('Sign Up'));
+		signUp.href = "signup.html";
+		getSideNavItems.append(signUp);
+	}
+}
+
+
+async function getUserProfile(uid) {
+	window.history.pushState(null, "", window.location.href);
+	window.onpopstate = function () {
+		this.window.history.pushState(null, "", window.location.href);
+	}
+
+	var user = await Get_One_Profile(uid);
+	console.log(user);
+	var getSideNavItems = document.getElementById("sideNavItems");
+
+	// Create Name Title Inside sideNavBar
+	document.getElementById("nameTitle").appendChild(document.createTextNode('Hello, ' + user.Name));
+
+	// Create Email Title Inside sideNavBar
+	document.getElementById("emailTitle").appendChild(document.createTextNode(user.Email));
+
+
+	// Create Link to Admin Management
+	if (user.Admin == true) {
+		var buildingSettings = document.createElement("a");
+		buildingSettings.appendChild(document.createTextNode('Building Settings'));
+		getSideNavItems.append(buildingSettings);
+		buildingSettings.href = "managebuilding.html?user=" + uid;
+	}
+
+	// Create Link to User Settings
+	var userSettings = document.createElement("a");
+	userSettings.appendChild(document.createTextNode('User Settings'));
+	getSideNavItems.append(userSettings);
+	userSettings.href = "";
+
+	// Create Log Out Inside sideNavBar
+	var logOut = document.createElement("a");
+	logOut.appendChild(document.createTextNode('Log out'));
+	logOut.onclick = function () {
+		sign_Out();
+	};
+	logOut.href = "";
+	getSideNavItems.append(logOut);
+
+}
