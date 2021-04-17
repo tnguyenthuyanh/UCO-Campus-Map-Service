@@ -68,6 +68,12 @@ async function Retrieve_All_Buildings() {
     return snapshot.docs.map(doc => doc.data());
 }
 
+// Retrieves all auto door from collection "Doors"
+async function retrieveAllBuildingAutos() {
+    const snapshot = await cloudDB.collection('Doors').get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
 // Update building
 function Update_Fields_inDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).update(

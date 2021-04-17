@@ -96,6 +96,7 @@ function initMap() {
 
 
 var allBuildings;
+var allBuildingAutos;
 async function displayCampusBuildingMarkers(map) {
 	let button;
 	let markerId;
@@ -103,6 +104,7 @@ async function displayCampusBuildingMarkers(map) {
 
 	// From Firebase Controller
 	allBuildings = await Retrieve_All_Buildings();
+	allBuildingAutos = await retrieveAllBuildingAutos();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
@@ -184,11 +186,13 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	allBuildings.forEach(e => {
 		if (e.BuildingName == startLoc)
 			startLoc = {
+				BuildingCode: e.BuildingCode,
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
 		if (e.BuildingName == endLoc)
 			endLoc = {
+				BuildingCode: e.BuildingCode,
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
@@ -196,9 +200,37 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 
 	// TODO: provide wheel chair accessible routes
 
+	// if wheel chair mode, change destination to automatic doors.
+	if (document.getElementById('wheelChairBox').checked == true) {
+		allBuildingAutos.forEach(e => {
+			if (startLoc.BuildingCode == e.BuildingCode) {
+				console.log('startTest');
+				startLoc = {
+					BuildingCode: e.BuildingCode,
+					lat: e.Latitude,
+					lng: e.Longitude,
+				};
+			}
+			if (endLoc.BuildingCode == e.BuildingCode) {
+				console.log('endTest');
+				endLoc = {
+					BuildingCode: e.BuildingCode,
+					lat: e.Latitude,
+					lng: e.Longitude,
+				};
+			}
+		});
+	}
+
 	directionService.route({
-		origin: startLoc,
-		destination: endLoc,
+		origin: {
+			lat: startLoc.lat,
+			lng: startLoc.lng,
+		},
+		destination: {
+			lat: endLoc.lat,
+			lng: endLoc.lng,
+		},
 		travelMode: google.maps.TravelMode['WALKING'],
 		provideRouteAlternatives: true,
 	}, function (response, status) {
