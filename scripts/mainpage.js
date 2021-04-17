@@ -299,29 +299,43 @@ function initProfile() {
 	document.getElementById('closeNav').onclick = function () {
 		document.getElementById("mySidenav").style.width = "0";
 	}
-
 	// Find if one user is logging in
 	const urlParam = new URLSearchParams(window.location.search);
-	const uid = urlParam.get('user');
-	if (uid != null)
-		getUserProfile(uid);
-	else {
-		// Create Sign Up Inside Drawer
-		document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
-		var getSideNavItems = document.getElementById("sideNavItems");
-		var signUp = document.createElement("a");
-		signUp.appendChild(document.createTextNode('Sign Up'));
-		signUp.href = "signup.html";
-		getSideNavItems.append(signUp);
-	}
+	const uid = urlParam.get('session');
+
+	firebase.auth().onAuthStateChanged(function (user) {
+		// console.log(user.uid);
+		if (uid != null && user) // If user or admin
+			// user activities loaded in here, such as retrieving user info, user's saved locations
+			getUserProfile(uid);
+		if (uid == "guest" || user.uid == null) { // If guest
+			document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
+			var getSideNavItems = document.getElementById("sideNavItems");
+			// Create Sign In Inside Drawer
+			var signIn = document.createElement("a");
+			signIn.appendChild(document.createTextNode('Sign In'));
+			signIn.href = "signin.html";
+			getSideNavItems.append(signIn);
+
+			// Create Sign Up Inside Drawer
+			var signUp = document.createElement("a");
+			signUp.appendChild(document.createTextNode('Sign Up'));
+			signUp.href = "signup.html";
+			getSideNavItems.append(signUp);
+		}
+	});
+
+
 }
 
 
 async function getUserProfile(uid) {
-	window.history.pushState(null, "", window.location.href);
-	window.onpopstate = function () {
-		this.window.history.pushState(null, "", window.location.href);
-	}
+	/** These code to stop users from using return button in the browser */
+	// window.history.pushState(null, "", window.location.href);
+	// window.onpopstate = function () {
+	// 	this.window.history.pushState(null, "", window.location.href);
+	// }
+	/** *******************************************************************/
 
 	var user = await Get_One_Profile(uid);
 	console.log(user);
