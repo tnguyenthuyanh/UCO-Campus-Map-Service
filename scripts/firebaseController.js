@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 let cloudDB = firebase.firestore();
 
 // Add buidling
-function addBuildingWithAutoID() { // Auto generate ID for doc
+function Add_Building_WithAutoID() { // Auto generate ID for doc
     cloudDB.collection("UCOBuildings").add(
         {
             BuildingName: bName,
@@ -30,7 +30,7 @@ function addBuildingWithAutoID() { // Auto generate ID for doc
     })
 }
 
-function addBuildingWithID() { // Use custom ID for doc
+function Add_Building_WithID() { // Use custom ID for doc
     cloudDB.collection("UCOBuildings").doc(bCode).set(
         {
             BuildingName: bName,
@@ -46,7 +46,7 @@ function addBuildingWithID() { // Use custom ID for doc
 
 }
 // Retrieve building
-function retrieveBuilding() {
+function Retrieve_Building() {
     cloudDB.collection("UCOBuildings").doc(bCode).get(
     ).then(function (doc) {
         if (doc.exists) {
@@ -63,18 +63,19 @@ function retrieveBuilding() {
 }
 
 // Retrieve all buildings in collection "UCOBuildings"
-async function retrieveAllBuildings() {
-    const snapshot = await cloudDB.collection('UCOBuildings').get();
+async function Retrieve_All_Buildings() {
+    const snapshot = await cloudDB.collection('UCOBuildings').get()
     return snapshot.docs.map(doc => doc.data());
 }
 
+// Retrieves all auto door from collection "Doors"
 async function retrieveAllBuildingAutos() {
     const snapshot = await cloudDB.collection('Doors').get();
     return snapshot.docs.map(doc => doc.data());
 }
 
 // Update building
-function updateFieldsInDoc() {
+function Update_Fields_inDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).update(
         {
             BuildingName: bName,
@@ -90,7 +91,7 @@ function updateFieldsInDoc() {
 }
 
 // Delete building
-function deleteDoc() {
+function Delete_Doc() {
     cloudDB.collection("UCOBuildings").doc(bCode).delete()
         .then(function (docRef) {
             console.log("Deleted doc with ID  ", bCode);
@@ -100,7 +101,7 @@ function deleteDoc() {
 }
 
 // Add door
-function addDoorWithAutoID() { // Auto generate ID for doc
+function Add_Door_WithAutoID() { // Auto generate ID for doc
     cloudDB.collection("Doors").add(
         {
             BuildingCode: dBldCode,

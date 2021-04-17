@@ -103,8 +103,8 @@ async function displayCampusBuildingMarkers(map) {
 	let buildingName;
 
 	// From Firebase Controller
-	allBuildings = await retrieveAllBuildings();
-	allBuildingAutos = await retallBuildingAutos();
+	allBuildings = await Retrieve_All_Buildings();
+	allBuildingAutos = await retrieveAllBuildingAutos();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
@@ -184,18 +184,18 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	// checking if provided start/end is a UCO custom marker
 	// TODO: also check if provided start/end is a USER custom marker
 	allBuildings.forEach(e => {
-		if (e.buildingName == startLoc)
+		if (e.BuildingName == startLoc)
 			startLoc = {
-				buildingCode = e.buildingCode,
-				lat: e.latitude,
-				lng: e.longitude,
-			};
-		if (e.buildingName == endLoc)
+				BuildingCode: e.BuildingCode,
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
+		if (e.BuildingName == endLoc)
 			endLoc = {
-				buildingCode = e.buildingCode,
-				lat: e.latitude,
-				lng: e.longitude,
-			};
+				BuildingCode: e.BuildingCode,
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
 	});
 
 	// TODO: provide wheel chair accessible routes
@@ -203,18 +203,22 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 	// if wheel chair mode, change destination to automatic doors.
 	if (document.getElementById('wheelChairBox').checked == true) {
 		allBuildingAutos.forEach(e => {
-			if (startLoc.buildingCode == e.buildingCode)
+			if (startLoc.BuildingCode == e.BuildingCode) {
+				console.log('startTest');
 				startLoc = {
-					buildingCode = e.buildingCode,
-					lat: e.latitude,
-					lng: e.longitude,
+					BuildingCode: e.BuildingCode,
+					lat: e.Latitude,
+					lng: e.Longitude,
 				};
-			if (endLoc.buildingCode == e.buildingCode)
+			}
+			if (endLoc.BuildingCode == e.BuildingCode) {
+				console.log('endTest');
 				endLoc = {
-					buildingCode = e.buildingCode,
-					lat: e.latitude,
-					lng: e.longitude,
+					BuildingCode: e.BuildingCode,
+					lat: e.Latitude,
+					lng: e.Longitude,
 				};
+			}
 		});
 	}
 
