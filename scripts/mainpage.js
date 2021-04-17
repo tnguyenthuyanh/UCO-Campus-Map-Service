@@ -299,21 +299,32 @@ function initProfile() {
 	document.getElementById('closeNav').onclick = function () {
 		document.getElementById("mySidenav").style.width = "0";
 	}
-
 	// Find if one user is logging in
 	const urlParam = new URLSearchParams(window.location.search);
-	const uid = urlParam.get('user');
-	if (uid != null)
-		getUserProfile(uid);
-	else {
-		// Create Sign Up Inside Drawer
-		document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
-		var getSideNavItems = document.getElementById("sideNavItems");
-		var signUp = document.createElement("a");
-		signUp.appendChild(document.createTextNode('Sign Up'));
-		signUp.href = "signup.html";
-		getSideNavItems.append(signUp);
-	}
+	const uid = urlParam.get('session');
+
+	firebase.auth().onAuthStateChanged(function (user) {
+		// console.log(user.uid);
+		if (uid != null && user) // If user or admin
+			getUserProfile(uid);
+		if (uid == "guest" || user.uid == null) { // If guest
+			document.getElementById("nameTitle").appendChild(document.createTextNode('Welcome, guest'));
+			var getSideNavItems = document.getElementById("sideNavItems");
+			// Create Sign In Inside Drawer
+			var signIn = document.createElement("a");
+			signIn.appendChild(document.createTextNode('Sign In'));
+			signIn.href = "signin.html";
+			getSideNavItems.append(signIn);
+
+			// Create Sign Up Inside Drawer
+			var signUp = document.createElement("a");
+			signUp.appendChild(document.createTextNode('Sign Up'));
+			signUp.href = "signup.html";
+			getSideNavItems.append(signUp);
+		}
+	});
+
+
 }
 
 

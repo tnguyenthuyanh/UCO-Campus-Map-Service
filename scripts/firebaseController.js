@@ -124,7 +124,7 @@ function sign_In(email, password) {
         .then(function (data) {
             // console.log(data.user.uid);
             if (data.user.uid.length != 0) {
-                window.location.href = "main.html?user=" + data.user.uid;
+                window.location.href = "main.html?session=" + data.user.uid;
             }
         });
 
