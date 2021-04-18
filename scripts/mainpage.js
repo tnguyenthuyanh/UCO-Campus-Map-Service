@@ -201,11 +201,10 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 	// TODO: provide wheel chair accessible routes
 
-	// if wheel chair mode, change destination to automatic doors.
+	// if wheel chair mode, change destination to automatic doors & avoid stair routes
 	if (document.getElementById('wheelChairBox').checked == true) {
 		allBuildingAutos.forEach(e => {
 			if (startLoc.BuildingCode == e.BuildingCode) {
-				console.log('startTest');
 				startLoc = {
 					BuildingCode: e.BuildingCode,
 					lat: e.Latitude,
@@ -213,7 +212,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 				};
 			}
 			if (endLoc.BuildingCode == e.BuildingCode) {
-				console.log('endTest');
 				endLoc = {
 					BuildingCode: e.BuildingCode,
 					lat: e.Latitude,
@@ -242,11 +240,36 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 			for (var i = 0, len = response.routes.length; i < len; i++) {
 				// check if route passes through all stairs locations pulled from firebase
 				//		if it doesn not, end look  and display route.
-				new google.maps.DirectionsRenderer({
-					map: map,
-					directions: response,
-					routeIndex: i,
-				});
+
+				// if wheelChairBox is checked
+				// 		for each of the stairscases on walking paths
+				if (document.getElementById('wheelChairBox').checked == true) {
+					for (var j = 0; j < allStairs.length; j++) {
+						// getting staircase coordinates
+						let loc = new google.maps.LatLng(allStairs[j].Latitude, allStairs[j].Longitude);
+						// check if path goes over stairscase. If it does, continue
+						var polyline = new google.maps.Polyline(response.routes[i].overview_polyline);
+
+						// if route does not pass through 
+						//	TODO: multiple routes still being displayed, some are still going through bad routes.
+						//		  somehow getting called 6 times from MCS -> Murdaugh hall
+						if (!isLocationOnEdge(loc, polyline, 10e-1)) {
+							console.log('test');
+							new google.maps.DirectionsRenderer({
+								map: map,
+								directions: response,
+								routeIndex: i,
+							});
+						}
+					}
+				}
+				// if wheelchairbox is not checked
+				else {
+					new google.maps.DirectionsRenderer({
+						map: map,
+						directions: response,
+					});
+				}
 			}
 		}
 		else
