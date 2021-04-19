@@ -44,7 +44,7 @@ function initMap() {
 		},
 		zoom: zoomLvl,
 		center: UCO_NIGH_CENTER,
-		minZoom: zoomLvl,
+		// minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
 	});
 	/* *********************************************************************************************** */
@@ -259,18 +259,21 @@ function calculateAndDisplayRoute(directionsService) {
 						// getting staircase coordinates
 						let loc = new google.maps.LatLng(allStairs[j].Latitude, allStairs[j].Longitude);
 						// check if path goes over stairscase. If it does, continue
-						var polyline = new google.maps.Polyline(response.routes[i].overview_polyline);
+						var polyline = new google.maps.Polyline({ path: response.routes[i].overview_path });
 
 						// if route does not pass through 
 						//	TODO: multiple routes still being displayed, some are still going through bad routes.
 						//		  somehow getting called 6 times from MCS -> Murdaugh hall
-						console.log(`test[${i}]: ${j}`);
-						if (!isLocationOnEdge(loc, polyline, 10e-1)) {
+						// 10e-4, 0.0005
+						if (!isLocationOnEdge(loc, polyline, 0.00045)) {
+							console.log('test');
 							directionsDisplayArray.push(new google.maps.DirectionsRenderer({
 								map: map,
 								directions: response,
 								routeIndex: i,
 							}));
+							j = allStairs.length;
+							i = response.routes.length;
 						}
 					}
 				}
