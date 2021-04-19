@@ -2,6 +2,7 @@
 
 var directionsService;
 var directionsDisplay;
+var directionsDisplayArray = [];
 var map;
 
 var allBuildings;
@@ -11,6 +12,7 @@ var allStairs;
 
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
+
 
 /* ************************************************************************************************************* */
 /* ******************************************* MAP INITIALIZATION ********************************************** */
@@ -77,11 +79,7 @@ function initMap() {
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
-	// directionsDisplay = new google.maps.DirectionsRenderer();
-
-	// assigning defined map to the directionsDisplay
-	// directionsDisplay.setMap(map);
-
+	directionsDisplay = new google.maps.DirectionsRenderer();
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
 
@@ -168,7 +166,20 @@ function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
 } // getDirections()
 
-function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+function calculateAndDisplayRoute(directionsService) {
+	// clearing past route results for multiple routes
+	for (var i = 0; i < directionsDisplayArray.length; i++) {
+		directionsDisplayArray[i].setMap(null);
+		directionsDisplayArray[i] = null;
+	}
+	directionsDisplayArray = [];
+
+	// clearing past route result for single route
+	directionsDisplay.setMap(null);
+	directionsDisplay = null;
+	directionsDisplay = new google.maps.DirectionsRenderer();
+	directionsDisplay.setMap(map);
+
 
 	// grabbing data from start and end search bar
 	let startLoc = document.getElementById('startBar').value;
@@ -253,22 +264,20 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 						// if route does not pass through 
 						//	TODO: multiple routes still being displayed, some are still going through bad routes.
 						//		  somehow getting called 6 times from MCS -> Murdaugh hall
+						console.log(`test[${i}]: ${j}`);
 						if (!isLocationOnEdge(loc, polyline, 10e-1)) {
-							console.log('test');
-							new google.maps.DirectionsRenderer({
+							directionsDisplayArray.push(new google.maps.DirectionsRenderer({
 								map: map,
 								directions: response,
 								routeIndex: i,
-							});
+							}));
 						}
 					}
 				}
 				// if wheelchairbox is not checked
 				else {
-					new google.maps.DirectionsRenderer({
-						map: map,
-						directions: response,
-					});
+					// assigning defined map to the directionsDisplay
+					directionsDisplay.setDirections(response);
 				}
 			}
 		}
