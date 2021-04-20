@@ -44,8 +44,40 @@ function initMap() {
 		},
 		zoom: zoomLvl,
 		center: UCO_NIGH_CENTER,
-		// minZoom: zoomLvl,
+		minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
+		styles: [
+			{
+				featureType: "poi",
+				stylers: [
+					{ visibility: "off" }
+				],
+			},
+			{
+				"elementType": "labels",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.land_parcel",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.neighborhood",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			}
+		]
 	});
 	/* *********************************************************************************************** */
 
@@ -53,26 +85,26 @@ function initMap() {
 
 	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
-	const autocompleteOptions = {
-		componentRestrictions: { country: "us" },
-		fields: ["formatted_address", "geometry", "name"],
-		origin: map.getCenter(),
-		strictBounds: true,
-		types: ["establishment"],
-	};
+	// const autocompleteOptions = {
+	// 	componentRestrictions: { country: "us" },
+	// 	fields: ["formatted_address", "geometry", "name"],
+	// 	origin: map.getCenter(),
+	// 	strictBounds: true,
+	// 	types: ["establishment"],
+	// };
 
-	// creating auto complete for start
-	var autocompleteStart = new google.maps.places.Autocomplete(
-		document.getElementById('startBar'),
-		autocompleteOptions,
-	);
-	autocompleteStart.bindTo("bounds", map);
-	// creating auto complete for end	
-	var autocompleteEnd = new google.maps.places.Autocomplete(
-		document.getElementById('endBar'),
-		autocompleteOptions
-	);
-	autocompleteEnd.bindTo("bounds", map);
+	// // creating auto complete for start
+	// var autocompleteStart = new google.maps.places.Autocomplete(
+	// 	document.getElementById('startBar'),
+	// 	autocompleteOptions,
+	// );
+	// autocompleteStart.bindTo("bounds", map);
+	// // creating auto complete for end	
+	// var autocompleteEnd = new google.maps.places.Autocomplete(
+	// 	document.getElementById('endBar'),
+	// 	autocompleteOptions
+	// );
+	// autocompleteEnd.bindTo("bounds", map);
 	/* ******************************************************************************************** */
 
 
