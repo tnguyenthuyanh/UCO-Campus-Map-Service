@@ -150,13 +150,21 @@ async function displayCampusBuildingMarkers(map) {
 			lng: allBuildings[i].Longitude
 		};
 
+
 		// create a marker with current building information
 		const marker = new google.maps.Marker({
 			position: myLatLng,
 			map,
 			title: allBuildings[i].BuildingName,
-			icon: ucoLogo,
+			icon: {
+				url: ucoLogo,
+				labelOrigin: new google.maps.Point(35, 80),
+			},
 			optimized: false,
+			label: {
+				text: allBuildings[i].BuildingName,
+				fontWeight: 'bold',
+			},
 		});
 
 		// add click-event for each marker for infowindow pop up
