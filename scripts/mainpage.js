@@ -3,6 +3,7 @@
 var directionsService;
 var directionsDisplay;
 var directionsDisplayArray = [];
+var hintBuildings = [];
 var map;
 
 var allBuildings;
@@ -141,11 +142,15 @@ async function displayCampusBuildingMarkers(map) {
 	const infoWindow = new google.maps.InfoWindow();
 
 	for (let i = 0; i < allBuildings.length; i++) {
+		// adding all building names to the hintText array
+		hintBuildings.push(allBuildings[i].BuildingName);
+		// get current building lat/lng
 		let myLatLng = {
 			lat: allBuildings[i].Latitude,
 			lng: allBuildings[i].Longitude
 		};
 
+		// create a marker with current building information
 		const marker = new google.maps.Marker({
 			position: myLatLng,
 			map,
@@ -154,6 +159,7 @@ async function displayCampusBuildingMarkers(map) {
 			optimized: false,
 		});
 
+		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
 			infoWindow.close();
 			infoWindow.setContent('<div style="text-align: center">' +
