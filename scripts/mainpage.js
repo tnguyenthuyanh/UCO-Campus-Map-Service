@@ -304,7 +304,6 @@ function calculateAndDisplayRoute(directionsService) {
 						//		  somehow getting called 6 times from MCS -> Murdaugh hall
 						// 10e-4, 0.0005
 						if (!isLocationOnEdge(loc, polyline, 0.00045)) {
-							console.log('test');
 							directionsDisplayArray.push(new google.maps.DirectionsRenderer({
 								map: map,
 								directions: response,
