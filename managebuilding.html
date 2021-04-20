@@ -12,18 +12,18 @@
 <body>
     Edit Building Database:
     <br><br>
-    Building Code <input id="BuildCodeBox" type="text" oninput="UpdateB(this.value,'bcode')"> (docID) <br><br>
+    Building Code <input id="BuildCodeBox" type="text" oninput="updateBuilding(this.value,'bcode')"> (docID) <br><br>
     <button id="retrieveBldBtn">Retrieve</button>
     <br><br>
 
     <hr>
 
-    Building Name <input id="BuildNameBox" type="text" oninput="UpdateB(this.value,'bname')"> <br><br>
-    Latitude <input id="BLatBox" type="text" oninput="UpdateB(this.value,'blat')"> <br><br>
-    Longitude <input id="BLngBox" type="text" oninput="UpdateB(this.value,'blng')"> <br><br>
+    Building Name <input id="BuildNameBox" type="text" oninput="updateBuilding(this.value,'bname')"> <br><br>
+    Latitude <input id="BLatBox" type="text" oninput="updateBuilding(this.value,'blat')"> <br><br>
+    Longitude <input id="BLngBox" type="text" oninput="updateBuilding(this.value,'blng')"> <br><br>
     <button id="addBldBtn">Add</button>
 
-    <button id="updateBldBtn">Update</button>
+    <button id="updateBuildingldBtn">Update</button>
     <button id="deleteBldBtn">Delete</button>
     <hr>
     <br>
@@ -55,8 +55,8 @@
     <br><br>
 
     <hr>
-    Latitude <input id="SLatBox" type="text" oninput="UpdateS(this.value,'slat')"> <br><br>
-    Longitude <input id="SLngBox" type="text" oninput="UpdateS(this.value,'slng')"> <br><br>
+    Latitude <input id="SLatBox" type="text" oninput="updateStairs(this.value,'slat')"> <br><br>
+    Longitude <input id="SLngBox" type="text" oninput="updateStairs(this.value,'slng')"> <br><br>
     <button id="addStairsBtn">Add</button>
     <br><br>
     <button id="resetSValueBtn">Reset</button>
