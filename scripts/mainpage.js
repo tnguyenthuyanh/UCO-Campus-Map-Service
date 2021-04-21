@@ -3,6 +3,7 @@
 var directionsService;
 var directionsDisplay;
 var directionsDisplayArray = [];
+var hintBuildings = [];
 var map;
 
 var allBuildings;
@@ -44,8 +45,40 @@ function initMap() {
 		},
 		zoom: zoomLvl,
 		center: UCO_NIGH_CENTER,
-		// minZoom: zoomLvl,
+		minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
+		styles: [
+			{
+				featureType: "poi",
+				stylers: [
+					{ visibility: "off" }
+				],
+			},
+			{
+				"elementType": "labels",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.land_parcel",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.neighborhood",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			}
+		]
 	});
 	/* *********************************************************************************************** */
 
@@ -53,26 +86,26 @@ function initMap() {
 
 	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
-	const autocompleteOptions = {
-		componentRestrictions: { country: "us" },
-		fields: ["formatted_address", "geometry", "name"],
-		origin: map.getCenter(),
-		strictBounds: true,
-		types: ["establishment"],
-	};
+	// const autocompleteOptions = {
+	// 	componentRestrictions: { country: "us" },
+	// 	fields: ["formatted_address", "geometry", "name"],
+	// 	origin: map.getCenter(),
+	// 	strictBounds: true,
+	// 	types: ["establishment"],
+	// };
 
-	// creating auto complete for start
-	var autocompleteStart = new google.maps.places.Autocomplete(
-		document.getElementById('startBar'),
-		autocompleteOptions,
-	);
-	autocompleteStart.bindTo("bounds", map);
-	// creating auto complete for end	
-	var autocompleteEnd = new google.maps.places.Autocomplete(
-		document.getElementById('endBar'),
-		autocompleteOptions
-	);
-	autocompleteEnd.bindTo("bounds", map);
+	// // creating auto complete for start
+	// var autocompleteStart = new google.maps.places.Autocomplete(
+	// 	document.getElementById('startBar'),
+	// 	autocompleteOptions,
+	// );
+	// autocompleteStart.bindTo("bounds", map);
+	// // creating auto complete for end	
+	// var autocompleteEnd = new google.maps.places.Autocomplete(
+	// 	document.getElementById('endBar'),
+	// 	autocompleteOptions
+	// );
+	// autocompleteEnd.bindTo("bounds", map);
 	/* ******************************************************************************************** */
 
 
@@ -109,19 +142,32 @@ async function displayCampusBuildingMarkers(map) {
 	const infoWindow = new google.maps.InfoWindow();
 
 	for (let i = 0; i < allBuildings.length; i++) {
+		// adding all building names to the hintText array
+		hintBuildings.push(allBuildings[i].BuildingName);
+		// get current building lat/lng
 		let myLatLng = {
 			lat: allBuildings[i].Latitude,
 			lng: allBuildings[i].Longitude
 		};
 
+
+		// create a marker with current building information
 		const marker = new google.maps.Marker({
 			position: myLatLng,
 			map,
 			title: allBuildings[i].BuildingName,
-			icon: ucoLogo,
+			icon: {
+				url: ucoLogo,
+				labelOrigin: new google.maps.Point(35, 80),
+			},
 			optimized: false,
+			label: {
+				text: allBuildings[i].BuildingName,
+				fontWeight: 'bold',
+			},
 		});
 
+		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
 			infoWindow.close();
 			infoWindow.setContent('<div style="text-align: center">' +
@@ -266,7 +312,6 @@ function calculateAndDisplayRoute(directionsService) {
 						//		  somehow getting called 6 times from MCS -> Murdaugh hall
 						// 10e-4, 0.0005
 						if (!isLocationOnEdge(loc, polyline, 0.00045)) {
-							console.log('test');
 							directionsDisplayArray.push(new google.maps.DirectionsRenderer({
 								map: map,
 								directions: response,

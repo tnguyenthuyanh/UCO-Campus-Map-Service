@@ -5,10 +5,11 @@
     <title>UCO Campus Map Service</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="scripts/mainpage.js"></script>
+    <script src="scripts/hintText.js"></script>
 
 </head>
 
-<body>
+<body onfocus="bodyOnFocus()">
     <div id="mySidenav" class="sidenav">
         <h1 id="nameTitle"></h1>
         <h3 id="emailTitle"></h3>
@@ -23,12 +24,17 @@
     <div class="header">
         <div class="inner-header">
             <div class="searchbars-container">
-                <form>
-                    <label for="startBar">Start Location: </label>
-                    <input type="text" id="startBar" name="startBar" placeholder="Enter a building name"><br>
-                    <label for="endBar">End Location: </label>
-                    <input type="text" id="endBar" name="endBar" placeholder="Enter a building name"><br>
-                </form>
+                <!-- <form> -->
+                <label for="startBar">Start Location: </label>
+                <input class="search-marker-start" type="text" id="startBar" name="startBar"
+                    placeholder="Enter a building name" onfocus="searchStartOnFocus()"><br>
+                <div class="suggestions-start">
+                </div>
+                <label for="endBar">End Location: </label>
+                <input class="search-marker-end" type="text" id="endBar" name="endBar"
+                    placeholder="Enter a building name" onfocus="searchEndOnFocus()"><br>
+                <div class="suggestions-end"></div>
+                <!-- </form> -->
             </div>
             <div class="button-container">
                 <button class="switchroutes-btn" onclick="swapStartEnd()">Switch<br />Start/End</button>
@@ -54,9 +60,10 @@
     <script src="scripts/firebaseController.js"></script>
     <!-- <script src=></script> -->
     <script src="scripts/managebuilding.js"></script>
+    <script src="scripts/hintText.js"></script>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script async
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbrXB8ZzqgG0F2lfrcbUe23ZFcnrqil8U&libraries=places&callback=initMap">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDbrXB8ZzqgG0F2lfrcbUe23ZFcnrqil8U&callback=initMap">
         </script>
 </body>
 

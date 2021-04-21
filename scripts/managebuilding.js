@@ -12,7 +12,7 @@ let bCode = buildingCode.value;
 let bLat = b_latitude.value;
 let bLng = b_longitude.value;
 
-function UpdateB(val, type) {
+function updateBuilding(val, type) {
     if (type == 'bname') bName = val;
     else if (type == 'bcode') bCode = val;
     else if (type == 'blat') bLat = val;
@@ -61,7 +61,7 @@ let s_longitude = document.getElementById('SLngBox');
 let sLat = s_latitude.value;
 let sLng = s_longitude.value;
 
-function UpdateS(val, type) {
+function updateStairs(val, type) {
     if (type == 'slat') sLat = val;
     else if (type == 'slng') sLng = val;
 }
@@ -76,7 +76,7 @@ document.getElementById('addBldBtn').onclick = function () {
 document.getElementById('retrieveBldBtn').onclick = function () {
     retrieveBuilding();
 }
-document.getElementById('updateBldBtn').onclick = function () {
+document.getElementById('updateBuildingldBtn').onclick = function () {
     updateFieldsInDoc();
 }
 document.getElementById('deleteBldBtn').onclick = function () {
