@@ -4,6 +4,7 @@
 var searchInpStart = document.querySelector('.search-marker-start');
 var suggestPanelStart = document.querySelector('.suggestions-start');
 var tempSuggestPanelStart;
+var bodyOutOfFocus;
 
 
 searchInpStart.addEventListener('keyup', function () {
@@ -31,6 +32,11 @@ searchInpStart.addEventListener('keyup', function () {
 
 function searchStartOnFocus() {
     const input = searchInpStart.value.toLowerCase();
+    // if we left the body focus and are returning, do not add suggestions again
+    if (input != '' && bodyOutOfFocus){
+        bodyOutOfFocus = false;
+        return;
+    }
     const suggestions = hintBuildings.filter(function (building) {
         return building.toLowerCase().startsWith(input);
     });
@@ -110,6 +116,11 @@ document.addEventListener('click', function (e) {
 
 function searchEndOnFocus() {
     const input = searchInpEnd.value.toLowerCase();
+    // if we left the body focus and are returning, do not add suggestions again
+    if (input != '' && bodyOutOfFocus){
+        bodyOutOfFocus = false;
+        return;
+    }
     const suggestions = hintBuildings.filter(function (building) {
         return building.toLowerCase().startsWith(input);
     });
@@ -127,3 +138,6 @@ function searchEndOnFocus() {
 }
 /* *********************************************************************************************** */
 
+function bodyOnFocus() {
+    bodyOutOfFocus = true;
+}
