@@ -15,11 +15,10 @@ searchInpStart.addEventListener('keyup', function () {
         return building.toLowerCase().startsWith(input);
     });
 
-    console.log('suggetions', suggestions);
-
     suggestions.forEach(function (suggested) {
         var div = document.createElement('div');
         div.innerHTML = suggested;
+        div.setAttribute('class', 'suggestion-start');
         suggestPanelStart.appendChild(div);
     });
 
@@ -30,10 +29,6 @@ searchInpStart.addEventListener('keyup', function () {
     tempSuggestPanelStart = suggestPanelStart;
 });
 
-function searchStartOnFocusOut() {
-    suggestPanelStart.innerHTML = '';
-}
-
 function searchStartOnFocus() {
     const input = searchInpStart.value.toLowerCase();
     const suggestions = hintBuildings.filter(function (building) {
@@ -43,6 +38,7 @@ function searchStartOnFocus() {
     suggestions.forEach(function (suggested) {
         var div = document.createElement('div');
         div.innerHTML = suggested;
+        div.setAttribute('class', 'suggestion-start');
         suggestPanelStart.appendChild(div);
     });
 
@@ -70,11 +66,11 @@ searchInpEnd.addEventListener('keyup', function () {
         return building.toLowerCase().startsWith(input);
     });
 
-    console.log('suggetions', suggestions);
-
+    var count = 0;
     suggestions.forEach(function (suggested) {
         var div = document.createElement('div');
         div.innerHTML = suggested;
+        div.setAttribute('class', 'suggestion-end');
         suggestPanelEnd.appendChild(div);
     });
 
@@ -83,9 +79,34 @@ searchInpEnd.addEventListener('keyup', function () {
     }
 });
 
-function searchEndOnFocusOut() {
-    suggestPanelEnd.innerHTML = '';
-}
+document.addEventListener('click', function (e) {
+    if (e.target.className === 'search-marker-start') {
+        suggestPanelEnd.innerHTML = '';
+        return;
+    }
+    else if (e.target.className === 'search-marker-end') {
+        suggestPanelStart.innerHTML = '';
+        return;
+    }
+    else if (e.target.className === 'suggestion-start') {
+        console.log(e.target.innerHTML);
+        searchInpStart.value = e.target.innerHTML;
+        suggestPanelStart.innerHTML = '';
+    }
+    else if (e.target.className === 'suggestion-end') {
+        console.log(e.target.innerHTML);
+        searchInpEnd.value = e.target.innerHTML;
+        suggestPanelEnd.innerHTML = '';
+    }
+    else {
+        suggestPanelStart.innerHTML = '';
+        suggestPanelEnd.innerHTML = '';
+    }
+});
+
+// function searchEndOnFocusOut() {
+//     suggestPanelEnd.innerHTML = '';
+// }
 
 function searchEndOnFocus() {
     const input = searchInpEnd.value.toLowerCase();
@@ -96,6 +117,7 @@ function searchEndOnFocus() {
     suggestions.forEach(function (suggested) {
         var div = document.createElement('div');
         div.innerHTML = suggested;
+        div.setAttribute('class', 'suggestion-end');
         suggestPanelEnd.appendChild(div);
     });
 
