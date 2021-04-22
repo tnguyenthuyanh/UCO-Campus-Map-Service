@@ -12,7 +12,7 @@ let bCode = buildingCode.value;
 let bLat = b_latitude.value;
 let bLng = b_longitude.value;
 
-function UpdateB(val, type) {
+function updateBuilding(val, type) {
     if (type == 'bname') bName = val;
     else if (type == 'bcode') bCode = val;
     else if (type == 'blat') bLat = val;
@@ -33,6 +33,11 @@ function Reset_Door_Value() {
     d_longitude.value = '';
 }
 
+function Reset_Stair_Value() {
+    s_latitude.value = '';
+    s_longitude.value = '';
+}
+
 //-------------------------------- HANDLE DOOR DATA --------------------------------//
 
 let d_buildingCode = document.getElementById('DBldCodeBox');
@@ -49,6 +54,18 @@ function UpdateD(val, type) {
     else if (type == 'dlng') dLng = val;
 }
 
+//-------------------------------- HANDLE STAIRS DATA ------------------------------//
+
+let s_latitude = document.getElementById('SLatBox');
+let s_longitude = document.getElementById('SLngBox');
+let sLat = s_latitude.value;
+let sLng = s_longitude.value;
+
+function updateStairs(val, type) {
+    if (type == 'slat') sLat = val;
+    else if (type == 'slng') sLng = val;
+}
+
 //-------- Event buttons -----------//
 
 document.getElementById('addBldBtn').onclick = function () {
@@ -59,7 +76,7 @@ document.getElementById('addBldBtn').onclick = function () {
 document.getElementById('retrieveBldBtn').onclick = function () {
     retrieveBuilding();
 }
-document.getElementById('updateBldBtn').onclick = function () {
+document.getElementById('updateBuildingldBtn').onclick = function () {
     updateFieldsInDoc();
 }
 document.getElementById('deleteBldBtn').onclick = function () {
@@ -77,5 +94,14 @@ document.getElementById('addDoorBtn').onclick = function () {
 
 document.getElementById('resetDValueBtn').onclick = function () {
     Reset_Door_Value();
+}
+
+document.getElementById('resetSValueBtn').onclick = function () {
+    Reset_Stair_Value();
+}
+
+document.getElementById('addStairsBtn').onclick = function () {
+    Add_Stairs();
+    Reset_Stair_Value();
 }
 

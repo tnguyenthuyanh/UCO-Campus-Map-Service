@@ -1,10 +1,19 @@
 "use strict";
 
-let directionsService;
-let directionsDisplay;
+var directionsService;
+var directionsDisplay;
+var directionsDisplayArray = [];
+var hintBuildings = [];
+var map;
+
+var allBuildings;
+var allBuildingAutos;
+var allStairs;
+
 
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
+
 
 /* ************************************************************************************************************* */
 /* ******************************************* MAP INITIALIZATION ********************************************** */
@@ -28,7 +37,7 @@ function initMap() {
 	/* ************************************************ */
 
 	/* *************************************** Creation of Map *************************************** */
-	const map = new google.maps.Map(document.getElementById("map"), {
+	map = new google.maps.Map(document.getElementById("map"), {
 		//TODO: restriction to UCO BOUNDS not working
 		restriction: {
 			latLngBounds: UCO_BOUNDS,
@@ -38,6 +47,38 @@ function initMap() {
 		center: UCO_NIGH_CENTER,
 		minZoom: zoomLvl,
 		maxZoom: zoomLvl + 3,
+		styles: [
+			{
+				featureType: "poi",
+				stylers: [
+					{ visibility: "off" }
+				],
+			},
+			{
+				"elementType": "labels",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.land_parcel",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			},
+			{
+				"featureType": "administrative.neighborhood",
+				"stylers": [
+					{
+						"visibility": "off"
+					}
+				]
+			}
+		]
 	});
 	/* *********************************************************************************************** */
 
@@ -45,26 +86,26 @@ function initMap() {
 
 	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
-	const autocompleteOptions = {
-		componentRestrictions: { country: "us" },
-		fields: ["formatted_address", "geometry", "name"],
-		origin: map.getCenter(),
-		strictBounds: true,
-		types: ["establishment"],
-	};
+	// const autocompleteOptions = {
+	// 	componentRestrictions: { country: "us" },
+	// 	fields: ["formatted_address", "geometry", "name"],
+	// 	origin: map.getCenter(),
+	// 	strictBounds: true,
+	// 	types: ["establishment"],
+	// };
 
-	// creating auto complete for start
-	var autocompleteStart = new google.maps.places.Autocomplete(
-		document.getElementById('startBar'),
-		autocompleteOptions,
-	);
-	autocompleteStart.bindTo("bounds", map);
-	// creating auto complete for end	
-	var autocompleteEnd = new google.maps.places.Autocomplete(
-		document.getElementById('endBar'),
-		autocompleteOptions
-	);
-	autocompleteEnd.bindTo("bounds", map);
+	// // creating auto complete for start
+	// var autocompleteStart = new google.maps.places.Autocomplete(
+	// 	document.getElementById('startBar'),
+	// 	autocompleteOptions,
+	// );
+	// autocompleteStart.bindTo("bounds", map);
+	// // creating auto complete for end	
+	// var autocompleteEnd = new google.maps.places.Autocomplete(
+	// 	document.getElementById('endBar'),
+	// 	autocompleteOptions
+	// );
+	// autocompleteEnd.bindTo("bounds", map);
 	/* ******************************************************************************************** */
 
 
@@ -72,10 +113,6 @@ function initMap() {
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
-
-	// assigning defined map to the directionsDisplay
-	directionsDisplay.setMap(map);
-
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
 
@@ -91,9 +128,6 @@ function initMap() {
 /* ************************************* Display Campus Building Markers ***************************************** */
 /* *************************************************************************************************************** */
 
-
-var allBuildings;
-var allBuildingAutos;
 async function displayCampusBuildingMarkers(map) {
 	let button;
 	let markerId;
@@ -102,24 +136,38 @@ async function displayCampusBuildingMarkers(map) {
 	// From Firebase Controller
 	allBuildings = await Retrieve_All_Buildings();
 	allBuildingAutos = await retrieveAllBuildingAutos();
+	allStairs = await getAllStairs();
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
 
 	for (let i = 0; i < allBuildings.length; i++) {
+		// adding all building names to the hintText array
+		hintBuildings.push(allBuildings[i].BuildingName);
+		// get current building lat/lng
 		let myLatLng = {
 			lat: allBuildings[i].Latitude,
 			lng: allBuildings[i].Longitude
 		};
 
+
+		// create a marker with current building information
 		const marker = new google.maps.Marker({
 			position: myLatLng,
 			map,
 			title: allBuildings[i].BuildingName,
-			icon: ucoLogo,
+			icon: {
+				url: ucoLogo,
+				labelOrigin: new google.maps.Point(35, 80),
+			},
 			optimized: false,
+			label: {
+				text: allBuildings[i].BuildingName,
+				fontWeight: 'bold',
+			},
 		});
 
+		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
 			infoWindow.close();
 			infoWindow.setContent('<div style="text-align: center">' +
@@ -164,7 +212,20 @@ function getDirections() {
 	calculateAndDisplayRoute(directionsService, directionsDisplay);
 } // getDirections()
 
-function calculateAndDisplayRoute(directionService, directionsDisplay) {
+function calculateAndDisplayRoute(directionsService) {
+	// clearing past route results for multiple routes
+	for (var i = 0; i < directionsDisplayArray.length; i++) {
+		directionsDisplayArray[i].setMap(null);
+		directionsDisplayArray[i] = null;
+	}
+	directionsDisplayArray = [];
+
+	// clearing past route result for single route
+	directionsDisplay.setMap(null);
+	directionsDisplay = null;
+	directionsDisplay = new google.maps.DirectionsRenderer();
+	directionsDisplay.setMap(map);
+
 
 	// grabbing data from start and end search bar
 	let startLoc = document.getElementById('startBar').value;
@@ -197,11 +258,10 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 
 	// TODO: provide wheel chair accessible routes
 
-	// if wheel chair mode, change destination to automatic doors.
+	// if wheel chair mode, change destination to automatic doors & avoid stair routes
 	if (document.getElementById('wheelChairBox').checked == true) {
 		allBuildingAutos.forEach(e => {
 			if (startLoc.BuildingCode == e.BuildingCode) {
-				console.log('startTest');
 				startLoc = {
 					BuildingCode: e.BuildingCode,
 					lat: e.Latitude,
@@ -209,7 +269,6 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 				};
 			}
 			if (endLoc.BuildingCode == e.BuildingCode) {
-				console.log('endTest');
 				endLoc = {
 					BuildingCode: e.BuildingCode,
 					lat: e.Latitude,
@@ -219,7 +278,7 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		});
 	}
 
-	directionService.route({
+	directionsService.route({
 		origin: {
 			lat: startLoc.lat,
 			lng: startLoc.lng,
@@ -231,8 +290,45 @@ function calculateAndDisplayRoute(directionService, directionsDisplay) {
 		travelMode: google.maps.TravelMode['WALKING'],
 		provideRouteAlternatives: true,
 	}, function (response, status) {
-		if (status === 'OK')
-			directionsDisplay.setDirections(response);
+		if (status === 'OK') {
+
+			var isLocationOnEdge = google.maps.geometry.poly.isLocationOnEdge;
+
+			for (var i = 0, len = response.routes.length; i < len; i++) {
+				// check if route passes through all stairs locations pulled from firebase
+				//		if it doesn not, end look  and display route.
+
+				// if wheelChairBox is checked
+				// 		for each of the stairscases on walking paths
+				if (document.getElementById('wheelChairBox').checked == true) {
+					for (var j = 0; j < allStairs.length; j++) {
+						// getting staircase coordinates
+						let loc = new google.maps.LatLng(allStairs[j].Latitude, allStairs[j].Longitude);
+						// check if path goes over stairscase. If it does, continue
+						var polyline = new google.maps.Polyline({ path: response.routes[i].overview_path });
+
+						// if route does not pass through 
+						//	TODO: multiple routes still being displayed, some are still going through bad routes.
+						//		  somehow getting called 6 times from MCS -> Murdaugh hall
+						// 10e-4, 0.0005
+						if (!isLocationOnEdge(loc, polyline, 0.00045)) {
+							directionsDisplayArray.push(new google.maps.DirectionsRenderer({
+								map: map,
+								directions: response,
+								routeIndex: i,
+							}));
+							j = allStairs.length;
+							i = response.routes.length;
+						}
+					}
+				}
+				// if wheelchairbox is not checked
+				else {
+					// assigning defined map to the directionsDisplay
+					directionsDisplay.setDirections(response);
+				}
+			}
+		}
 		else
 			window.alert('Directions request failed due to ' + status);
 	}
@@ -264,31 +360,9 @@ function setEnd(buildingEndName) {
 /* ********************************************************************************************************** */
 
 
-function geocodeLatLng(geocoder, map, infowindow) {
-	const input = document.getElementById("latlng").value;
-	const latlngStr = input.split(",", 2);
-	const latlng = {
-		lat: parseFloat(latlngStr[0]),
-		lng: parseFloat(latlngStr[1]),
-	};
-	geocoder.geocode({ location: latlng }, (results, status) => {
-		if (status === "OK") {
-			if (results[0]) {
-				map.setZoom(16);
-				const marker = new google.maps.Marker({
-					position: latlng,
-					map: map,
-				});
-				infowindow.setContent(results[0].formatted_address);
-				infowindow.open(map, marker);
-			} else {
-				window.alert("No results found");
-			}
-		} else {
-			window.alert("Geocoder failed due to: " + status);
-		}
-	});
-} // geocodeLatLng(geocoder, map, infowindow)
+/* ********************************************************************************************* */
+/* ************************************* Profile Login ***************************************** */
+/* ********************************************************************************************* */
 
 function initProfile() {
 	/** ************************************************* INSIDE HTML BODY ********************************************/
@@ -324,10 +398,7 @@ function initProfile() {
 			getSideNavItems.append(signUp);
 		}
 	});
-
-
 }
-
 
 async function getUserProfile(uid) {
 	/** These code to stop users from using return button in the browser */
@@ -370,5 +441,5 @@ async function getUserProfile(uid) {
 	};
 	logOut.href = "";
 	getSideNavItems.append(logOut);
-
 }
+/* ********************************************************************************************* */
