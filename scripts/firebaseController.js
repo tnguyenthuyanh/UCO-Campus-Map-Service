@@ -14,6 +14,7 @@ firebase.initializeApp(firebaseConfig);
 
 let cloudDB = firebase.firestore();
 let authDB = firebase.auth();
+var markers = [];
 
 // Add buidling
 function Add_Building_WithAutoID() { // Auto generate ID for doc
@@ -226,9 +227,14 @@ function Add_savedLocs(uid, inputName, lat, lng) {
     }).catch(function (e) {console.error("Error", e);})
 }
 
-// find uid
+// show all saved markers
 function show_markers(map, uid) { 
+    let button;
+    let markerPos;
+    let lat;
+    let lng;
     var ar = [];
+    var infoLocs = new google.maps.InfoWindow;
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
             ar.push((doc.data().Latitude,doc.data().Longitude));
@@ -237,10 +243,78 @@ function show_markers(map, uid) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
                 map: map,
-                id: count
+                title: doc.data().NameLocation,
             });
+
+            markers.push(marker);
+            infoLocs.close();
+
+            google.maps.event.addListener(marker, "click", function (e) {
+                
+                infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +
+                    'Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
+                    '<div style="text-align: center">' +
+                    '<button id="changeName" markerPos="' + marker.position + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Change Name </button>' +
+                    '<div class="divider"/></div>' +
+                    '<button id="deleteMarker" markerPos="' + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Delete </button>' +
+                    '</div>'
+                );
+                infoLocs.open(map, marker);
+            });
+
+            google.maps.event.addListener(infoLocs, 'domready', function () {
+                const urlParam = new URLSearchParams(window.location.search);
+                const uid = urlParam.get('session');
+                
+                if (document.getElementById('deleteMarker')) {
+                    
+                    button = document.getElementById('deleteMarker');
+                    lat = button.getAttribute('lat');
+                    lng = button.getAttribute('lng');
+                    button.onclick = function () {
+                        deleteLocation(lat, lng, uid);
+                    };
+                    
+                }
+                // if (document.getElementById('changeName')) {
+                //     button = document.getElementById('changeName');
+                //     markerId = parseInt(button.getAttribute('markerPos'));
+                //     lat = button.getAttribute('lat');
+                //     lng = button.getAttribute('lng');
+                //     button.onclick = function () {
+                //         if (uid == "guest" || uid == null) {
+                //             infoLocs.setContent('Please log in to save location');
+                //         }
+                //         else {
+                //             saveMarker(uid, infoLocs, document.getElementById('inputName').value, lat, lng);
+                //         }
+                //     };
+                // } 
+            });
+
         })
     }).catch(function(error) {
         console.log("Error getting documents: ", error);
     });
+}
+
+function deleteLocation(lat, lng, uid) {
+    for (var i = 0; i < markers.length; i++) {
+		if (markers[i].position == {lat: lat, lng: lng}) {           
+			markers[i].setMap(null); //Remove the marker from map     
+			markers.splice(i, 1); //Remove the marker from markers array
+
+            var id = cloudDB.collection("savedLocations").where("UID", "==", uid).where("Latitude","==", lat).where("Longitude","==", lng);
+            cloudDB.collection("savedLocations").doc(id).delete()
+                .then(function (docRef) {
+                    console.log("Deleted doc with ID  ", id);
+                }).catch(function (e) {
+                    console.error("Error deleting", e);
+                })
+		}
+	}
+}
+
+function return_markers() {
+    return markers;
 }
