@@ -98,6 +98,25 @@
 		border-bottom: 2px solid rgb(70, 70, 70);
 		outline: none;
 	}
+
+	/* input box in infowindow*/
+	input[type="text"].input-save {
+		background-color:#dce1e4;
+		width: 130px;
+		padding: 4px 0px;
+		margin: 8px;
+		border: none;
+		box-sizing: border-box;
+		border-bottom: 2px solid rgb(70, 70, 70);
+		outline: none;
+	}
+
+	/* space btw buttons in infowindow*/
+	.divider{
+		width:10px;
+		height:auto;
+		display:inline-block;
+	}
 	
 	.searchbars-container {
 		height: 100%;

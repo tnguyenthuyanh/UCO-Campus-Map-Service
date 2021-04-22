@@ -211,3 +211,36 @@ async function Get_One_Profile(uid) {
     };
     return userProfile;
 }
+
+// add saved locations 
+function Add_savedLocs(uid, inputName, lat, lng) { 
+    cloudDB.collection("savedLocations").add(
+        {
+            NameLocation: inputName,
+            Longitude: Number(lng),
+            Latitude: Number(lat),
+            UID: uid
+        }
+    ).then(function(docRef) {
+        console.log("Document successfully written!", docRef.id);
+    }).catch(function (e) {console.error("Error", e);})
+}
+
+// find uid
+function show_markers(map, uid) { 
+    var ar = [];
+    cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
+        querySnapshot.forEach(function(doc) {
+            ar.push((doc.data().Latitude,doc.data().Longitude));
+            console.log(doc.data().Latitude, " " , doc.data().Longitude);
+
+            var marker = new google.maps.Marker({
+                position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
+                map: map,
+                id: count
+            });
+        })
+    }).catch(function(error) {
+        console.log("Error getting documents: ", error);
+    });
+}
