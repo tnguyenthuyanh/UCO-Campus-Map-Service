@@ -15,6 +15,7 @@ firebase.initializeApp(firebaseConfig);
 let cloudDB = firebase.firestore();
 let authDB = firebase.auth();
 var markers = [];
+var count = 0;
 
 // Add buidling
 function Add_Building_WithAutoID() { // Auto generate ID for doc
@@ -230,33 +231,35 @@ function Add_savedLocs(uid, inputName, lat, lng) {
 // show all saved markers
 function show_markers(map, uid) { 
     let button;
-    let markerPos;
     let lat;
     let lng;
-    var ar = [];
+    let docID;
     var infoLocs = new google.maps.InfoWindow;
+
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-            ar.push((doc.data().Latitude,doc.data().Longitude));
             console.log(doc.data().Latitude, " " , doc.data().Longitude);
 
+            //if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
                 map: map,
+                docID: doc.id,
                 title: doc.data().NameLocation,
             });
-
+            
+            
             markers.push(marker);
             infoLocs.close();
 
             google.maps.event.addListener(marker, "click", function (e) {
                 
                 infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +
-                    'Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
+                    'New Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
                     '<div style="text-align: center">' +
-                    '<button id="changeName" markerPos="' + marker.position + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Change Name </button>' +
+                    '<button id="changeName"' + ' docID="'+ doc.id + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Change Name </button>' +
                     '<div class="divider"/></div>' +
-                    '<button id="deleteMarker" markerPos="' + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Delete </button>' +
+                    '<button id="deleteMarker"'+ ' docID="'+ doc.id + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Delete </button>' +
                     '</div>'
                 );
                 infoLocs.open(map, marker);
@@ -271,50 +274,63 @@ function show_markers(map, uid) {
                     button = document.getElementById('deleteMarker');
                     lat = button.getAttribute('lat');
                     lng = button.getAttribute('lng');
+                    docID = button.getAttribute('docID');
                     button.onclick = function () {
-                        deleteLocation(lat, lng, uid);
+                        deleteLocation(docID, lat, lng);
                     };
                     
                 }
-                // if (document.getElementById('changeName')) {
-                //     button = document.getElementById('changeName');
-                //     markerId = parseInt(button.getAttribute('markerPos'));
-                //     lat = button.getAttribute('lat');
-                //     lng = button.getAttribute('lng');
-                //     button.onclick = function () {
-                //         if (uid == "guest" || uid == null) {
-                //             infoLocs.setContent('Please log in to save location');
-                //         }
-                //         else {
-                //             saveMarker(uid, infoLocs, document.getElementById('inputName').value, lat, lng);
-                //         }
-                //     };
-                // } 
+                if (document.getElementById('changeName')) {
+                    
+                    button = document.getElementById('changeName');
+                    lat = button.getAttribute('lat');
+                    lng = button.getAttribute('lng');
+                    docID = button.getAttribute('docID');
+                    button.onclick = function () {
+                        changeName(marker, docID, infoLocs, document.getElementById('Name').value);
+                    };
+                } 
             });
-
+        //}
         })
     }).catch(function(error) {
         console.log("Error getting documents: ", error);
     });
 }
 
-function deleteLocation(lat, lng, uid) {
+
+function changeName(marker, docID, infoLocs, newName) {
+    cloudDB.collection("savedLocations").doc(docID).update({NameLocation: newName}) 
+        .then(function (docRef) {
+            console.log("Name updated!");
+        }).catch(function (e) {
+            console.error("Error updating", e);
+        })
+    infoLocs.setContent("Location's Name updated!");
+    marker.title = newName;
+}
+
+function deleteLocation(docID, lat, lng) {
     for (var i = 0; i < markers.length; i++) {
-		if (markers[i].position == {lat: lat, lng: lng}) {           
+		if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) {           
 			markers[i].setMap(null); //Remove the marker from map     
 			markers.splice(i, 1); //Remove the marker from markers array
-
-            var id = cloudDB.collection("savedLocations").where("UID", "==", uid).where("Latitude","==", lat).where("Longitude","==", lng);
-            cloudDB.collection("savedLocations").doc(id).delete()
+            cloudDB.collection("savedLocations").doc(docID).delete()
                 .then(function (docRef) {
-                    console.log("Deleted doc with ID  ", id);
+                    console.log("Successfully deleted from Saved Locations collection!");
                 }).catch(function (e) {
                     console.error("Error deleting", e);
                 })
+            break;
 		}
 	}
 }
 
-function return_markers() {
-    return markers;
+function isMarkerFree(lat, lng) {
+    for (var i = 0; i < markers.length; i++) {
+      if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) {
+        return false;
+      }
+    }
+    return true;
 }
