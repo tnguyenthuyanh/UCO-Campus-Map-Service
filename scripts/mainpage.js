@@ -10,6 +10,8 @@ var allBuildings;
 var allBuildingAutos;
 var allStairs;
 
+var markers = [];
+var count = 0;
 
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
@@ -82,7 +84,12 @@ function initMap() {
 	});
 	/* *********************************************************************************************** */
 
-
+	/* **************************************** Place Markers**************************************** */
+	var infoLocs = new google.maps.InfoWindow;
+	google.maps.event.addListener(map, 'click', function (e) {
+		placeMarker(map, e.latLng, infoLocs);
+	});
+	/* *********************************************************************************************** */
 
 	/* *************************************** AUTO COMPLETE *************************************** */
 	// auto complete options
@@ -107,7 +114,6 @@ function initMap() {
 	// );
 	// autocompleteEnd.bindTo("bounds", map);
 	/* ******************************************************************************************** */
-
 
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
@@ -443,3 +449,85 @@ async function getUserProfile(uid) {
 	getSideNavItems.append(logOut);
 }
 /* ********************************************************************************************* */
+
+
+function placeMarker(map, location, infoLocs) {
+
+	infoLocs.close();
+	
+	let button;
+	let markerId;
+	let lat; 
+	let lng;
+
+	count++;
+	var marker = new google.maps.Marker({
+		position: location,
+		map: map,
+		id: count
+	});
+	markers.push(marker);
+
+	//Attach click event handler to the marker.
+	google.maps.event.addListener(marker, "click", function (e) {
+		infoLocs.setContent('Latitude: ' + location.lat() + '<br />Longitude: ' + location.lng() +
+			'<br />Name:  <input class="input-save" id="inputName" type="text" size="30" maxlength="30" value=""/>' + 
+			'<div style="text-align: center">' +
+			'<button id="saveMarker" markerId="' + marker.id + '" lat="' + location.lat() + '" lng="' + location.lng() + '"> Save </button>' +
+			'<div class="divider"/></div>' +
+			'<button id="removeMarker" markerId="' + marker.id + '"> Remove </button>' +
+			'</div>'
+		);
+		infoLocs.open(map, marker);
+	});
+
+	google.maps.event.addListener(infoLocs, 'domready', function () {
+		const urlParam = new URLSearchParams(window.location.search);
+		const uid = urlParam.get('session');
+		
+		if (document.getElementById('removeMarker')) {
+			
+            button = document.getElementById('removeMarker');
+			markerId = parseInt(button.getAttribute('markerId'));
+            button.onclick = function () {
+                removeMarker(markerId);
+            };
+			
+		}
+        if (document.getElementById('saveMarker')) {
+            button = document.getElementById('saveMarker');
+			markerId = parseInt(button.getAttribute('markerId'));
+			lat = button.getAttribute('lat');
+			lng = button.getAttribute('lng');
+            button.onclick = function () {
+				if (uid == "guest" || uid == null) {
+					infoLocs.setContent('Please log in to save location');
+				}
+				else {
+                	saveMarker(uid, infoLocs, document.getElementById('inputName').value, lat, lng);
+				}
+            };
+        } 
+	});
+}
+
+function saveMarker(uid, infoLocs, inputName, lat, lng) {
+	Add_savedLocs(uid, inputName, lat, lng);
+	infoLocs.setContent('Successfully saved');
+}
+
+function removeMarker(markerId) {
+	for (var i = 0; i < markers.length; i++) {
+		if (markers[i].id == markerId) {           
+			markers[i].setMap(null); //Remove the marker from map     
+			markers.splice(i, 1); //Remove the marker from markers array
+		}
+	}
+}
+
+function showMarkers() {
+	const urlParam = new URLSearchParams(window.location.search);
+	const uid = urlParam.get('session');
+
+	show_markers(map, uid);
+}
