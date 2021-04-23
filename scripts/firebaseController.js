@@ -231,11 +231,6 @@ async function Add_savedLocs(uid, inputName, lat, lng) {
 
 // show all saved markers
 function show_markers(map, uid, infoLocs) { 
-    let button;
-    let lat;
-    let lng;
-    let docID;
-
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
@@ -249,7 +244,6 @@ function show_markers(map, uid, infoLocs) {
             });
             
             markers.push(marker);
-            
             addMarkerListener(map, marker, infoLocs);
         }
         })
@@ -294,10 +288,9 @@ function addMarkerListener (map, marker, infoLocs) {
                     changeName(map, marker, docID, infoLocs, document.getElementById('Name').value);
                 };
             }
-            
-    });
+        });
 
-     
+
     });
 }
 
@@ -310,7 +303,8 @@ function changeName(map, marker, docID, infoLocs, newName) {
         })
     infoLocs.setContent("Location's Name updated!");
     marker.title = newName;
-    infoLocs.open(map, marker);
+    marker.setMap(null);
+    marker.setMap(map);
 }
 
 function deleteLocation(docID, lat, lng) {
