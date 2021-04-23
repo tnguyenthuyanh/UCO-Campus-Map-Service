@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 let cloudDB = firebase.firestore();
 let authDB = firebase.auth();
 var markers = [];
-var count = 0;
+
 
 // Add buidling
 function Add_Building_WithAutoID() { // Auto generate ID for doc
@@ -67,7 +67,6 @@ async function getAllStairs() {
     const snapshot = await cloudDB.collection('Stairs').get();
     return snapshot.docs.map(doc => doc.data());
 }
-
 
 
 // Retrieve building
@@ -215,91 +214,94 @@ async function Get_One_Profile(uid) {
 }
 
 // add saved locations 
-function Add_savedLocs(uid, inputName, lat, lng) { 
-    cloudDB.collection("savedLocations").add(
+async function Add_savedLocs(uid, inputName, lat, lng) { 
+    let doc_ref = cloudDB.collection("savedLocations").add(
         {
             NameLocation: inputName,
             Longitude: Number(lng),
             Latitude: Number(lat),
             UID: uid
-        }
-    ).then(function(docRef) {
-        console.log("Document successfully written!", docRef.id);
-    }).catch(function (e) {console.error("Error", e);})
+        });
+
+    const docAdded = await doc_ref;
+    console.log(docAdded.id);
+    return docAdded.id;
 }
 
+
 // show all saved markers
-function show_markers(map, uid) { 
+function show_markers(map, uid, infoLocs) { 
     let button;
     let lat;
     let lng;
     let docID;
-    var infoLocs = new google.maps.InfoWindow;
 
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
-            console.log(doc.data().Latitude, " " , doc.data().Longitude);
 
-            //if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
+            if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
+                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
                 map: map,
                 docID: doc.id,
                 title: doc.data().NameLocation,
             });
             
-            
             markers.push(marker);
-            infoLocs.close();
-
-            google.maps.event.addListener(marker, "click", function (e) {
-                
-                infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +
-                    'New Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
-                    '<div style="text-align: center">' +
-                    '<button id="changeName"' + ' docID="'+ doc.id + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Change Name </button>' +
-                    '<div class="divider"/></div>' +
-                    '<button id="deleteMarker"'+ ' docID="'+ doc.id + '" lat="' + doc.data().Latitude + '" lng="' + doc.data().Longitude + '"> Delete </button>' +
-                    '</div>'
-                );
-                infoLocs.open(map, marker);
-            });
-
-            google.maps.event.addListener(infoLocs, 'domready', function () {
-                const urlParam = new URLSearchParams(window.location.search);
-                const uid = urlParam.get('session');
-                
-                if (document.getElementById('deleteMarker')) {
-                    
-                    button = document.getElementById('deleteMarker');
-                    lat = button.getAttribute('lat');
-                    lng = button.getAttribute('lng');
-                    docID = button.getAttribute('docID');
-                    button.onclick = function () {
-                        deleteLocation(docID, lat, lng);
-                    };
-                    
-                }
-                if (document.getElementById('changeName')) {
-                    
-                    button = document.getElementById('changeName');
-                    lat = button.getAttribute('lat');
-                    lng = button.getAttribute('lng');
-                    docID = button.getAttribute('docID');
-                    button.onclick = function () {
-                        changeName(marker, docID, infoLocs, document.getElementById('Name').value);
-                    };
-                } 
-            });
-        //}
+            
+            addMarkerListener(map, marker, infoLocs);
+        }
         })
     }).catch(function(error) {
         console.log("Error getting documents: ", error);
     });
 }
 
+function addMarkerListener (map, marker, infoLocs) {
 
-function changeName(marker, docID, infoLocs, newName) {
+    google.maps.event.addListener(marker, "click", function (e) {
+        infoLocs.close();    
+        infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +
+            'New Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
+            '<div style="text-align: center">' +
+            '<button id="changeName"' + ' docID="'+ marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '"> Change Name </button>' +
+            '<div class="divider"/></div>' +
+            '<button id="deleteMarker"'+ ' docID="'+ marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '"> Delete </button>' +
+            '</div>'
+        );
+        infoLocs.open(map, marker);
+
+        google.maps.event.addListener(infoLocs, 'domready', function () {
+        
+            if (document.getElementById('deleteMarker')) {
+                
+                button = document.getElementById('deleteMarker');
+                lat = button.getAttribute('lat');
+                lng = button.getAttribute('lng');
+                docID = button.getAttribute('docID');
+                button.onclick = function () {
+                    deleteLocation(docID, lat, lng);
+                };
+            }
+            if (document.getElementById('changeName')) {
+                
+                button = document.getElementById('changeName');
+                lat = button.getAttribute('lat');
+                lng = button.getAttribute('lng');
+                docID = button.getAttribute('docID');
+                button.onclick = function () {
+                    changeName(map, marker, docID, infoLocs, document.getElementById('Name').value);
+                };
+            }
+            
+    });
+
+     
+    });
+}
+
+function changeName(map, marker, docID, infoLocs, newName) {
     cloudDB.collection("savedLocations").doc(docID).update({NameLocation: newName}) 
         .then(function (docRef) {
             console.log("Name updated!");
@@ -308,6 +310,7 @@ function changeName(marker, docID, infoLocs, newName) {
         })
     infoLocs.setContent("Location's Name updated!");
     marker.title = newName;
+    infoLocs.open(map, marker);
 }
 
 function deleteLocation(docID, lat, lng) {
@@ -333,4 +336,8 @@ function isMarkerFree(lat, lng) {
       }
     }
     return true;
+}
+
+function pushMarkers(marker) {
+    markers.push(marker);
 }

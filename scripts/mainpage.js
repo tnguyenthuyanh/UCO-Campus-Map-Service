@@ -12,6 +12,7 @@ var allStairs;
 
 var markers = [];
 var count = 0;
+var infoLocs;
 
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
@@ -85,7 +86,7 @@ function initMap() {
 	/* *********************************************************************************************** */
 
 	/* **************************************** Place Markers**************************************** */
-	var infoLocs = new google.maps.InfoWindow;
+	infoLocs = new google.maps.InfoWindow;
 	google.maps.event.addListener(map, 'click', function (e) {
 		placeMarker(map, e.latLng, infoLocs);
 	});
@@ -479,41 +480,54 @@ function placeMarker(map, location, infoLocs) {
 			'</div>'
 		);
 		infoLocs.open(map, marker);
+
+		google.maps.event.addListener(infoLocs, 'domready', function () {
+			const urlParam = new URLSearchParams(window.location.search);
+			const uid = urlParam.get('session');
+			
+			if (document.getElementById('removeMarker')) {
+				
+				button = document.getElementById('removeMarker');
+				markerId = parseInt(button.getAttribute('markerId'));
+				button.onclick = function () {
+					removeMarker(markerId);
+				};
+				
+			}
+			if (document.getElementById('saveMarker')) {
+				button = document.getElementById('saveMarker');
+				markerId = parseInt(button.getAttribute('markerId'));
+				lat = button.getAttribute('lat');
+				lng = button.getAttribute('lng');
+				button.onclick = function () {
+					if (uid == "guest" || uid == null) {
+						infoLocs.setContent('Please log in to save location');
+					}
+					else {
+						saveMarker(marker, uid, document.getElementById('inputName').value, location);
+					}
+				};
+			} 
+		});
 	});
 
-	google.maps.event.addListener(infoLocs, 'domready', function () {
-		const urlParam = new URLSearchParams(window.location.search);
-		const uid = urlParam.get('session');
-		
-		if (document.getElementById('removeMarker')) {
-			
-            button = document.getElementById('removeMarker');
-			markerId = parseInt(button.getAttribute('markerId'));
-            button.onclick = function () {
-                removeMarker(markerId);
-            };
-			
-		}
-        if (document.getElementById('saveMarker')) {
-            button = document.getElementById('saveMarker');
-			markerId = parseInt(button.getAttribute('markerId'));
-			lat = button.getAttribute('lat');
-			lng = button.getAttribute('lng');
-            button.onclick = function () {
-				if (uid == "guest" || uid == null) {
-					infoLocs.setContent('Please log in to save location');
-				}
-				else {
-                	saveMarker(uid, infoLocs, document.getElementById('inputName').value, lat, lng);
-				}
-            };
-        } 
-	});
+	
 }
 
-function saveMarker(uid, infoLocs, inputName, lat, lng) {
-	Add_savedLocs(uid, inputName, lat, lng);
+async function saveMarker(marker, uid, inputName, location) {
+	var docID = await Add_savedLocs(uid, inputName, location.lat(), location.lng());
+	console.log(docID);
 	infoLocs.setContent('Successfully saved');
+	removeMarker(marker.id);
+	var newMarker = new google.maps.Marker({
+		position: location,
+		icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+		map: map,
+		docID: docID,
+		title: inputName,
+	});
+	pushMarkers(newMarker);
+	addMarkerListener(map, newMarker, infoLocs);
 }
 
 function removeMarker(markerId) {
@@ -529,6 +543,6 @@ function showMarkers() {
 	const urlParam = new URLSearchParams(window.location.search);
 	const uid = urlParam.get('session');
 
-	show_markers(map, uid);
+	show_markers(map, uid, infoLocs);
 }
 
