@@ -510,8 +510,6 @@ function placeMarker(map, location, infoLocs) {
 			} 
 		});
 	});
-
-	
 }
 
 async function saveMarker(marker, uid, inputName, location) {
