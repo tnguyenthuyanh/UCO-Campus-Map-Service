@@ -9,14 +9,18 @@ var map;
 var allBuildings;
 var allBuildingAutos;
 var allStairs;
+var allUserSavedLocs;
 
 var markers = [];
 var count = 0;
 var infoLocs;
 
+
+
 // UCO LOGO For custom markers
 const ucoLogo = 'https://i.imgur.com/UBf2qqn.png'
-
+const savedLogo = 'https://i.imgur.com/b7sZ6Hr.png';
+const tempSavedLogo = 'https://i.imgur.com/NMlpaHS.png';
 
 /* ************************************************************************************************************* */
 /* ******************************************* MAP INITIALIZATION ********************************************** */
@@ -92,36 +96,13 @@ function initMap() {
 	});
 	/* *********************************************************************************************** */
 
-	/* *************************************** AUTO COMPLETE *************************************** */
-	// auto complete options
-	// const autocompleteOptions = {
-	// 	componentRestrictions: { country: "us" },
-	// 	fields: ["formatted_address", "geometry", "name"],
-	// 	origin: map.getCenter(),
-	// 	strictBounds: true,
-	// 	types: ["establishment"],
-	// };
-
-	// // creating auto complete for start
-	// var autocompleteStart = new google.maps.places.Autocomplete(
-	// 	document.getElementById('startBar'),
-	// 	autocompleteOptions,
-	// );
-	// autocompleteStart.bindTo("bounds", map);
-	// // creating auto complete for end	
-	// var autocompleteEnd = new google.maps.places.Autocomplete(
-	// 	document.getElementById('endBar'),
-	// 	autocompleteOptions
-	// );
-	// autocompleteEnd.bindTo("bounds", map);
-	/* ******************************************************************************************** */
-
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
+	showUserSavedLocMarkers()
 
 	/* ****************** This initilizes guest / user / admin access inside header drawer ************ */
 	initProfile();
@@ -139,14 +120,22 @@ async function displayCampusBuildingMarkers(map) {
 	let button;
 	let markerId;
 	let buildingName;
+	const urlParam = new URLSearchParams(window.location.search);
+	const uid = urlParam.get('session');
 
-	// From Firebase Controller
+	// initializing all needed FB data
 	allBuildings = await Retrieve_All_Buildings();
 	allBuildingAutos = await retrieveAllBuildingAutos();
 	allStairs = await getAllStairs();
+	allUserSavedLocs = await getAllUserSavedLocs(uid);
 
 	// creating infowindow for markers
 	const infoWindow = new google.maps.InfoWindow();
+
+	// adding all user saved locations to the hint buildings
+	for (let i = 0; i < allUserSavedLocs.length; i++) {
+		hintBuildings.push(allUserSavedLocs[i].NameLocation);
+	}
 
 	for (let i = 0; i < allBuildings.length; i++) {
 		// adding all building names to the hintText array
@@ -235,29 +224,42 @@ function calculateAndDisplayRoute(directionsService) {
 
 
 	// grabbing data from start and end search bar
-	let startLoc = document.getElementById('startBar').value;
-	let endLoc = document.getElementById('endBar').value;
+	let startLocName = document.getElementById('startBar').value;
+	let endLocName = document.getElementById('endBar').value;
+	var startLoc;
+	var endLoc;
 
 	// error handling for empty search bars
-	if (startLoc.trim() == "" || endLoc.trim() == "") {
-		// let msgStart = startLoc.trim();
-		// let msgEnd = endLoc.trim();
+	if (startLocName.trim() == "" || endLocName.trim() == "") {
 		window.alert('Please enter a location!');
 		return;
 	}
 
 	// checking if provided start/end is a UCO custom marker
-	// TODO: also check if provided start/end is a USER custom marker
 	allBuildings.forEach(e => {
-		if (e.BuildingName == startLoc)
+		if (e.BuildingName == startLocName)
 			startLoc = {
 				BuildingCode: e.BuildingCode,
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
-		if (e.BuildingName == endLoc)
+		if (e.BuildingName == endLocName)
 			endLoc = {
 				BuildingCode: e.BuildingCode,
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
+	});
+
+	// checking if provided start/end is a User Saved Location custom marker
+	allUserSavedLocs.forEach(e => {
+		if (e.NameLocation == startLocName)
+			startLoc = {
+				lat: e.Latitude,
+				lng: e.Longitude,
+			}
+		if (e.NameLocation == endLocName)
+			endLoc = {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
@@ -465,7 +467,8 @@ function placeMarker(map, location, infoLocs) {
 	var marker = new google.maps.Marker({
 		position: location,
 		map: map,
-		id: count
+		id: count,
+		icon: tempSavedLogo,
 	});
 	markers.push(marker);
 
@@ -519,11 +522,19 @@ async function saveMarker(marker, uid, inputName, location) {
 	removeMarker(marker.id);
 	var newMarker = new google.maps.Marker({
 		position: location,
-		icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+		icon: {
+			url: savedLogo,
+			labelOrigin: new google.maps.Point(35, 80),
+		},
 		map: map,
 		docID: docID,
 		title: inputName,
+		label: {
+			text: inputName,
+			fontWeight: 'bold',
+		},
 	});
+	hintBuildings.push(inputName);
 	pushMarkers(newMarker);
 	addMarkerListener(map, newMarker, infoLocs);
 }
@@ -537,10 +548,10 @@ function removeMarker(markerId) {
 	}
 }
 
-function showMarkers() {
+function showUserSavedLocMarkers() {
 	const urlParam = new URLSearchParams(window.location.search);
 	const uid = urlParam.get('session');
 
-	show_markers(map, uid, infoLocs);
+	show_markers(map, uid, infoLocs, savedLogo);
 }
 

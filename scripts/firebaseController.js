@@ -98,6 +98,11 @@ async function retrieveAllBuildingAutos() {
     return snapshot.docs.map(doc => doc.data());
 }
 
+async function getAllUserSavedLocs(uid) {
+    const snapshot = await cloudDB.collection("savedLocations").where("UID", "==", uid).get();
+    return snapshot.docs.map(doc => doc.data());
+}
+
 // Update building
 function Update_Fields_inDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).update(
@@ -228,19 +233,25 @@ async function Add_savedLocs(uid, inputName, lat, lng) {
     return docAdded.id;
 }
 
-
 // show all saved markers
-function show_markers(map, uid, infoLocs) { 
+function show_markers(map, uid, infoLocs, savedLogo) { 
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
             if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
-                icon: 'http://maps.google.com/mapfiles/ms/icons/green-dot.png',
+                icon: {
+                    url: savedLogo,
+                    labelOrigin: new google.maps.Point(35, 80),
+                },
                 map: map,
                 docID: doc.id,
                 title: doc.data().NameLocation,
+                label: {
+                    text: doc.data().NameLocation,
+                    fontWeight: 'bold',
+                },
             });
             
             markers.push(marker);
