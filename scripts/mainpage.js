@@ -253,11 +253,13 @@ function calculateAndDisplayRoute(directionsService) {
 
 	// checking if provided start/end is a User Saved Location custom marker
 	allUserSavedLocs.forEach(e => {
-		if (e.NameLocation == startLocName)
+		if (e.NameLocation == startLocName) {
 			startLoc = {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			console.log('match!');
+		}
 		if (e.NameLocation == endLocName)
 			endLoc = {
 				lat: e.Latitude,
@@ -534,7 +536,18 @@ async function saveMarker(marker, uid, inputName, location) {
 			fontWeight: 'bold',
 		},
 	});
+
+	// console.log(location.lat());
+	// console.log(location.lng());
+
 	hintBuildings.push(inputName);
+	allUserSavedLocs.push({
+		Latitude: location.lat(),
+		Longitude: location.lng(),
+		NameLocation: inputName,
+		UID: uid,
+	});
+
 	pushMarkers(newMarker);
 	addMarkerListener(map, newMarker, infoLocs);
 }
