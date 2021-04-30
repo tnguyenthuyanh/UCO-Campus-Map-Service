@@ -384,7 +384,7 @@ function initProfile() {
 			// user activities loaded in here, such as retrieving user info, 
 			//		user's saved locations
 			getUserProfile(UID);
-		if (UID == "guest" || user.UID == null) { // If guest
+		if (UID == "guest" || user.uid == null) { // If guest
 			document.getElementById("nameTitle")
 				.appendChild(document.createTextNode('Welcome, guest'));
 			var getSideNavItems = document.getElementById("sideNavItems");
