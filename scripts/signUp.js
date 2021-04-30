@@ -1,10 +1,10 @@
 // ----------------- sign Up Handler ----------------- //
 
 document.getElementById('btn-signup').onclick = function () {
-    let name = document.getElementById('sign_up_name').value;
-    let email = document.getElementById('sign_up_email').value;
-    let password = document.getElementById('sign_up_password').value;
-    let c_password = document.getElementById('sign_up_confirmPassword').value;
+    let name = document.getElementById('signUp_name').value;
+    let email = document.getElementById('signUp_email').value;
+    let password = document.getElementById('signUp_password').value;
+    let c_password = document.getElementById('signUp_confirmPassword').value;
 
     if (name.length == 0) {
         alert("Enter your name");

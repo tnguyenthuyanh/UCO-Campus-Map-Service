@@ -1,6 +1,6 @@
 //-------------------------------- Configuration for FirebaseFirestore --------------------------------//
 
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDJ4SVerZgGodKbClc3xRSgFNVDpPMslPg",
     authDomain: "uco-cms.firebaseapp.com",
     projectId: "uco-cms",
@@ -10,7 +10,7 @@ const firebaseConfig = {
     measurementId: "G-M1E63ZQ6DM"
 };
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(FIREBASE_CONFIG);
 
 let cloudDatabase = firebase.firestore();
 let authDatabase = firebase.auth();
@@ -47,7 +47,6 @@ async function retrieveBuilding(bCode) {
         Longitude: data.Longitude,
     }
     return buildingData;
-
 }
 
 // Retrieve all buildings in collection "UCOBuildings"
@@ -58,13 +57,14 @@ async function retrieveAllBuilding() {
 
 // Retrieves all auto door from collection "Doors"
 async function retrieveAllBuildingAutos() {
-    const snapShot = await cloudDatabase.collection('Doors').get();
-    return snapShot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDatabase.collection('Doors').get();
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 async function getAllUserSavedLocs(uid) {
-    const snapshot = await cloudDB.collection("savedLocations").where("UID", "==", uid).get();
-    return snapshot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDatabase.collection("savedLocations")
+        .where("UID", "==", uid).get();
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 // Update building
@@ -158,8 +158,8 @@ async function getOneProfile(uid) {
 }
 
 // add saved locations 
-async function Add_savedLocs(uid, inputName, lat, lng) { 
-    let doc_ref = cloudDB.collection("savedLocations").add(
+async function addSavedLocs(uid, inputName, lat, lng) { 
+    let doc_ref = cloudDatabase.collection("savedLocations").add(
         {
             NameLocation: inputName,
             Longitude: Number(lng),
@@ -167,21 +167,21 @@ async function Add_savedLocs(uid, inputName, lat, lng) {
             UID: uid
         });
 
-    const docAdded = await doc_ref;
-    console.log(docAdded.id);
-    return docAdded.id;
+    const DOC_ADDED = await doc_ref;
+    console.log(DOC_ADDED.id);
+    return DOC_ADDED.id;
 }
 
 // show all saved markers
-function show_markers(map, uid, infoLocs, savedLogo) { 
-    cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
+function showMarkers(map, uid, infoLocs, SAVED_LOGO) { 
+    cloudDatabase.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
             if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
                 icon: {
-                    url: savedLogo,
+                    url: SAVED_LOGO,
                     labelOrigin: new google.maps.Point(35, 80),
                 },
                 map: map,
@@ -265,7 +265,7 @@ function addMarkerListener (map, marker, infoLocs) {
 }
 
 function changeName(map, marker, docID, infoLocs, newName) {
-    cloudDB.collection("savedLocations").doc(docID).update({NameLocation: newName}) 
+    cloudDatabase.collection("savedLocations").doc(docID).update({NameLocation: newName}) 
         .then(function (docRef) {
             console.log("Name updated!");
         }).catch(function (e) {
@@ -308,7 +308,7 @@ function deleteLocation(docID, lat, lng, title) {
 
 			markers[i].setMap(null); //Remove the marker from map     
 			markers.splice(i, 1); //Remove the marker from markers array
-            cloudDB.collection("savedLocations").doc(docID).delete()
+            cloudDatabase.collection("savedLocations").doc(docID).delete()
                 .then(function (docRef) {
                     console.log("Successfully deleted from Saved Locations collection!");
                 }).catch(function (e) {

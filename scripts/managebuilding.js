@@ -14,6 +14,7 @@ let oneBuilding = {
     Longitude: Number,
 }
 
+
 document.getElementById('addBldBtn').onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
     try {
@@ -46,7 +47,6 @@ document.getElementById('updateBldBtn').onclick = async function () {
     } catch (e) {
         alert("Updating error: " + e);
     }
-
 }
 document.getElementById('deleteBldBtn').onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
@@ -63,9 +63,6 @@ document.getElementById('deleteBldBtn').onclick = async function () {
 document.getElementById('resetBValueBtn').onclick = function () {
     resetBuildingValue();
 }
-
-
-
 
 //-------------------------------- HANDLE DOOR DATA --------------------------------//
 
@@ -94,9 +91,6 @@ document.getElementById('addDoorBtn').onclick = async function () {
 document.getElementById('resetDValueBtn').onclick = function () {
     resetDoorValue();
 }
-
-
-
 
 //-------------------------------- HANDLE STAIRS DATA ------------------------------//
 
@@ -135,6 +129,7 @@ function updateBuildingBox() {
     oneBuilding.Latitude = Number(getBuildingLatitudeBox.value);
     oneBuilding.Longitude = Number(getBuildingLongitudeBox.value);
 }
+
 
 function updateDoorBox() {
     oneDoor.BuildingCode = String(getBuildingCodeOfDoorBox.value);
