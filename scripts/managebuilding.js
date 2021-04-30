@@ -176,18 +176,3 @@ function validateBuildingCode(value) {
         return false;
     }
 }
-
-async function checkUserCredentials() {
-    const urlParam = new URLSearchParams(window.location.search);
-    const uid = urlParam.get('user');
-    console.log(uid);
-    if (uid != null) {
-        var userProfile = await getOneProfile(uid);
-        if (userProfile.Admin == false) {
-            window.href = "signin.html";
-        }
-    } else {
-        window.href = "signin.html";
-    }
-
-}
