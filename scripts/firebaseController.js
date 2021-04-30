@@ -203,7 +203,6 @@ function showMarkers(map, uid, infoLocs, SAVED_LOGO) {
 }
 
 function addMarkerListener(map, marker, infoLocs) {
-
     google.maps.event.addListener(marker, "click", function (e) {
         infoLocs.close();
         infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +

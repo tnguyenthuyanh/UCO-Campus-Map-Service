@@ -13,7 +13,10 @@ let oneBuilding = {
     Latitude: Number,
     Longitude: Number,
 }
-
+getBuildingCodeBox.oninput = function () { updateBuildingBox(); }
+getBuildingCodeBox.oninput = function () { updateBuildingBox(); }
+getBuildingLatitudeBox.oninput = function () { updateBuildingBox(); }
+getBuildingLongitudeBox.oninput = function () { updateBuildingBox(); }
 
 document.getElementById('addBldBtn').onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
@@ -75,6 +78,9 @@ let oneDoor = {
     Latitude: Number,
     Longitude: Number,
 }
+getBuildingCodeOfDoorBox.oninput = function () { updateDoorBox(); }
+getDoorLatitudeBox.oninput = function () { updateDoorBox(); }
+getDoorLongitudeBox.oninput = function () { updateDoorBox(); }
 
 document.getElementById('addDoorBtn').onclick = async function () {
     if (!validateBuildingCode(oneDoor.BuildingCode)) return;
@@ -101,6 +107,8 @@ let stairsLocation = {
     Latitude: Number,
     Longitude: Number,
 }
+getStairsLatitudeBox.oninput = function () { updateStairsBox(); }
+getStairsLongitudeBox.oninput = function () { updateStairsBox(); }
 
 document.getElementById('addStairsBtn').onclick = async function () {
     if (getStairsLatitudeBox.value == '' || getStairsLongitudeBox == '') {
