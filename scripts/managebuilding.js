@@ -6,6 +6,11 @@ let getBuildingNameBox = document.getElementById('BuildNameBox');
 let getBuildingCodeBox = document.getElementById('BuildCodeBox');
 let getBuildingLatitudeBox = document.getElementById('BLatBox');
 let getBuildingLongitudeBox = document.getElementById('BLngBox');
+let addBuildingButton = document.getElementById('addBldBtn');
+let retrieveBuildingButton = document.getElementById('retrieveBldBtn');
+let updateBuildingButton = document.getElementById('updateBldBtn');
+let deleteBuildingButton = document.getElementById('deleteBldBtn');
+let resetBuildingValueButton = document.getElementById('resetBValueBtn');
 
 let oneBuilding = {
     BuildingName: '',
@@ -13,12 +18,20 @@ let oneBuilding = {
     Latitude: Number,
     Longitude: Number,
 }
-getBuildingCodeBox.oninput = function () { updateBuildingBox(); }
-getBuildingCodeBox.oninput = function () { updateBuildingBox(); }
-getBuildingLatitudeBox.oninput = function () { updateBuildingBox(); }
-getBuildingLongitudeBox.oninput = function () { updateBuildingBox(); }
+getBuildingCodeBox.oninput = function () {
+    updateBuildingBox();
+}
+getBuildingCodeBox.oninput = function () {
+    updateBuildingBox();
+}
+getBuildingLatitudeBox.oninput = function () {
+    updateBuildingBox();
+}
+getBuildingLongitudeBox.oninput = function () {
+    updateBuildingBox();
+}
 
-document.getElementById('addBldBtn').onclick = async function () {
+addBuildingButton.onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
     try {
         updateBuildingBox();
@@ -29,7 +42,7 @@ document.getElementById('addBldBtn').onclick = async function () {
         alert("Adding error: " + e);
     }
 }
-document.getElementById('retrieveBldBtn').onclick = async function () {
+retrieveBuildingButton.onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
     try {
         var getBuildingData = await retrieveBuilding(oneBuilding.BuildingCode);
@@ -41,7 +54,7 @@ document.getElementById('retrieveBldBtn').onclick = async function () {
     }
 }
 
-document.getElementById('updateBldBtn').onclick = async function () {
+updateBuildingButton.onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
     try {
         updateBuildingBox();
@@ -51,7 +64,7 @@ document.getElementById('updateBldBtn').onclick = async function () {
         alert("Updating error: " + e);
     }
 }
-document.getElementById('deleteBldBtn').onclick = async function () {
+deleteBuildingButton.onclick = async function () {
     if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
     try {
         await deleteBuilding(oneBuilding.BuildingCode);
@@ -63,7 +76,7 @@ document.getElementById('deleteBldBtn').onclick = async function () {
 
 }
 
-document.getElementById('resetBValueBtn').onclick = function () {
+resetBuildingValueButton.onclick = function () {
     resetBuildingValue();
 }
 
@@ -72,17 +85,25 @@ document.getElementById('resetBValueBtn').onclick = function () {
 let getBuildingCodeOfDoorBox = document.getElementById('DBldCodeBox');
 let getDoorLatitudeBox = document.getElementById('DLatBox');
 let getDoorLongitudeBox = document.getElementById('DLngBox');
+let addDoorButton = document.getElementById('addDoorBtn');
+let resetDoorValueButton = document.getElementById('resetDValueBtn');
 
 let oneDoor = {
     BuildingCode: '',
     Latitude: Number,
     Longitude: Number,
 }
-getBuildingCodeOfDoorBox.oninput = function () { updateDoorBox(); }
-getDoorLatitudeBox.oninput = function () { updateDoorBox(); }
-getDoorLongitudeBox.oninput = function () { updateDoorBox(); }
+getBuildingCodeOfDoorBox.oninput = function () {
+    updateDoorBox();
+}
+getDoorLatitudeBox.oninput = function () {
+    updateDoorBox();
+}
+getDoorLongitudeBox.oninput = function () {
+    updateDoorBox();
+}
 
-document.getElementById('addDoorBtn').onclick = async function () {
+addDoorButton.onclick = async function () {
     if (!validateBuildingCode(oneDoor.BuildingCode)) return;
     try {
         updateDoorBox();
@@ -94,7 +115,7 @@ document.getElementById('addDoorBtn').onclick = async function () {
     }
 }
 
-document.getElementById('resetDValueBtn').onclick = function () {
+resetDoorValueButton.onclick = function () {
     resetDoorValue();
 }
 
@@ -102,15 +123,21 @@ document.getElementById('resetDValueBtn').onclick = function () {
 
 let getStairsLatitudeBox = document.getElementById('SLatBox');
 let getStairsLongitudeBox = document.getElementById('SLngBox');
+let addStairsButton = document.getElementById('addStairsBtn');
+let resetStairsValueButton = document.getElementById('resetSValueBtn');
 
 let stairsLocation = {
     Latitude: Number,
     Longitude: Number,
 }
-getStairsLatitudeBox.oninput = function () { updateStairsBox(); }
-getStairsLongitudeBox.oninput = function () { updateStairsBox(); }
+getStairsLatitudeBox.oninput = function () {
+    updateStairsBox();
+}
+getStairsLongitudeBox.oninput = function () {
+    updateStairsBox();
+}
 
-document.getElementById('addStairsBtn').onclick = async function () {
+addStairsButton.onclick = async function () {
     if (getStairsLatitudeBox.value == '' || getStairsLongitudeBox == '') {
         alert("Enter both latitude and longitude of the stairs");
         return;
@@ -125,7 +152,7 @@ document.getElementById('addStairsBtn').onclick = async function () {
     }
 }
 
-document.getElementById('resetSValueBtn').onclick = function () {
+resetStairsValueButton.onclick = function () {
     resetStairsValue();
 }
 
