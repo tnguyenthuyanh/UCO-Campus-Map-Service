@@ -111,6 +111,7 @@ resetStairsValueButton.onclick = function () {
 
 
 // -------------------------------- Functions -------------------------------------- //
+
 async function _addBuilding(building) {
     if (!validateBuildingCode(building.BuildingCode)) return;
     try {
