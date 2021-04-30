@@ -1,4 +1,4 @@
-//-------------------------------- Configuration for FirebaseFirestore --------------------------------//
+//-------------------------------- Configuration for Firebase --------------------------------//
 
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDJ4SVerZgGodKbClc3xRSgFNVDpPMslPg",
@@ -158,7 +158,7 @@ async function getOneProfile(uid) {
 }
 
 // add saved locations 
-async function addSavedLocs(uid, inputName, lat, lng) { 
+async function addSavedLocs(uid, inputName, lat, lng) {
     let doc_ref = cloudDatabase.collection("savedLocations").add(
         {
             NameLocation: inputName,
@@ -173,58 +173,58 @@ async function addSavedLocs(uid, inputName, lat, lng) {
 }
 
 // show all saved markers
-function showMarkers(map, uid, infoLocs, SAVED_LOGO) { 
-    cloudDatabase.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
-        querySnapshot.forEach(function(doc) {
+function showMarkers(map, uid, infoLocs, SAVED_LOGO) {
+    cloudDatabase.collection("savedLocations").where("UID", "==", uid).get().then(function (querySnapshot) {
+        querySnapshot.forEach(function (doc) {
 
-            if (isMarkerFree(doc.data().Latitude,doc.data().Longitude)) {
-            var marker = new google.maps.Marker({
-                position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
-                icon: {
-                    url: SAVED_LOGO,
-                    labelOrigin: new google.maps.Point(35, 80),
-                },
-                map: map,
-                docID: doc.id,
-                title: doc.data().NameLocation,
-                label: {
-                    text: doc.data().NameLocation,
-                    fontWeight: 'bold',
-                },
-            });
-            
-            markers.push(marker);
-            addMarkerListener(map, marker, infoLocs);
-        }
+            if (isMarkerFree(doc.data().Latitude, doc.data().Longitude)) {
+                var marker = new google.maps.Marker({
+                    position: { lat: doc.data().Latitude, lng: doc.data().Longitude },
+                    icon: {
+                        url: SAVED_LOGO,
+                        labelOrigin: new google.maps.Point(35, 80),
+                    },
+                    map: map,
+                    docID: doc.id,
+                    title: doc.data().NameLocation,
+                    label: {
+                        text: doc.data().NameLocation,
+                        fontWeight: 'bold',
+                    },
+                });
+
+                markers.push(marker);
+                addMarkerListener(map, marker, infoLocs);
+            }
         })
-    }).catch(function(error) {
+    }).catch(function (error) {
         console.log("Error getting documents: ", error);
     });
 }
 
-function addMarkerListener (map, marker, infoLocs) {
+function addMarkerListener(map, marker, infoLocs) {
 
     google.maps.event.addListener(marker, "click", function (e) {
-        infoLocs.close();    
+        infoLocs.close();
         infoLocs.setContent('<div style="text-align: center">' + marker.title + '</div>' +
             '<div style="text-align: center">' +
             `<button id="set-start-btn" buildingName="${marker.title}"> Start </button>` +
             '<div class="divider"/></div>' +
             `<button id="set-end-btn" buildingName="${marker.title}"> End </button>` +
             '</div>' +
-            'New Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' + 
+            'New Name:  <input class="input-save" id="Name" type="text" size="30" maxlength="30" value=""/>' +
             '<div style="text-align: center">' +
-            '<button id="changeName"' + ' docID="'+ marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '"> Change Name </button>' +
+            '<button id="changeName"' + ' docID="' + marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '"> Change Name </button>' +
             '<div class="divider"/></div>' +
-            '<button id="deleteMarker"'+ ' docID="'+ marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '" title="' + marker.title + '"> Delete </button>' +
+            '<button id="deleteMarker"' + ' docID="' + marker.docID + '" lat="' + marker.getPosition().lat() + '" lng="' + marker.getPosition().lng() + '" title="' + marker.title + '"> Delete </button>' +
             '</div>'
         );
         infoLocs.open(map, marker);
 
         google.maps.event.addListener(infoLocs, 'domready', function () {
-        
+
             if (document.getElementById('deleteMarker')) {
-                
+
                 button = document.getElementById('deleteMarker');
                 lat = button.getAttribute('lat');
                 lng = button.getAttribute('lng');
@@ -235,7 +235,7 @@ function addMarkerListener (map, marker, infoLocs) {
                 };
             }
             if (document.getElementById('changeName')) {
-                
+
                 button = document.getElementById('changeName');
                 lat = button.getAttribute('lat');
                 lng = button.getAttribute('lng');
@@ -246,26 +246,26 @@ function addMarkerListener (map, marker, infoLocs) {
             }
             if (document.getElementById('set-start-btn')) {
 
-				button = document.getElementById('set-start-btn');
-				buildingName = button.getAttribute('buildingName');
-				button.onclick = function () {
-					setStart(buildingName);
-				};
-			}
-			if (document.getElementById('set-end-btn')) {
+                button = document.getElementById('set-start-btn');
+                buildingName = button.getAttribute('buildingName');
+                button.onclick = function () {
+                    setStart(buildingName);
+                };
+            }
+            if (document.getElementById('set-end-btn')) {
 
-				button = document.getElementById('set-end-btn');
-				buildingName = button.getAttribute('buildingName');
-				button.onclick = function () {
-					setEnd(buildingName);
-				};
-			}
+                button = document.getElementById('set-end-btn');
+                buildingName = button.getAttribute('buildingName');
+                button.onclick = function () {
+                    setEnd(buildingName);
+                };
+            }
         });
     });
 }
 
 function changeName(map, marker, docID, infoLocs, newName) {
-    cloudDatabase.collection("savedLocations").doc(docID).update({NameLocation: newName}) 
+    cloudDatabase.collection("savedLocations").doc(docID).update({ NameLocation: newName })
         .then(function (docRef) {
             console.log("Name updated!");
         }).catch(function (e) {
@@ -278,36 +278,36 @@ function changeName(map, marker, docID, infoLocs, newName) {
             marker.getLabel().text = newName;
             break;
         }
-    } 
-    
+    }
+
     for (var i = 0; i < allUserSavedLocs.length; i++) {
         if (allUserSavedLocs[i].NameLocation == marker.title && allUserSavedLocs[i].Latitude == marker.getPosition().lat() && allUserSavedLocs[i].Longitude == marker.getPosition().lng()) {
             allUserSavedLocs[i].NameLocation = newName;
             break;
         }
-    } 
+    }
     marker.title = newName;
     marker.setMap(null);
     marker.setMap(map);
-    
+
 }
 
 function deleteLocation(docID, lat, lng, title) {
     for (var i = 0; i < markers.length; i++) {
-		if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) { 
+        if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) {
 
             // remove from hint buildings
             for (var x = 0; x < hintBuildings.length; x++) {
                 if (hintBuildings[x] == title) {
                     console.log(hintBuildings[x]);
                     hintBuildings.splice(x, 1);
-                    
+
                     break;
                 }
-            } 
+            }
 
-			markers[i].setMap(null); //Remove the marker from map     
-			markers.splice(i, 1); //Remove the marker from markers array
+            markers[i].setMap(null); //Remove the marker from map     
+            markers.splice(i, 1); //Remove the marker from markers array
             cloudDatabase.collection("savedLocations").doc(docID).delete()
                 .then(function (docRef) {
                     console.log("Successfully deleted from Saved Locations collection!");
@@ -315,15 +315,15 @@ function deleteLocation(docID, lat, lng, title) {
                     console.error("Error deleting", e);
                 })
             break;
-		}
-	}
+        }
+    }
 }
 
 function isMarkerFree(lat, lng) {
     for (var i = 0; i < markers.length; i++) {
-      if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) {
-        return false;
-      }
+        if (markers[i].getPosition().lat() == lat && markers[i].getPosition().lng() == lng) {
+            return false;
+        }
     }
     return true;
 }
