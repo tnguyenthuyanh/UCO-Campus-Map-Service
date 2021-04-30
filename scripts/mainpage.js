@@ -403,8 +403,8 @@ function initProfile() {
 	});
 }
 
-async function getUserProfile(uid) {
-	var user = await getOneProfile(uid);
+async function getUserProfile(UID) {
+	var user = await getOneProfile(UID);
 	var getSideNavItems = document.getElementById("sideNavItems");
 
 	// Create Name Title Inside sideNavBar
@@ -422,7 +422,7 @@ async function getUserProfile(uid) {
 		buildingSettings
 			.appendChild(document.createTextNode('Building Settings'));
 		getSideNavItems.append(buildingSettings);
-		buildingSettings.href = "managebuilding.html?user=" + uid;
+		buildingSettings.href = "managebuilding.html?user=" + UID;
 	}
 
 	// Create Link to User Settings
