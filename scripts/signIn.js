@@ -11,7 +11,7 @@ $("#btn-login").click(function () {
         window.alert("Enter password");
     } else {
         try {
-            sign_In(email, password);
+            signIn(email, password);
         }
         catch (e) {
             alert(e);

@@ -13,32 +13,40 @@ let bLat = b_latitude.value;
 let bLng = b_longitude.value;
 
 function updateBuilding(val, type) {
-    if (type == 'bname') bName = val;
-    else if (type == 'bcode') bCode = val;
-    else if (type == 'blat') bLat = val;
-    else if (type == 'blng') bLng = val;
+    if (type == 'bname') { 
+        bName = val;
+    }
+    else if (type == 'bcode') {
+        bCode = val;
+    }
+    else if (type == 'blat') {
+        bLat = val;
+    }
+    else if (type == 'blng') {
+        bLng = val;
+    }
 }
 
 // Reset value
-function Reset_Building_Value() {
+function resetBuildingValue() {
     buildingName.value = '';
     buildingCode.value = '';
     b_latitude.value = '';
     b_longitude.value = '';
 }
 
-function Reset_Door_Value() {
+function resetDoorValue() {
     d_buildingCode.value = '';
     d_latitude.value = '';
     d_longitude.value = '';
 }
 
-function Reset_Stair_Value() {
+function resetStairValue() {
     s_latitude.value = '';
     s_longitude.value = '';
 }
 
-//-------------------------------- HANDLE DOOR DATA --------------------------------//
+/* -------------------------------- HANDLE DOOR DATA -------------------------------- */
 
 let d_buildingCode = document.getElementById('DBldCodeBox');
 let d_latitude = document.getElementById('DLatBox');
@@ -71,7 +79,7 @@ function updateStairs(val, type) {
 document.getElementById('addBldBtn').onclick = function () {
     // addBuildingWithAutoID();
     addBuildingWithID();
-    Reset_Building_Value();
+    resetBuildingValue();
 }
 document.getElementById('retrieveBldBtn').onclick = function () {
     retrieveBuilding();
@@ -84,24 +92,24 @@ document.getElementById('deleteBldBtn').onclick = function () {
 }
 
 document.getElementById('resetBValueBtn').onclick = function () {
-    Reset_Building_Value();
+    resetBuildingValue();
 }
 
 document.getElementById('addDoorBtn').onclick = function () {
     addDoorWithAutoID();
-    Reset_Door_Value();
+    resetDoorValue();
 }
 
 document.getElementById('resetDValueBtn').onclick = function () {
-    Reset_Door_Value();
+    resetDoorValue();
 }
 
 document.getElementById('resetSValueBtn').onclick = function () {
-    Reset_Stair_Value();
+    resetStairValue();
 }
 
 document.getElementById('addStairsBtn').onclick = function () {
-    Add_Stairs();
-    Reset_Stair_Value();
+    addStairs();
+    resetStairValue();
 }
 

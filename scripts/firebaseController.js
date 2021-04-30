@@ -1,6 +1,6 @@
 //-------------------------------- Configuration for FirebaseFirestore --------------------------------//
 
-const firebaseConfig = {
+const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDJ4SVerZgGodKbClc3xRSgFNVDpPMslPg",
     authDomain: "uco-cms.firebaseapp.com",
     projectId: "uco-cms",
@@ -10,7 +10,7 @@ const firebaseConfig = {
     measurementId: "G-M1E63ZQ6DM"
 };
 
-firebase.initializeApp(firebaseConfig);
+firebase.initializeApp(FIREBASE_CONFIG);
 
 let cloudDB = firebase.firestore();
 let authDB = firebase.auth();
@@ -18,7 +18,7 @@ var markers = [];
 
 
 // Add buidling
-function Add_Building_WithAutoID() { // Auto generate ID for doc
+function addBuildingWithAutoID() { // Auto generate ID for doc
     cloudDB.collection("UCOBuildings").add(
         {
             BuildingName: bName,
@@ -33,7 +33,7 @@ function Add_Building_WithAutoID() { // Auto generate ID for doc
     })
 }
 
-function Add_Building_WithID() { // Use custom ID for doc
+function addBuildingWithID() { // Use custom ID for doc
     cloudDB.collection("UCOBuildings").doc(bCode).set(
         {
             BuildingName: bName,
@@ -50,7 +50,7 @@ function Add_Building_WithID() { // Use custom ID for doc
 }
 
 // Add stairs
-function Add_Stairs() { // Use custom ID for doc
+function addStairs() { // Use custom ID for doc
     cloudDB.collection("Stairs").add(
         {
             Latitude: Number(sLat),
@@ -70,7 +70,7 @@ async function getAllStairs() {
 
 
 // Retrieve building
-function Retrieve_Building() {
+function retrieveBuilding() {
     cloudDB.collection("UCOBuildings").doc(bCode).get(
     ).then(function (doc) {
         if (doc.exists) {
@@ -87,7 +87,7 @@ function Retrieve_Building() {
 }
 
 // Retrieve all buildings in collection "UCOBuildings"
-async function Retrieve_All_Buildings() {
+async function retrieveAllBuildings() {
     const snapshot = await cloudDB.collection('UCOBuildings').get()
     return snapshot.docs.map(doc => doc.data());
 }
@@ -104,7 +104,7 @@ async function getAllUserSavedLocs(uid) {
 }
 
 // Update building
-function Update_Fields_inDoc() {
+function updateFieldsInDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).update(
         {
             BuildingName: bName,
@@ -130,7 +130,7 @@ function Delete_Doc() {
 }
 
 // Add door
-function Add_Door_WithAutoID() { // Auto generate ID for doc
+function addDoorWithAutoID() { // Auto generate ID for doc
     cloudDB.collection("Doors").add(
         {
             BuildingCode: dBldCode,
@@ -147,7 +147,7 @@ function Add_Door_WithAutoID() { // Auto generate ID for doc
 // FirebaseAuth
 firebase.auth.Auth.Persistence.LOCAL;
 
-function sign_In(email, password) {
+function signIn(email, password) {
     var result = authDB.signInWithEmailAndPassword(email, password)
         .then(function (data) {
             // console.log(data.user.uid);
@@ -167,7 +167,7 @@ function sign_In(email, password) {
     });
 }
 
-function sign_Out() {
+function signOut() {
     authDB.signOut().then(function () {
         // window.alert("Sign out Successfully");
         window.location.href = "signin.html";
@@ -176,12 +176,12 @@ function sign_Out() {
     });
 }
 
-function sign_Up(email, password, name) {
+function signUp(email, password, name) {
     authDB.createUserWithEmailAndPassword(email, password).
         then(data => {
             let uid = data.user.uid;
             console.log("UID: " + uid);
-            create_User_Profile(uid, email, name, false);
+            createUserProfile(uid, email, name, false);
             alert("Account created!");
         }).
         catch(function (e) {
@@ -189,7 +189,7 @@ function sign_Up(email, password, name) {
         });
 }
 
-function create_User_Profile(uid, email, name, admin_flag) {
+function createUserProfile(uid, email, name, admin_flag) {
     cloudDB.collection("userProfile").add(
         {
             UID: uid,
@@ -205,7 +205,7 @@ function create_User_Profile(uid, email, name, admin_flag) {
     })
 }
 
-async function Get_One_Profile(uid) {
+async function getOneProfile(uid) {
     var snapShot = await cloudDB.collection("userProfile").where("UID", "==", uid).get();
     var data = snapShot.docs[0].data();
     let userProfile =
@@ -219,7 +219,7 @@ async function Get_One_Profile(uid) {
 }
 
 // add saved locations 
-async function Add_savedLocs(uid, inputName, lat, lng) { 
+async function addSavedLocs(uid, inputName, lat, lng) { 
     let doc_ref = cloudDB.collection("savedLocations").add(
         {
             NameLocation: inputName,
@@ -234,7 +234,7 @@ async function Add_savedLocs(uid, inputName, lat, lng) {
 }
 
 // show all saved markers
-function show_markers(map, uid, infoLocs, savedLogo) { 
+function showMarkers(map, uid, infoLocs, SAVED_LOGO) { 
     cloudDB.collection("savedLocations").where("UID", "==", uid).get().then(function(querySnapshot) {
         querySnapshot.forEach(function(doc) {
 
@@ -242,7 +242,7 @@ function show_markers(map, uid, infoLocs, savedLogo) {
             var marker = new google.maps.Marker({
                 position: {lat: doc.data().Latitude, lng: doc.data().Longitude},
                 icon: {
-                    url: savedLogo,
+                    url: SAVED_LOGO,
                     labelOrigin: new google.maps.Point(35, 80),
                 },
                 map: map,
