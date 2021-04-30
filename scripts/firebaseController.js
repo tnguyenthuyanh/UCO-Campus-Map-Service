@@ -64,8 +64,8 @@ function addStairs() { // Use custom ID for doc
 }
 
 async function getAllStairs() {
-    const snapshot = await cloudDB.collection('Stairs').get();
-    return snapshot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDB.collection('Stairs').get();
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 
@@ -88,19 +88,20 @@ function retrieveBuilding() {
 
 // Retrieve all buildings in collection "UCOBuildings"
 async function retrieveAllBuildings() {
-    const snapshot = await cloudDB.collection('UCOBuildings').get()
-    return snapshot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDB.collection('UCOBuildings').get()
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 // Retrieves all auto door from collection "Doors"
 async function retrieveAllBuildingAutos() {
-    const snapshot = await cloudDB.collection('Doors').get();
-    return snapshot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDB.collection('Doors').get();
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 async function getAllUserSavedLocs(uid) {
-    const snapshot = await cloudDB.collection("savedLocations").where("UID", "==", uid).get();
-    return snapshot.docs.map(doc => doc.data());
+    const SNAPSHOT = await cloudDB.collection("savedLocations")
+        .where("UID", "==", uid).get();
+    return SNAPSHOT.docs.map(doc => doc.data());
 }
 
 // Update building
@@ -120,7 +121,7 @@ function updateFieldsInDoc() {
 }
 
 // Delete building
-function Delete_Doc() {
+function deleteDoc() {
     cloudDB.collection("UCOBuildings").doc(bCode).delete()
         .then(function (docRef) {
             console.log("Deleted doc with ID  ", bCode);
@@ -163,7 +164,6 @@ function signIn(email, password) {
         console.log(errorCode);
         console.log(errorMessage);
         window.alert("Message : " + errorMessage);
-
     });
 }
 
@@ -228,9 +228,9 @@ async function addSavedLocs(uid, inputName, lat, lng) {
             UID: uid
         });
 
-    const docAdded = await doc_ref;
-    console.log(docAdded.id);
-    return docAdded.id;
+    const DOC_ADDED = await doc_ref;
+    console.log(DOC_ADDED.id);
+    return DOC_ADDED.id;
 }
 
 // show all saved markers
