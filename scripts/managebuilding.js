@@ -19,65 +19,35 @@ let oneBuilding = {
     Longitude: Number,
 }
 getBuildingCodeBox.oninput = function () {
-    updateBuildingBox();
+    _updateBuildingBox();
 }
 getBuildingCodeBox.oninput = function () {
-    updateBuildingBox();
+    _updateBuildingBox();
 }
 getBuildingLatitudeBox.oninput = function () {
-    updateBuildingBox();
+    _updateBuildingBox();
 }
 getBuildingLongitudeBox.oninput = function () {
-    updateBuildingBox();
+    _updateBuildingBox();
 }
-
-addBuildingButton.onclick = async function () {
-    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
-    try {
-        updateBuildingBox();
-        await addBuildingWithID(oneBuilding);
-        alert("Successfully added building, ID " + oneBuilding.BuildingCode);
-        resetBuildingValue();
-    } catch (e) {
-        alert("Adding error: " + e);
-    }
+addBuildingButton.onclick = function () {
+    _updateBuildingBox();
+    _addBuilding(oneBuilding);
 }
-retrieveBuildingButton.onclick = async function () {
-    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
-    try {
-        var getBuildingData = await retrieveBuilding(oneBuilding.BuildingCode);
-        getBuildingNameBox.value = getBuildingData.BuildingName;
-        getBuildingLatitudeBox.value = getBuildingData.Latitude;
-        getBuildingLongitudeBox.value = getBuildingData.Longitude;
-    } catch (e) {
-        alert("Retrieving error: " + e);
-    }
+retrieveBuildingButton.onclick = function () {
+    _updateBuildingBox();
+    _retrieveBuilding(oneBuilding);
 }
-
-updateBuildingButton.onclick = async function () {
-    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
-    try {
-        updateBuildingBox();
-        await updateBuildingOfDoc(oneBuilding);
-        alert("Successfully updated building, ID " + oneBuilding.BuildingCode);
-    } catch (e) {
-        alert("Updating error: " + e);
-    }
+updateBuildingButton.onclick = function () {
+    _updateBuildingBox();
+    _updateBuilding(oneBuilding);
 }
-deleteBuildingButton.onclick = async function () {
-    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
-    try {
-        await deleteBuilding(oneBuilding.BuildingCode);
-        alert("Deleted building, ID " + oneBuilding.BuildingCode);
-        resetBuildingValue();
-    } catch (e) {
-        alert("Deleting error: " + e);
-    }
-
+deleteBuildingButton.onclick = function () {
+    _updateBuildingBox();
+    _deleteBuilding(oneBuilding);
 }
-
 resetBuildingValueButton.onclick = function () {
-    resetBuildingValue();
+    _resetBuildingValue();
 }
 
 //-------------------------------- HANDLE DOOR DATA --------------------------------//
@@ -94,29 +64,22 @@ let oneDoor = {
     Longitude: Number,
 }
 getBuildingCodeOfDoorBox.oninput = function () {
-    updateDoorBox();
+    _updateDoorBox();
 }
 getDoorLatitudeBox.oninput = function () {
-    updateDoorBox();
+    _updateDoorBox();
 }
 getDoorLongitudeBox.oninput = function () {
-    updateDoorBox();
+    _updateDoorBox();
 }
 
-addDoorButton.onclick = async function () {
-    if (!validateBuildingCode(oneDoor.BuildingCode)) return;
-    try {
-        updateDoorBox();
-        await addDoorWithAutoID(oneDoor);
-        alert("Successfully added one door, ID " + oneDoor.BuildingCode);
-        resetDoorValue();
-    } catch (e) {
-        alert("Adding door error: " + e);
-    }
+addDoorButton.onclick = function () {
+    _updateDoorBox();
+    _addDoor(oneDoor);
 }
 
 resetDoorValueButton.onclick = function () {
-    resetDoorValue();
+    _resetDoorValue();
 }
 
 //-------------------------------- HANDLE STAIRS DATA ------------------------------//
@@ -131,71 +94,129 @@ let stairsLocation = {
     Longitude: Number,
 }
 getStairsLatitudeBox.oninput = function () {
-    updateStairsBox();
+    _updateStairsBox();
 }
 getStairsLongitudeBox.oninput = function () {
-    updateStairsBox();
+    _updateStairsBox();
 }
 
-addStairsButton.onclick = async function () {
-    if (getStairsLatitudeBox.value == '' || getStairsLongitudeBox == '') {
-        alert("Enter both latitude and longitude of the stairs");
-        return;
-    }
-    try {
-        updateStairsBox();
-        await addStairs(stairsLocation);
-        alert("Successfully added stairs location!");
-        resetStairsValue();
-    } catch (e) {
-        alert("Stairs location adding error: " + e);
-    }
+addStairsButton.onclick = function () {
+    _updateStairsBox();
+    _addStairs(stairsLocation);
 }
 
 resetStairsValueButton.onclick = function () {
-    resetStairsValue();
+    _resetStairsValue();
 }
 
 
 // -------------------------------- Functions -------------------------------------- //
-function updateBuildingBox() {
+async function _addBuilding(building) {
+    if (!validateBuildingCode(building.BuildingCode)) return;
+    try {
+        await addBuildingWithID(oneBuilding);
+        alert("Successfully added building, ID " + building.BuildingCode);
+        _resetBuildingValue();
+    } catch (e) {
+        alert("Adding error: " + e);
+    }
+}
+
+async function _retrieveBuilding(building) {
+    if (!validateBuildingCode(building.BuildingCode)) return;
+    try {
+        var getBuildingData = await retrieveBuilding(building.BuildingCode);
+        getBuildingNameBox.value = getBuildingData.BuildingName;
+        getBuildingLatitudeBox.value = getBuildingData.Latitude;
+        getBuildingLongitudeBox.value = getBuildingData.Longitude;
+    } catch (e) {
+        alert("Retrieving error: " + e);
+    }
+}
+
+async function _updateBuilding(building) {
+    if (!validateBuildingCode(building.BuildingCode)) return;
+    try {
+
+        await updateBuildingOfDoc(building);
+        alert("Successfully updated building, ID " + building.BuildingCode);
+    } catch (e) {
+        alert("Updating error: " + e);
+    }
+}
+async function _deleteBuilding(building) {
+    if (!validateBuildingCode(building.BuildingCode)) return;
+    try {
+        await deleteBuilding(building.BuildingCode);
+        alert("Deleted building, ID " + building.BuildingCode);
+        _resetBuildingValue();
+    } catch (e) {
+        alert("Deleting error: " + e);
+    }
+}
+
+function _updateBuildingBox() {
     oneBuilding.BuildingName = String(getBuildingNameBox.value);
     oneBuilding.BuildingCode = String(getBuildingCodeBox.value);
     oneBuilding.Latitude = Number(getBuildingLatitudeBox.value);
     oneBuilding.Longitude = Number(getBuildingLongitudeBox.value);
 }
 
+function _resetBuildingValue() {
+    getBuildingNameBox.value = '';
+    getBuildingCodeBox.value = '';
+    getBuildingLatitudeBox.value = '';
+    getBuildingLongitudeBox.value = '';
+    _updateBuildingBox();
+}
 
-function updateDoorBox() {
+async function _addDoor(door) {
+    if (!validateBuildingCode(door.BuildingCode)) return;
+    try {
+        await addDoorWithAutoID(door);
+        alert("Successfully added one door, ID " + door.BuildingCode);
+        _resetDoorValue();
+    } catch (e) {
+        alert("Adding door error: " + e);
+    }
+}
+
+function _updateDoorBox() {
     oneDoor.BuildingCode = String(getBuildingCodeOfDoorBox.value);
     oneDoor.Latitude = Number(getDoorLatitudeBox.value);
     oneDoor.Longitude = Number(getDoorLongitudeBox.value);
 }
 
-function updateStairsBox() {
+function _resetDoorValue() {
+    getBuildingCodeOfDoorBox.value = '';
+    getDoorLatitudeBox.value = '';
+    getDoorLongitudeBox.value = '';
+    _updateDoorBox();
+}
+
+async function _addStairs(stairs) {
+    if (getStairsLatitudeBox.value == '' || getStairsLongitudeBox == '') {
+        alert("Enter both latitude and longitude of the stairs");
+        return;
+    }
+    try {
+        await addStairs(stairs);
+        alert("Successfully added stairs location!");
+        _resetStairsValue();
+    } catch (e) {
+        alert("Stairs location adding error: " + e);
+    }
+}
+
+function _updateStairsBox() {
     stairsLocation.Latitude = Number(getStairsLatitudeBox.value);
     stairsLocation.Longitude = Number(getStairsLongitudeBox.value);
 }
 
-function resetBuildingValue() {
-    getBuildingNameBox.value = '';
-    getBuildingCodeBox.value = '';
-    getBuildingLatitudeBox.value = '';
-    getBuildingLongitudeBox.value = '';
-    updateBuildingBox();
-}
-
-function resetDoorValue() {
-    getBuildingCodeOfDoorBox.value = '';
-    getDoorLatitudeBox.value = '';
-    getDoorLongitudeBox.value = '';
-    updateDoorBox();
-}
-
-function resetStairsValue() {
+function _resetStairsValue() {
     getStairsLatitudeBox.value = '';
     getStairsLongitudeBox.value = '';
-    updateStairsBox();
+    _updateStairsBox();
 }
 
 function validateBuildingCode(value) {
