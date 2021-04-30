@@ -134,7 +134,7 @@ async function displayCampusBuildingMarkers(map) {
 	let buildingName;
 
 	// From Firebase Controller
-	allBuildings = await Retrieve_All_Buildings();
+	allBuildings = await retrieveAllBuilding();
 	allBuildingAutos = await retrieveAllBuildingAutos();
 	allStairs = await getAllStairs();
 
@@ -401,15 +401,8 @@ function initProfile() {
 }
 
 async function getUserProfile(uid) {
-	/** These code to stop users from using return button in the browser */
-	// window.history.pushState(null, "", window.location.href);
-	// window.onpopstate = function () {
-	// 	this.window.history.pushState(null, "", window.location.href);
-	// }
-	/** *******************************************************************/
 
-	var user = await Get_One_Profile(uid);
-	console.log(user);
+	var user = await getOneProfile(uid);
 	var getSideNavItems = document.getElementById("sideNavItems");
 
 	// Create Name Title Inside sideNavBar
@@ -437,7 +430,7 @@ async function getUserProfile(uid) {
 	var logOut = document.createElement("a");
 	logOut.appendChild(document.createTextNode('Log out'));
 	logOut.onclick = function () {
-		sign_Out();
+		signOut();
 	};
 	logOut.href = "";
 	getSideNavItems.append(logOut);

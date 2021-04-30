@@ -2,106 +2,192 @@
 
 //-------------------------------- HANDLE BUILDING DATA --------------------------------//
 
-let buildingName = document.getElementById('BuildNameBox');
-let buildingCode = document.getElementById('BuildCodeBox');
-let b_latitude = document.getElementById('BLatBox');
-let b_longitude = document.getElementById('BLngBox');
+let getBuildingNameBox = document.getElementById('BuildNameBox');
+let getBuildingCodeBox = document.getElementById('BuildCodeBox');
+let getBuildingLatitudeBox = document.getElementById('BLatBox');
+let getBuildingLongitudeBox = document.getElementById('BLngBox');
 
-let bName = buildingName.value;
-let bCode = buildingCode.value;
-let bLat = b_latitude.value;
-let bLng = b_longitude.value;
-
-function updateBuilding(val, type) {
-    if (type == 'bname') bName = val;
-    else if (type == 'bcode') bCode = val;
-    else if (type == 'blat') bLat = val;
-    else if (type == 'blng') bLng = val;
+let oneBuilding = {
+    BuildingName: '',
+    BuildingCode: '',
+    Latitude: Number,
+    Longitude: Number,
 }
 
-// Reset value
-function Reset_Building_Value() {
-    buildingName.value = '';
-    buildingCode.value = '';
-    b_latitude.value = '';
-    b_longitude.value = '';
+document.getElementById('addBldBtn').onclick = async function () {
+    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
+    try {
+        updateBuildingBox();
+        await addBuildingWithID(oneBuilding);
+        alert("Successfully added building, ID " + oneBuilding.BuildingCode);
+        resetBuildingValue();
+    } catch (e) {
+        alert("Adding error: " + e);
+    }
+}
+document.getElementById('retrieveBldBtn').onclick = async function () {
+    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
+    try {
+        var getBuildingData = await retrieveBuilding(oneBuilding.BuildingCode);
+        getBuildingNameBox.value = getBuildingData.BuildingName;
+        getBuildingLatitudeBox.value = getBuildingData.Latitude;
+        getBuildingLongitudeBox.value = getBuildingData.Longitude;
+    } catch (e) {
+        alert("Retrieving error: " + e);
+    }
 }
 
-function Reset_Door_Value() {
-    d_buildingCode.value = '';
-    d_latitude.value = '';
-    d_longitude.value = '';
+document.getElementById('updateBldBtn').onclick = async function () {
+    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
+    try {
+        updateBuildingBox();
+        await updateBuildingOfDoc(oneBuilding);
+        alert("Successfully updated building, ID " + oneBuilding.BuildingCode);
+    } catch (e) {
+        alert("Updating error: " + e);
+    }
+
 }
+document.getElementById('deleteBldBtn').onclick = async function () {
+    if (!validateBuildingCode(oneBuilding.BuildingCode)) return;
+    try {
+        await deleteBuilding(oneBuilding.BuildingCode);
+        alert("Deleted building, ID " + oneBuilding.BuildingCode);
+        resetBuildingValue();
+    } catch (e) {
+        alert("Deleting error: " + e);
+    }
 
-function Reset_Stair_Value() {
-    s_latitude.value = '';
-    s_longitude.value = '';
-}
-
-//-------------------------------- HANDLE DOOR DATA --------------------------------//
-
-let d_buildingCode = document.getElementById('DBldCodeBox');
-let d_latitude = document.getElementById('DLatBox');
-let d_longitude = document.getElementById('DLngBox');
-
-let dBldCode = d_buildingCode.value;
-let dLat = d_latitude.value;
-let dLng = d_longitude.value;
-
-function UpdateD(val, type) {
-    if (type == 'dcode') dBldCode = val;
-    else if (type == 'dlat') dLat = val;
-    else if (type == 'dlng') dLng = val;
-}
-
-//-------------------------------- HANDLE STAIRS DATA ------------------------------//
-
-let s_latitude = document.getElementById('SLatBox');
-let s_longitude = document.getElementById('SLngBox');
-let sLat = s_latitude.value;
-let sLng = s_longitude.value;
-
-function updateStairs(val, type) {
-    if (type == 'slat') sLat = val;
-    else if (type == 'slng') sLng = val;
-}
-
-//-------- Event buttons -----------//
-
-document.getElementById('addBldBtn').onclick = function () {
-    // addBuildingWithAutoID();
-    addBuildingWithID();
-    Reset_Building_Value();
-}
-document.getElementById('retrieveBldBtn').onclick = function () {
-    retrieveBuilding();
-}
-document.getElementById('updateBuildingldBtn').onclick = function () {
-    updateFieldsInDoc();
-}
-document.getElementById('deleteBldBtn').onclick = function () {
-    deleteDoc();
 }
 
 document.getElementById('resetBValueBtn').onclick = function () {
-    Reset_Building_Value();
+    resetBuildingValue();
 }
 
-document.getElementById('addDoorBtn').onclick = function () {
-    addDoorWithAutoID();
-    Reset_Door_Value();
+
+
+
+//-------------------------------- HANDLE DOOR DATA --------------------------------//
+
+let getBuildingCodeOfDoorBox = document.getElementById('DBldCodeBox');
+let getDoorLatitudeBox = document.getElementById('DLatBox');
+let getDoorLongitudeBox = document.getElementById('DLngBox');
+
+let oneDoor = {
+    BuildingCode: '',
+    Latitude: Number,
+    Longitude: Number,
+}
+
+document.getElementById('addDoorBtn').onclick = async function () {
+    if (!validateBuildingCode(oneDoor.BuildingCode)) return;
+    try {
+        updateDoorBox();
+        await addDoorWithAutoID(oneDoor);
+        alert("Successfully added one door, ID " + oneDoor.BuildingCode);
+        resetDoorValue();
+    } catch (e) {
+        alert("Adding door error: " + e);
+    }
 }
 
 document.getElementById('resetDValueBtn').onclick = function () {
-    Reset_Door_Value();
+    resetDoorValue();
+}
+
+
+
+
+//-------------------------------- HANDLE STAIRS DATA ------------------------------//
+
+let getStairsLatitudeBox = document.getElementById('SLatBox');
+let getStairsLongitudeBox = document.getElementById('SLngBox');
+
+let stairsLocation = {
+    Latitude: Number,
+    Longitude: Number,
+}
+
+document.getElementById('addStairsBtn').onclick = async function () {
+    if (getStairsLatitudeBox.value == '' || getStairsLongitudeBox == '') {
+        alert("Enter both latitude and longitude of the stairs");
+        return;
+    }
+    try {
+        updateStairsBox();
+        await addStairs(stairsLocation);
+        alert("Successfully added stairs location!");
+        resetStairsValue();
+    } catch (e) {
+        alert("Stairs location adding error: " + e);
+    }
 }
 
 document.getElementById('resetSValueBtn').onclick = function () {
-    Reset_Stair_Value();
+    resetStairsValue();
 }
 
-document.getElementById('addStairsBtn').onclick = function () {
-    Add_Stairs();
-    Reset_Stair_Value();
+
+// -------------------------------- Functions -------------------------------------- //
+function updateBuildingBox() {
+    oneBuilding.BuildingName = String(getBuildingNameBox.value);
+    oneBuilding.BuildingCode = String(getBuildingCodeBox.value);
+    oneBuilding.Latitude = Number(getBuildingLatitudeBox.value);
+    oneBuilding.Longitude = Number(getBuildingLongitudeBox.value);
 }
 
+function updateDoorBox() {
+    oneDoor.BuildingCode = String(getBuildingCodeOfDoorBox.value);
+    oneDoor.Latitude = Number(getDoorLatitudeBox.value);
+    oneDoor.Longitude = Number(getDoorLongitudeBox.value);
+}
+
+function updateStairsBox() {
+    stairsLocation.Latitude = Number(getStairsLatitudeBox.value);
+    stairsLocation.Longitude = Number(getStairsLongitudeBox.value);
+}
+
+function resetBuildingValue() {
+    getBuildingNameBox.value = '';
+    getBuildingCodeBox.value = '';
+    getBuildingLatitudeBox.value = '';
+    getBuildingLongitudeBox.value = '';
+    updateBuildingBox();
+}
+
+function resetDoorValue() {
+    getBuildingCodeOfDoorBox.value = '';
+    getDoorLatitudeBox.value = '';
+    getDoorLongitudeBox.value = '';
+    updateDoorBox();
+}
+
+function resetStairsValue() {
+    getStairsLatitudeBox.value = '';
+    getStairsLongitudeBox.value = '';
+    updateStairsBox();
+}
+
+function validateBuildingCode(value) {
+    if (value.length == 3) {
+        return true;
+    } else {
+        alert("Enter building code");
+        return false;
+    }
+}
+
+async function checkUserCredentials() {
+    const urlParam = new URLSearchParams(window.location.search);
+    const uid = urlParam.get('user');
+    console.log(uid);
+    if (uid != null) {
+        var userProfile = await getOneProfile(uid);
+        if (userProfile.Admin == false) {
+            window.href = "signin.html";
+        }
+    } else {
+        window.href = "signin.html";
+    }
+
+}

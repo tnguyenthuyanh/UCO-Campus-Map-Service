@@ -12,157 +12,96 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 
-let cloudDB = firebase.firestore();
-let authDB = firebase.auth();
+let cloudDatabase = firebase.firestore();
+let authDatabase = firebase.auth();
 
 // Add buidling
-function Add_Building_WithAutoID() { // Auto generate ID for doc
-    cloudDB.collection("UCOBuildings").add(
-        {
-            BuildingName: bName,
-            BuildingCode: bCode,
-            Latitude: Number(bLat),
-            Longitude: Number(bLng),
-        }
-    ).then(function (docRef) {
-        console.log("DocID  ", docRef.id);
-    }).catch(function (e) {
-        console.error("Error adding", e);
-    })
-}
-
-function Add_Building_WithID() { // Use custom ID for doc
-    cloudDB.collection("UCOBuildings").doc(bCode).set(
-        {
-            BuildingName: bName,
-            BuildingCode: bCode,
-            Latitude: Number(bLat),
-            Longitude: Number(bLng),
-        }
-    ).then(function () {
-        console.log("DocID  ", bCode);
-    }).catch(function (e) {
-        console.error("Error adding", e);
-    })
-
+async function addBuildingWithID(oneBuilding) { // Use custom ID for doc
+    await cloudDatabase.collection("UCOBuildings")
+        .doc(oneBuilding.BuildingCode)
+        .set(oneBuilding);
 }
 
 // Add stairs
-function Add_Stairs() { // Use custom ID for doc
-    cloudDB.collection("Stairs").add(
-        {
-            Latitude: Number(sLat),
-            Longitude: Number(sLng),
-        }
-    ).then(function () {
-        console.log("DocID  ", bCode);
-    }).catch(function (e) {
-        console.error("Error adding", e);
-    });
+async function addStairs(stairsLocation) { // Use custom ID for doc
+    cloudDatabase.collection("Stairs").add(stairsLocation);
 }
 
 async function getAllStairs() {
-    const snapshot = await cloudDB.collection('Stairs').get();
-    return snapshot.docs.map(doc => doc.data());
+    const snapShot = await cloudDatabase.collection('Stairs').get();
+    return snapShot.docs.map(doc => doc.data());
 }
 
-
-
 // Retrieve building
-function Retrieve_Building() {
-    cloudDB.collection("UCOBuildings").doc(bCode).get(
-    ).then(function (doc) {
-        if (doc.exists) {
-            buildingName.value = doc.data().BuildingName;
-            b_latitude.value = doc.data().Latitude;
-            b_longitude.value = doc.data().Longitude;
-            console.log("Retrieved successfully with docID ", bCode);
-        } else {
-            console.log("Doc does not exist");
-        }
-    }).catch(function (e) {
-        console.log("error", error);
-    })
+async function retrieveBuilding(bCode) {
+    const snapshot = await cloudDatabase.collection("UCOBuildings")
+        .where("BuildingCode", "==", bCode)
+        .limit(1)
+        .get();
+    var data = snapshot.docs[0].data();
+    let buildingData = {
+        BuildingName: data.BuildingName,
+        BuildingCode: data.BuildingCode,
+        Latitude: data.Latitude,
+        Longitude: data.Longitude,
+    }
+    return buildingData;
+
 }
 
 // Retrieve all buildings in collection "UCOBuildings"
-async function Retrieve_All_Buildings() {
-    const snapshot = await cloudDB.collection('UCOBuildings').get()
-    return snapshot.docs.map(doc => doc.data());
+async function retrieveAllBuilding() {
+    const snapShot = await cloudDatabase.collection('UCOBuildings').get()
+    return snapShot.docs.map(doc => doc.data());
 }
 
 // Retrieves all auto door from collection "Doors"
 async function retrieveAllBuildingAutos() {
-    const snapshot = await cloudDB.collection('Doors').get();
-    return snapshot.docs.map(doc => doc.data());
+    const snapShot = await cloudDatabase.collection('Doors').get();
+    return snapShot.docs.map(doc => doc.data());
 }
 
 // Update building
-function Update_Fields_inDoc() {
-    cloudDB.collection("UCOBuildings").doc(bCode).update(
-        {
-            BuildingName: bName,
-            // BuildingCode: bCode,
-            Latitude: Number(bLat),
-            Longitude: Number(bLng),
-        }
-    ).then(function (docRef) {
-        console.log("Overwritten with ID  ", bCode);
-    }).catch(function (e) {
-        console.error("Error updating", e);
-    })
+async function updateBuildingOfDoc(oneBuilding) {
+    await cloudDatabase.collection("UCOBuildings")
+        .doc(oneBuilding.BuildingCode)
+        .update(oneBuilding);
 }
 
 // Delete building
-function Delete_Doc() {
-    cloudDB.collection("UCOBuildings").doc(bCode).delete()
-        .then(function (docRef) {
-            console.log("Deleted doc with ID  ", bCode);
-        }).catch(function (e) {
-            console.error("Error deleting", e);
-        })
+async function deleteBuilding(bCode) {
+    await cloudDatabase.collection("UCOBuildings")
+        .doc(bCode)
+        .delete();
 }
 
 // Add door
-function Add_Door_WithAutoID() { // Auto generate ID for doc
-    cloudDB.collection("Doors").add(
-        {
-            BuildingCode: dBldCode,
-            Latitude: Number(dLat),
-            Longitude: Number(dLng),
-        }
-    ).then(function (docRef) {
-        console.log("DocID  ", docRef.id);
-    }).catch(function (e) {
-        console.error("Error adding", e);
-    })
+async function addDoorWithAutoID(oneDoor) { // Auto generate ID for doc
+    await cloudDatabase.collection("Doors").add(oneDoor);
 }
 
 // FirebaseAuth
 firebase.auth.Auth.Persistence.LOCAL;
 
-function sign_In(email, password) {
-    var result = authDB.signInWithEmailAndPassword(email, password)
+function signIn(email, password) {
+    var result = authDatabase.signInWithEmailAndPassword(email, password)
         .then(function (data) {
             // console.log(data.user.uid);
             if (data.user.uid.length != 0) {
                 window.location.href = "main.html?session=" + data.user.uid;
             }
         });
-
     result.catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
-
         console.log(errorCode);
         console.log(errorMessage);
         window.alert("Message : " + errorMessage);
-
     });
 }
 
-function sign_Out() {
-    authDB.signOut().then(function () {
+function signOut() {
+    authDatabase.signOut().then(function () {
         // window.alert("Sign out Successfully");
         window.location.href = "signin.html";
     }).catch(function (e) {
@@ -170,12 +109,12 @@ function sign_Out() {
     });
 }
 
-function sign_Up(email, password, name) {
-    authDB.createUserWithEmailAndPassword(email, password).
+function signUp(email, password, name) {
+    authDatabase.createUserWithEmailAndPassword(email, password).
         then(data => {
             let uid = data.user.uid;
             console.log("UID: " + uid);
-            create_User_Profile(uid, email, name, false);
+            createUserProfile(uid, email, name, false);
             alert("Account created!");
         }).
         catch(function (e) {
@@ -183,8 +122,8 @@ function sign_Up(email, password, name) {
         });
 }
 
-function create_User_Profile(uid, email, name, admin_flag) {
-    cloudDB.collection("userProfile").add(
+function createUserProfile(uid, email, name, admin_flag) {
+    cloudDatabase.collection("userProfile").add(
         {
             UID: uid,
             Email: email,
@@ -199,8 +138,8 @@ function create_User_Profile(uid, email, name, admin_flag) {
     })
 }
 
-async function Get_One_Profile(uid) {
-    var snapShot = await cloudDB.collection("userProfile").where("UID", "==", uid).get();
+async function getOneProfile(uid) {
+    var snapShot = await cloudDatabase.collection("userProfile").where("UID", "==", uid).get();
     var data = snapShot.docs[0].data();
     let userProfile =
     {
