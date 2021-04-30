@@ -113,8 +113,9 @@ async function displayCampusBuildingMarkers(map) {
 	const URL_PARAM = new URLSearchParams(window.location.search);
 	const UID = URL_PARAM.get('session');
 
-	// initializing all needed FB data
-	allBuildings = await retrieveAllBuildings();
+
+	// From Firebase Controller
+	allBuildings = await retrieveAllBuilding();
 	allBuildingAutos = await retrieveAllBuildingAutos();
 	allStairs = await getAllStairs();
 	allUserSavedLocs = await getAllUserSavedLocs(UID);
@@ -402,16 +403,8 @@ function initProfile() {
 	});
 }
 
-async function getUserProfile(UID) {
-	/* These code to stop users from using return button in the browser */
-	// window.history.pushState(null, "", window.location.href);
-	// window.onpopstate = function () {
-	// 	this.window.history.pushState(null, "", window.location.href);
-	// }
-	/** *******************************************************************/
-
-	var user = await getOneProfile(UID);
-	console.log(user);
+async function getUserProfile(uid) {
+	var user = await getOneProfile(uid);
 	var getSideNavItems = document.getElementById("sideNavItems");
 
 	// Create Name Title Inside sideNavBar
@@ -442,7 +435,7 @@ async function getUserProfile(UID) {
 	var logOut = document.createElement("a");
 	logOut.appendChild(document.createTextNode('Log out'));
 	logOut.onclick = function () {
-		sign_Out();
+		signOut();
 	};
 	logOut.href = "";
 	getSideNavItems.append(logOut);
