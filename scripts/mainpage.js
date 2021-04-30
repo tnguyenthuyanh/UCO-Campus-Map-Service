@@ -422,7 +422,7 @@ async function getUserProfile(uid) {
 		buildingSettings
 			.appendChild(document.createTextNode('Building Settings'));
 		getSideNavItems.append(buildingSettings);
-		buildingSettings.href = "managebuilding.html?user=" + UID;
+		buildingSettings.href = "managebuilding.html?user=" + uid;
 	}
 
 	// Create Link to User Settings
