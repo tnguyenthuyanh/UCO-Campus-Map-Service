@@ -158,7 +158,7 @@ async function displayCampusBuildingMarkers(map) {
 		marker.addListener("click", () => {
 			infoWindow.close();
 			infoWindow.setContent('<div style="text-align: center">' +
-				`<button id="set-start-btn" buildingName="${marker.title}"` + 
+				`<button id="set-start-btn" buildingName="${marker.title}"` +
 				`markerId="${marker.id}"> Start </button>` +
 				'<div class="divider"/></div>' +
 				`<button id="set-end-btn" buildingName="${marker.title}"` +
@@ -422,7 +422,7 @@ async function getUserProfile(uid) {
 		buildingSettings
 			.appendChild(document.createTextNode('Building Settings'));
 		getSideNavItems.append(buildingSettings);
-		buildingSettings.href = "managebuilding.html?user=" + UID;
+		buildingSettings.href = "managebuilding.html?user=" + uid;
 	}
 
 	// Create Link to User Settings
@@ -444,10 +444,10 @@ async function getUserProfile(uid) {
 
 function placeMarker(map, location, infoLocs) {
 	infoLocs.close();
-	
+
 	let button;
 	let markerId;
-	let lat; 
+	let lat;
 	let lng;
 
 	count++;
@@ -464,12 +464,12 @@ function placeMarker(map, location, infoLocs) {
 		infoLocs.setContent('Latitude: ' + location.lat() +
 			'<br />Longitude: ' + location.lng() +
 			'<br />Name:  <input class="input-save" id="inputName"' +
-			'type="text" size="30" maxlength="30" value=""/>' + 
+			'type="text" size="30" maxlength="30" value=""/>' +
 			'<div style="text-align: center">' +
 			'<button id="saveMarker" markerId="' + marker.id + '" lat="' +
 			location.lat() + '" lng="' + location.lng() + '"> Save </button>' +
 			'<div class="divider"/></div>' +
-			'<button id="removeMarker" markerId="' + marker.id + 
+			'<button id="removeMarker" markerId="' + marker.id +
 			'"> Remove </button>' +
 			'</div>'
 		);
@@ -478,7 +478,7 @@ function placeMarker(map, location, infoLocs) {
 		google.maps.event.addListener(infoLocs, 'domready', function () {
 			const URL_PARAM = new URLSearchParams(window.location.search);
 			const UID = URL_PARAM.get('session');
-			
+
 			if (document.getElementById('removeMarker')) {
 				button = document.getElementById('removeMarker');
 				markerId = parseInt(button.getAttribute('markerId'));
@@ -498,7 +498,7 @@ function placeMarker(map, location, infoLocs) {
 						saveMarker(marker, UID, document.getElementById('inputName').value, location);
 					}
 				};
-			} 
+			}
 		});
 	});
 }
@@ -537,7 +537,7 @@ async function saveMarker(marker, UID, inputName, location) {
 
 function removeMarker(markerId) {
 	for (var i = 0; i < markers.length; i++) {
-		if (markers[i].id == markerId) {           
+		if (markers[i].id == markerId) {
 			markers[i].setMap(null); //Remove the marker from map     
 			markers.splice(i, 1); //Remove the marker from markers array
 		}
