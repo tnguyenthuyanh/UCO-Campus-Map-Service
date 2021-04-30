@@ -15,7 +15,7 @@ document.getElementById('btn-signup').onclick = function () {
     } else if (password != c_password) {
         alert("Confirm password does not match");
     } else {
-        sign_Up(email, password, name);
+        signUp(email, password, name);
     }
 }
 
