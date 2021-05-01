@@ -120,9 +120,6 @@ async function displayCampusBuildingMarkers(map) {
 	allStairs = await getAllStairs();
 	allUserSavedLocs = await getAllUserSavedLocs(UID);
 
-	// creating infowindow for markers
-	const infoWindow = new google.maps.InfoWindow();
-
 	// adding all user saved locations to the hint buildings
 	for (let i = 0; i < allUserSavedLocs.length; i++) {
 		hintBuildings.push(allUserSavedLocs[i].NameLocation);
@@ -156,8 +153,8 @@ async function displayCampusBuildingMarkers(map) {
 
 		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
-			infoWindow.close();
-			infoWindow.setContent('<div style="text-align: center">' +
+			infoLocs.close();
+			infoLocs.setContent('<div style="text-align: center">' +
 				`<button id="set-start-btn" buildingName="${marker.title}"` +
 				`markerId="${marker.id}"> Start </button>` +
 				'<div class="divider"/></div>' +
@@ -165,10 +162,10 @@ async function displayCampusBuildingMarkers(map) {
 				`markerId="${marker.id}"> End </button>` +
 				'</div>'
 			);
-			infoWindow.open(marker.getMap(), marker);
+			infoLocs.open(marker.getMap(), marker);
 		});
 
-		google.maps.event.addListener(infoWindow, 'domready', function () {
+		google.maps.event.addListener(infoLocs, 'domready', function () {
 			if (document.getElementById('set-start-btn')) {
 
 				button = document.getElementById('set-start-btn');
