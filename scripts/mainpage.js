@@ -440,7 +440,6 @@ async function getUserProfile(UID) {
 	userSettings.appendChild(document.createTextNode('User Settings'));
 	getSideNavItems.append(userSettings);
 	userSettings.href = "usersettings.html?session=" + UID;
-
 	// Create Log Out Inside sideNavBar
 	var logOut = document.createElement("a");
 	logOut.appendChild(document.createTextNode('Log out'));

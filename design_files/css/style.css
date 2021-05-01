@@ -50,10 +50,8 @@ a:hover {
   margin: auto;
   display: flex; }
   .inner .image-holder {
-    /* New code being inserted for testing purpose */
-      /* width: 50%;
-      height: 50%; */
-      width: 600px;
+    /* width: 50%; */
+    width: 600px;
 	    height: 600px;
       background: url("../images/image5.jpg");
       /* margin: 100px auto; */
@@ -73,6 +71,7 @@ a:hover {
         }
       }
       /*New code ends here*/
+
   .inner form {
     width: 50%;
     padding-top: 36px;
