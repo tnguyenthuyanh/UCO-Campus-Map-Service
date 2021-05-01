@@ -3,6 +3,25 @@
 	#map {
 		height: 100%;
 	}
+
+	.hamburger-icon {
+		margin: 0;
+		padding: 19px 16px;
+		display: inline-block;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+	.hamburger-icon span {
+		width: 40px;
+		background-color: #000;
+		height: 5px;
+		display: block;
+		margin-bottom: 6px;
+	}
+	.hamburger-icon span:last-child {
+		margin-bottom:0px;
+	}
 	
 	/* Optional: Makes the sample page fill the window. */
 	.html,
@@ -303,7 +322,7 @@
 	text-align: left;
 
   }
-
+  
   
 
   .sidenav h1 {
