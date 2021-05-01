@@ -125,9 +125,6 @@ async function displayCampusBuildingMarkers(map) {
 	allStairs = await getAllStairs();
 	allUserSavedLocs = await getAllUserSavedLocs(UID);
 
-	// creating infowindow for markers
-	const infoWindow = new google.maps.InfoWindow();
-
 	// adding all user saved locations to the hint buildings
 	for (let i = 0; i < allUserSavedLocs.length; i++) {
 		hintBuildings.push(allUserSavedLocs[i].NameLocation);
@@ -161,8 +158,8 @@ async function displayCampusBuildingMarkers(map) {
 
 		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
-			infoWindow.close();
-			infoWindow.setContent('<div style="text-align: center">' +
+			infoLocs.close();
+			infoLocs.setContent('<div style="text-align: center">' +
 				`<button id="set-start-btn" buildingName="${marker.title}"` +
 				`markerId="${marker.id}"> Start </button>` +
 				'<div class="divider"/></div>' +
@@ -170,10 +167,10 @@ async function displayCampusBuildingMarkers(map) {
 				`markerId="${marker.id}"> End </button>` +
 				'</div>'
 			);
-			infoWindow.open(marker.getMap(), marker);
+			infoLocs.open(marker.getMap(), marker);
 		});
 
-		google.maps.event.addListener(infoWindow, 'domready', function () {
+		google.maps.event.addListener(infoLocs, 'domready', function () {
 			if (document.getElementById('set-start-btn')) {
 
 				button = document.getElementById('set-start-btn');
@@ -224,10 +221,15 @@ function calculateAndDisplayRoute(directionsService) {
 	let endLocName = document.getElementById('endBar').value;
 	var startLoc;
 	var endLoc;
+	var realStartLoc = false;
+	var realEndLoc = false;
 
 	// error handling for empty search bars
 	if (startLocName.trim() == "" || endLocName.trim() == "") {
 		window.alert('Please enter a location!');
+		return;
+	} else if (startLocName == endLocName) {
+		window.alert('The same location has been entered for the Start Location and End Location.');
 		return;
 	}
 
@@ -239,6 +241,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realStartLoc = true;
 		}
 		if (e.BuildingName == endLocName) {
 			endLoc = {
@@ -246,6 +249,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
 
@@ -256,15 +260,21 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
-			console.log('match!');
+			realStartLoc = true;
 		}
 		if (e.NameLocation == endLocName) {
 			endLoc = {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
+
+	if (!realStartLoc || !realEndLoc) {
+		window.alert('Location(s) not recognized. Please enter the location name exactly as displayed or use the hint text.');
+		return;
+	}
 
 	// TODO: provide wheel chair accessible routes
 
