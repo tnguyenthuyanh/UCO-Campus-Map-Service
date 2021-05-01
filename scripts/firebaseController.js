@@ -145,7 +145,10 @@ function createUserProfile(uid, email, name, admin_flag) {
 }
 
 async function getOneProfile(uid) {
-    var snapShot = await cloudDatabase.collection("userProfile").where("UID", "==", uid).get();
+    var snapShot = await cloudDatabase
+        .collection("userProfile")
+        .where("UID", "==", uid)
+        .get();
     var data = snapShot.docs[0].data();
     let userProfile =
     {
@@ -155,6 +158,98 @@ async function getOneProfile(uid) {
         Admin: data.Admin,
     };
     return userProfile;
+}
+
+async function updateProfileName(UID, oneName) {
+    var snapShot = await cloudDatabase
+        .collection("userProfile")
+        .where("UID", "==", UID)
+        .get();
+    var docID = snapShot.docs[0].id;
+
+    console.log(oneName);
+    await cloudDatabase
+        .collection("userProfile")
+        .doc(docID)
+        .update(
+            {
+                Name: oneName,
+            }
+        );
+}
+
+async function updateUserEmail(UID, currentEmail, newEmail, password) {
+    authDatabase.signInWithEmailAndPassword(currentEmail, password)
+        .then(async function (userCredential) {
+            userCredential.user.updateEmail(newEmail);
+            var snapShot = await cloudDatabase
+                .collection("userProfile")
+                .where("UID", "==", UID)
+                .get();
+            var docID = snapShot.docs[0].id;
+
+            await cloudDatabase.collection("userProfile")
+                .doc(docID)
+                .update(
+                    {
+                        Email: newEmail,
+                    }
+                )
+            alert("Email changed successfully!");
+            window.location.reload(false);
+        }).catch(function (e) {
+            alert(e);
+        });
+
+}
+
+async function updateUserPassword(oldPassword, newPassword) {
+    var user = authDatabase.currentUser;
+    var credential = firebase.auth.EmailAuthProvider.credential(user.email, oldPassword);
+    var result = await user.reauthenticateWithCredential(credential);
+
+    result.user.updatePassword(newPassword)
+        .then(function () {
+            alert("Password changed successfully");
+            window.location.reload(false);
+        }).catch(function (e) {
+            alert(e);
+        })
+}
+
+async function deleteUserAccount(password, UID) {
+    var user = authDatabase.currentUser;
+    var credential = firebase.auth.EmailAuthProvider.credential(user.email, password);
+    var result = await user.reauthenticateWithCredential(credential);
+
+    try {
+        if (result.user) {
+            await cloudDatabase.collection("savedLocations")
+                .where("UID", "==", UID)
+                .get()
+                .then(function (querySnapshot) {
+                    querySnapshot.forEach(function (doc) {
+                        doc.ref.delete();
+                    })
+                });
+            await cloudDatabase.collection("userProfile")
+                .where("UID", "==", UID)
+                .get()
+                .then(function (snapShot) {
+                    snapShot.forEach(function (doc) {
+                        doc.ref.delete();
+                    })
+                });
+            await result.user.delete();
+            alert("Account deleted!");
+            window.location = "signin.html";
+        } else {
+            throw e;
+        }
+    } catch (e) {
+        alert(e);
+    }
+
 }
 
 // add saved locations 

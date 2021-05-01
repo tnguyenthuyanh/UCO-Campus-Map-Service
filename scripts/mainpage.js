@@ -90,14 +90,19 @@ function initApp() {
 		placeMarker(map, e.latLng, infoLocs);
 	});
 	/* *********************************************************************************************** */
-
+	// Header Drawer
+	document.getElementById('openNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "300px";
+	}
+	document.getElementById('closeNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "0";
+	}
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
-	showUserSavedLocMarkers()
 	/* ****************** This initilizes guest / user / admin access inside header drawer ************ */
 	initProfile();
 } // initApp()
@@ -367,23 +372,18 @@ function setEnd(buildingEndName) {
 
 function initProfile() {
 	/** ************************************************* INSIDE HTML BODY ********************************************/
-	// Header Drawer
-	document.getElementById('openNav').onclick = function () {
-		document.getElementById("mySidenav").style.width = "300px";
-	}
-	document.getElementById('closeNav').onclick = function () {
-		document.getElementById("mySidenav").style.width = "0";
-	}
 	// Find if one user is logging in
 	const URL_PARAM = new URLSearchParams(window.location.search);
 	const UID = URL_PARAM.get('session');
 
 	firebase.auth().onAuthStateChanged(function (user) {
 		// console.log(user.UID);
-		if (UID != null && user) // If user or admin
+		if (UID != null && user) { // If user or admin
 			// user activities loaded in here, such as retrieving user info, 
 			//		user's saved locations
 			getUserProfile(UID);
+			showUserSavedLocMarkers();
+		}
 		if (UID == "guest" || user.uid == null) { // If guest
 			document.getElementById("nameTitle")
 				.appendChild(document.createTextNode('Welcome, guest'));
@@ -422,14 +422,14 @@ async function getUserProfile(UID) {
 		buildingSettings
 			.appendChild(document.createTextNode('Building Settings'));
 		getSideNavItems.append(buildingSettings);
-		buildingSettings.href = "managebuilding.html?user=" + UID;
+		buildingSettings.href = "managebuilding.html?session=" + UID;
 	}
 
 	// Create Link to User Settings
 	var userSettings = document.createElement("a");
 	userSettings.appendChild(document.createTextNode('User Settings'));
 	getSideNavItems.append(userSettings);
-	userSettings.href = "";
+	userSettings.href = "usersettings.html?session=" + UID;
 
 	// Create Log Out Inside sideNavBar
 	var logOut = document.createElement("a");
