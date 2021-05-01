@@ -1,5 +1,27 @@
 "use strict";
 
+window.onload = function () {
+    const URL_PARAM = new URLSearchParams(window.location.search);
+    const UID = URL_PARAM.get('session');
+
+    firebase.auth().onAuthStateChanged(function (user) {
+        if (UID == null || UID == '' || !user) {
+            window.location = "signin.html";
+        } else {
+            init(UID);
+        }
+    });
+
+}
+
+/** init admin user */
+async function init(UID) {
+    var userProfile = await getOneProfile(UID);
+    if (userProfile.Admin == false) {
+        window.location = "signin.html";
+    }
+}
+
 //-------------------------------- HANDLE BUILDING DATA --------------------------------//
 
 let getBuildingNameBox = document.getElementById('BuildNameBox');
