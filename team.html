@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="styles/team.css">
+
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<script src="scripts/team.js"></script>
+</head>
+
+<body>
+
+	<div id="wrapper_team">
+		<div class="title_team">
+			<h1>Meet the team</h1>
+			<p style='font-family: Courier New, monospace;'>Click on the photos for more information</p>
+		</div>
+		<div class="team_box">
+			<div id="teamcontent">
+				<div class="container-left">
+					<div class="bigimg" height="260" width="225">&nbsp;</div>
+				</div>
+
+				<div class="container-right" id="teamdetails">
+					<h2 id="bigname">Name</h2>
+					<h3 id="bigjob">Title</h3>
+					<p id="bigdesc">A brief description.</p>
+				</div>
+			</div>
+		</div>
+
+		<ul class="team clearfix">
+			<li>
+				<!-- <div class="profile_container">
+					<img alt="Jane Doe" class="profilepic" src="https://essayslimmer.com/assets/avatars/stevie.jpg" />
+					<div class="bigimg-overlay">
+						<div class="bigimg-text"><strong>Jane Doe</strong><br>Service Specialist</div>
+					</div>
+				</div>
+				<span class="hcontent job">Service Specialist</span>
+				<p class="hcontent desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut.<br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li> -->
+			<li>
+				<div class="profile_container">
+					<img alt="Rakin Riza" class="profilepic" src="design_files/images/Rakin.png" />
+					<div class="bigimg-overlay">
+						<div class="bigimg-text" style="font-family: Courier New, monospace;"><strong>Rakin
+								Riza</strong><br>Frontend/UX developer</div>
+					</div>
+				</div>
+				<span class="hcontent job">Frontend/UX developer</span>
+				<p class="hcontent desc">Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit. Donec imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut. <br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li>
+			<li>
+				<div class="profile_container">
+					<img alt="Thu Nguyen" class="profilepic" src="design_files/images/Thu.jpg">
+					<div class="bigimg-overlay">
+						<div class="bigimg-text" style="font-family: Courier New, monospace;"><strong>Thu
+								Nguyen</strong><br>Backend/API developer</div>
+					</div>
+				</div>
+				<span class="hcontent job">Backend/API developer</span>
+				<p class="hcontent desc">Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit. Donec imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut. <br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li>
+			<li>
+				<div class="profile_container">
+					<img alt="An Truong" class="profilepic" src="design_files/images/An.jpg">
+					<div class="bigimg-overlay">
+						<div class="bigimg-text" style="font-family: Courier New, monospace;"><strong>An
+								Truong</strong><br>Backend/Database developer</div>
+					</div>
+				</div>
+				<span class="hcontent job" style="font-family: Courier New, monospace;">Backend/Database
+					developer</span>
+				<p class="hcontent desc" style="font-family: Courier New, monospace;">Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit. Donec imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut. <br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li>
+			<li>
+				<div class="profile_container">
+					<img alt="Noah Stinson" class="profilepic" src="design_files/images/Noah.png" />
+					<div class="bigimg-overlay">
+						<div class="bigimg-text" style="font-family: Courier New, monospace;"><strong>Noah
+								Stinson</strong><br>Team Leader</div>
+					</div>
+				</div>
+				<span class=" hcontent job" style="font-family: Courier New, monospace;">Lead/Full Stack
+					developer</span>
+				<p class="hcontent desc" style="font-family: Courier New, monospace;">Lorem ipsum dolor sit amet,
+					consectetur adipiscing elit. Donec
+					imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor
+					rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget
+					felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut. <br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li>
+			<!-- <li>
+				<div class="profile_container">
+					<img alt="John Doe" class="profilepic flipimg"
+						src="https://ironsoft3d.fr/public/avatar/matthew.png" />
+					<div class="bigimg-overlay">
+						<div class="bigimg-text"><strong>John Doe</strong><br>Teamlead</div>
+					</div>
+				</div>
+				<span class="hcontent job">Teamlead</span>
+				<p class="hcontent desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec imperdiet diam
+					nec risus semper, a pretium nisi mollis. Vivamus non diam volutpat tortor porttitor rhoncus in non
+					erat. Suspendisse potenti. Curabitur odio tortor, lacinia at tempus vel, iaculis eget felis. Vivamus
+					consectetur placerat mauris, at mollis dui suscipit ut. <br />
+					<br /> Contact:
+					<br /> Tel: <a href="tel:+xxxxxxxxxx">xx-xxxxxxxx</a><br /> E-mail: <a
+						href="mailto:xxx@xxx.nl">xxx@xxx.nl</a>
+				</p>
+			</li> -->
+		</ul>
+	</div>
+</body>
+
+</html>
