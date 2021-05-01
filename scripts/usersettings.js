@@ -7,7 +7,6 @@ window.onload = function () {
             window.location = "signin.html";
         } else {
             _init(UID);
-            console.log(user);
         }
     });
 
