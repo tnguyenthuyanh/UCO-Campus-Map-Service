@@ -219,10 +219,15 @@ function calculateAndDisplayRoute(directionsService) {
 	let endLocName = document.getElementById('endBar').value;
 	var startLoc;
 	var endLoc;
+	var realStartLoc = false;
+	var realEndLoc = false;
 
 	// error handling for empty search bars
 	if (startLocName.trim() == "" || endLocName.trim() == "") {
 		window.alert('Please enter a location!');
+		return;
+	} else if (startLocName == endLocName) {
+		window.alert('The same location has been entered for the Start Location and End Location.');
 		return;
 	}
 
@@ -234,6 +239,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realStartLoc = true;
 		}
 		if (e.BuildingName == endLocName) {
 			endLoc = {
@@ -241,6 +247,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
 
@@ -251,15 +258,21 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
-			console.log('match!');
+			realStartLoc = true;
 		}
 		if (e.NameLocation == endLocName) {
 			endLoc = {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
+
+	if (!realStartLoc || !realEndLoc) {
+		window.alert('Location(s) not recognized. Please enter the location name exactly as displayed or use the hint text.');
+		return;
+	}
 
 	// TODO: provide wheel chair accessible routes
 
