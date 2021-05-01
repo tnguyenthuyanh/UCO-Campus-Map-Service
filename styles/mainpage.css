@@ -21,7 +21,7 @@
 	.header {
 		width: 100%;
 		height: 110px;
-		display: block;
+		
 		background-color: #87CEFF;
 	}
 	
@@ -265,7 +265,7 @@
 	z-index: 1;
 	top: 0;
 	left: 0;
-	background-color: #111;
+	background-color:black;
 	overflow-x: hidden;
 	transition: 0.5s;
 	padding-top: 60px;
@@ -274,6 +274,7 @@
   .sidenav a {
 	padding: 8px 8px 8px 32px;
 	text-decoration: none;
+	text-align: left;
 	font-size: 20px;
 	color: #818181;
 	display: block;
@@ -299,7 +300,11 @@
 	color: #f1f1f1;
 	display: block;
 	transition: 0.3s;
+	text-align: left;
+
   }
+
+  
 
   .sidenav h1 {
 	padding: 8px 8px 8px 32px;
