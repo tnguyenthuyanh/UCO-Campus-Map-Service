@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="utf-8">
     <title>
         Manage Buildings Info
     </title>
-    <link rel="stylesheet" type="text/css" href="styles/managebuilding.css">
+    <link rel="stylesheet" href="styles/managebuilding.css">
 
 </head>
 
@@ -19,39 +20,47 @@
                 <div class="input-group"><input id="BuildCodeBox" type="text"> (docID)</div>
                 <button id="retrieveBldBtn" class="form-btn">Retrieve</button>
             </div>
+        </div>
 
 
 
-            <div class="inputDiv">
-                <label class="inputLabel" for="BuildNameBox">Building Name</label>
-                <input id="BuildNameBox" type="text">
+        <div class="inputDiv">
+            <label class="inputLabel" for="BuildNameBox">Building Name</label>
+            <input id="BuildNameBox" type="text">
 
-            </div>
+        </div>
 
-            <div class="inputDiv">
-                <label class="inputLabel" for="BLatBox">Latitude</label>
-                <input id="BLatBox" type="number">
+        <div class="inputDiv">
+            <label class="inputLabel" for="BLatBox">Latitude</label>
+            <input id="BLatBox" type="number">
 
-            </div>
+        </div>
 
-            <div class="inputDiv">
-                <label class="inputLabel" for="BLngBox">Longitude</label>
-                <input id="BLngBox" type="number">
+        <div class="inputDiv">
+            <label class="inputLabel" for="BLngBox">Longitude</label>
+            <input id="BLngBox" type="number">
 
-            </div>
+        </div>
 
-            <div class="inputDiv buttons">
-                <button id="addBldBtn" class="form-btn">Add</button>
+        <div class="inputDiv buttons">
+            <button id="addBldBtn" class="form-btn">Add</button>
 
-                <button id="updateBldBtn" class="form-btn">Update</button>
-                <button id="deleteBldBtn" class="form-btn">Delete</button>
+            <button id="updateBldBtn" class="form-btn">Update</button>
+            <button id="deleteBldBtn" class="form-btn">Delete</button>
 
-            </div>
-            <br>
-            <div class="inputDiv"><button id="resetBValueBtn" class="form-btn">Reset</button></div>
+        </div>
+        <br>
+        <div class="inputDiv"><button id="resetBValueBtn" class="form-btn">Reset</button></div>
 
 
 
+    </div>
+    <div class="cardStyle">
+        <h2 class="formTitle">Add Door Database:</h2>
+        <div class="inputDiv">
+            <label class="inputLabel" for="DBldCodeBox">Building Code</label>
+            <div class="input-group"><input id="DBldCodeBox" type="text"> (docID)</div>
+            <button id="retrieveBldBtn" class="form-btn">Retrieve</button>
         </div>
         <div class="cardStyle">
             <h2 class="formTitle">Add Door Database:</h2>
