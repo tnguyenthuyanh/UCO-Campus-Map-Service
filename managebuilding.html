@@ -19,43 +19,45 @@
                 <label class="inputLabel" for="BuildCodeBox">Building Code</label>
                 <div class="input-group"><input id="BuildCodeBox" type="text"> (docID)</div>
                 <button id="retrieveBldBtn" class="form-btn">Retrieve</button>
+                <div class="inputDiv">
+                    <label class="inputLabel" for="BuildNameBox">Building Name</label>
+                    <input id="BuildNameBox" type="text">
+
+                </div>
+
+                <div class="inputDiv">
+                    <label class="inputLabel" for="BLatBox">Latitude</label>
+                    <input id="BLatBox" type="number">
+
+                </div>
+
+                <div class="inputDiv">
+                    <label class="inputLabel" for="BLngBox">Longitude</label>
+                    <input id="BLngBox" type="number">
+
+                </div>
+
+                <div class="inputDiv buttons">
+                    <button id="addBldBtn" class="form-btn">Add</button>
+
+                    <button id="updateBldBtn" class="form-btn">Update</button>
+                    <button id="deleteBldBtn" class="form-btn">Delete</button>
+
+                </div>
+                <br>
+                <div class="inputDiv"><button id="resetBValueBtn" class="form-btn">Reset</button></div>
             </div>
         </div>
 
 
 
-        <div class="inputDiv">
-            <label class="inputLabel" for="BuildNameBox">Building Name</label>
-            <input id="BuildNameBox" type="text">
 
-        </div>
-
-        <div class="inputDiv">
-            <label class="inputLabel" for="BLatBox">Latitude</label>
-            <input id="BLatBox" type="number">
-
-        </div>
-
-        <div class="inputDiv">
-            <label class="inputLabel" for="BLngBox">Longitude</label>
-            <input id="BLngBox" type="number">
-
-        </div>
-
-        <div class="inputDiv buttons">
-            <button id="addBldBtn" class="form-btn">Add</button>
-
-            <button id="updateBldBtn" class="form-btn">Update</button>
-            <button id="deleteBldBtn" class="form-btn">Delete</button>
-
-        </div>
-        <br>
-        <div class="inputDiv"><button id="resetBValueBtn" class="form-btn">Reset</button></div>
 
 
 
     </div>
     <div class="cardStyle">
+
         <h2 class="formTitle">Add Door Database:</h2>
         <div class="inputDiv">
             <label class="inputLabel" for="DBldCodeBox">Building Code</label>
@@ -63,7 +65,6 @@
             <button id="retrieveBldBtn" class="form-btn">Retrieve</button>
         </div>
         <div class="cardStyle">
-            <h2 class="formTitle">Add Door Database:</h2>
             <div class="inputDiv">
                 <label class="inputLabel" for="DBldCodeBox">Building Code</label>
                 <div class="input-group"><input id="DBldCodeBox" type="text"> (docID)</div>
@@ -82,11 +83,7 @@
 
             </div>
             <div class="inputDiv buttons">
-
-
                 <button id="addDoorBtn" class="form-btn">Add</button>
-
-
             </div>
 
             <br>
@@ -94,36 +91,37 @@
 
 
         </div>
+    </div>
 
-        <div class="cardStyle">
-            <h2 class="formTitle">Add Stairs:</h2>
-            <div class="inputDiv">
-                <label class="inputLabel" for="SLatBox">Latitude</label>
-                <input id="SLatBox" type="text">
+    <div class="cardStyle">
+        <h2 class="formTitle">Add Stairs:</h2>
+        <div class="inputDiv">
+            <label class="inputLabel" for="SLatBox">Latitude</label>
+            <input id="SLatBox" type="text">
 
-            </div>
-
-            <div class="inputDiv">
-                <label class="inputLabel" for="SLngBox">Longitude</label>
-                <input id="SLngBox" type="text">
-
-            </div>
-
-            <div class="inputDiv buttons">
-                <button id="addStairsBtn" class="form-btn">Add</button>
-            </div>
-
-            <br>
-            <div class="inputDiv"><button id="resetSValueBtn" class="form-btn">Reset</button></div>
         </div>
-        <br>
 
-        <!-- The core Firebase JS SDK is always required and must be listed first -->
-        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
-        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
-        <script src="scripts/firebaseController.js"></script>
-        <script src="scripts/managebuilding.js"></script>
+        <div class="inputDiv">
+            <label class="inputLabel" for="SLngBox">Longitude</label>
+            <input id="SLngBox" type="text">
+
+        </div>
+
+        <div class="inputDiv buttons">
+            <button id="addStairsBtn" class="form-btn">Add</button>
+        </div>
+
+        <br>
+        <div class="inputDiv"><button id="resetSValueBtn" class="form-btn">Reset</button></div>
+    </div>
+    <br>
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+    <script src="scripts/firebaseController.js"></script>
+    <script src="scripts/managebuilding.js"></script>
 
 
 
