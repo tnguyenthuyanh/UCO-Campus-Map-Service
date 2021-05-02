@@ -74,18 +74,21 @@
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
-		padding-left: 5.5%;
-		width: 26.2%;
+		/* padding-left: 5.5%; */
+		padding-left: 9.5%;
+		width: 39.7%;
 		z-index: 1;
 	  }
 	  
 	  .suggestions-start > div {
 		padding: 15px;
+		margin-bottom: 2px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
+		border-radius: 15px;
 	  }
 	  
 	  .suggestions-start > div:hover {
@@ -96,18 +99,20 @@
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
-		padding-left: 5.5%;
-		width: 26.2%;
+		padding-left: 8.8%;
+		width: 39.7%;
 		z-index: 1;
 	  }
 	  
 	  .suggestions-end > div {
 		padding: 15px;
+		margin-bottom: 2px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
+		border-radius: 15px;
 	  }
 	  
 	  .suggestions-end > div:hover {
