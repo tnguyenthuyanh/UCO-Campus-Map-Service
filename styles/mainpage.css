@@ -43,7 +43,7 @@
 	  /* TODO: map body fills to rest of screen, not fixed size */
 	  .map-body {
 		width: 100%;
-		height: calc(100vh - 110px - 50px); /* viewport height - header height - menu height) */
+		height: calc(100vh - 110px); /* viewport height - header height - menu height) */
 	  }
 	  
 	  .header {
