@@ -429,7 +429,7 @@ async function getUserProfile(UID) {
 	var userSettings = document.createElement("a");
 	userSettings.appendChild(document.createTextNode('User Settings'));
 	getSideNavItems.append(userSettings);
-	userSettings.href = "user_settings.html";
+	userSettings.href = "usersettings.html";
 
 	// Create Log Out Inside sideNavBar
 	var logOut = document.createElement("a");
