@@ -1,5 +1,3 @@
-//-------------------------------- Configuration for Firebase --------------------------------//
-
 const FIREBASE_CONFIG = {
     apiKey: "AIzaSyDJ4SVerZgGodKbClc3xRSgFNVDpPMslPg",
     authDomain: "uco-cms.firebaseapp.com",

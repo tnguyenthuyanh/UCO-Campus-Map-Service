@@ -3,66 +3,115 @@
 <html>
 
 <head>
-    <title>
-        User Settings - UCO Campus Map Service
-    </title>
-    <!-- <link rel="stylesheet" type="text/css" href="styles/usersettings.css"> -->
+	<title>
+		User Settings - UCO Campus Map Service
+	</title>
+	<link rel="stylesheet" type="text/css" href="styles/usersettings.css">
 
 
 <body>
-    <hr>
-    Edit Your Profile:
-    <hr>
-    <br><br>
-    Name: <input id="nameBox" type="text">
-    <button id="updateName">Update Name</button>
-    <br>
-    <hr>
-    Email: <input id="emailBox" type="text" disabled> <br>
-    New Email: <input id="newEmailBox" type="text"> <br>
-    Password: <input id="passForEmailBox" type="password">
-    <input type="checkbox" id="showOldPasswordForEmail"> Show Password
-    <br>
-    <br>
-    <button id="changeEmail">Change Email</button>
-    <br><br>
-    <button id="resetProfileValueBox">Reset</button>
-    <hr>
-    <br><br>
-    <hr>
-    Change Your Password:
-    <br><br>
-    Old Password: <input id="passwordForChangeBox" type="password">
-    <br>
-    New Password: <input id="newPasswordForChangeBox" type="password"> <br>
-    <input type="checkbox" id="showPasswordForChange"> Show Password
-    <br><br>
-    <button id="changePassword">Change Password</button>
-    <br><br>
-    <button id="resetPasswordValueBox">Reset</button>
-    <hr>
-    <br><br><br><br><br>
 
-    <hr>
-
-    Delete Account:
-    <br><br>
-    Password: <input id="passwordForDeletionBox" type="password">
-    <br>
-    Confirm Password: <input id="confirmPasswordBox" type="password">
-    <br>
-    <input type="checkbox" id="showPasswordForDeletion"> Show Password
-    <br><br>
-    <button id="deleteAccount">Delete</button>
-    <hr>
+	<div class="cardStyle">
+		<h2 class="formTitle">Edit Your Profile</h2>
+		<div class="inputDiv">
+			<label class="inputLabel" for="nameBox">Name</label>
+			<input id="nameBox" type="text">
+			<button id="updateName" class="form-btn">Update Name</button>
+		</div>
 
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
-    <script src="scripts/firebaseController.js"></script>
-    <script src="scripts/usersettings.js"></script>
+		<div class="inputDiv">
+			<label class="inputLabel" for="emailBox">Email</label>
+			<input id="emailBox" type="text" disabled>
+		</div>
+
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="newEmailBox">New Email</label>
+			<input id="newEmailBox" type="text">
+		</div>
+
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="passForEmailBox">Password</label>
+			<input id="passForEmailBox" type="password">
+			<label class="show-password"><input type="checkbox" id="showOldPasswordForEmail"
+					style="height: auto;margin-right: 7px;">Show Password</label>
+		</div>
+		<br>
+		<div class="inputDiv">
+			<button id="changeEmail" class="form-btn">Change Email</button>
+		</div>
+
+		<div class="inputDiv">
+			<button id="resetProfileValueBox" class="form-btn">Reset</button>
+		</div>
+
+
+
+
+	</div>
+	<div class="cardStyle">
+		<h2 class="formTitle">Change Your Password</h2>
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="passwordForChangeBox">Old Password</label>
+			<input id="passwordForChangeBox" type="password">
+		</div>
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="newPasswordForChangeBox">New Password</label>
+			<input id="newPasswordForChangeBox" type="password">
+			<label class="show-password"><input type="checkbox" id="showPasswordForChange"
+					style="height: auto;margin-right: 7px;">Show Password</label>
+		</div>
+
+		<br>
+		<div class="inputDiv">
+			<button id="changePassword" class="form-btn">Change Password</button>
+		</div>
+
+		<div class="inputDiv">
+			<button id="resetPasswordValueBox" class="form-btn">Reset</button>
+		</div>
+
+	</div>
+
+
+	<div class="cardStyle">
+		<h2 class="formTitle">Delete Account</h2>
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="passwordForDeletionBox">Password</label>
+			<input id="passwordForDeletionBox" type="password">
+		</div>
+
+		<div class="inputDiv">
+			<label class="inputLabel" for="confirmPasswordBox">Confirm Password</label>
+			<input id="confirmPasswordBox" type="password">
+			<label class="show-password"><input type="checkbox" id="showPasswordForDeletion"
+					style="height: auto;margin-right: 7px;">Show Password</label>
+		</div>
+
+		<br>
+		<div class="inputDiv">
+			<button id="deleteAccount" class="form-btn">Delete</button>
+		</div>
+
+
+	</div>
+
+
+
+
+
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+	<script src="scripts/firebaseController.js"></script>
+	<script src="scripts/usersettings.js"></script>
 
 
 

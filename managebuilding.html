@@ -4,67 +4,121 @@
 
 <head>
     <title>
-        Mangage Buildings Info
+        Manage Buildings Info
     </title>
     <link rel="stylesheet" type="text/css" href="styles/managebuilding.css">
 
+</head>
 
 <body>
-    <hr>
-    Edit Building Database:
-    <br><br>
-    Building Code <input id="BuildCodeBox" type="text"> (docID) <br><br>
-    <button id="retrieveBldBtn">Retrieve</button>
-    <br><br>
+    <div>
+        <div class="cardStyle">
+            <h2 class="formTitle">Edit Building Database:</h2>
+            <div class="inputDiv">
+                <label class="inputLabel" for="BuildCodeBox">Building Code</label>
+                <div class="input-group"><input id="BuildCodeBox" type="text"> (docID)</div>
+                <button id="retrieveBldBtn" class="form-btn">Retrieve</button>
+            </div>
 
-    Building Name <input id="BuildNameBox" type="text"> <br><br>
-    Latitude <input id="BLatBox" type="number"> <br><br>
-    Longitude <input id="BLngBox" type="number"> <br><br>
-    <button id="addBldBtn">Add</button>
 
-    <button id="updateBldBtn">Update</button>
-    <button id="deleteBldBtn">Delete</button>
-    <br><br>
-    <button id="resetBValueBtn">Reset</button>
-    <hr>
-    <br><br><br><br><br>
 
-    <hr>
+            <div class="inputDiv">
+                <label class="inputLabel" for="BuildNameBox">Building Name</label>
+                <input id="BuildNameBox" type="text">
 
-    Add Door Database:
-    <br><br>
-    Building Code <input id="DBldCodeBox" type="text"> (docID) <br><br>
+            </div>
 
-    <hr>
-    Latitude <input id="DLatBox" type="text"> <br><br>
-    Longitude <input id="DLngBox" type="text"> <br><br>
-    <button id="addDoorBtn">Add</button> <br><br>
-    <button id="resetDValueBtn">Reset</button>
+            <div class="inputDiv">
+                <label class="inputLabel" for="BLatBox">Latitude</label>
+                <input id="BLatBox" type="number">
 
-    <hr>
-    <br><br><br><br>
-    <hr>
-    Add Stairs:
-    <br><br>
+            </div>
 
-    Latitude <input id="SLatBox" type="text"> <br><br>
-    Longitude <input id="SLngBox" type="text"> <br><br>
-    <button id="addStairsBtn">Add</button>
-    <br><br>
-    <button id="resetSValueBtn">Reset</button>
-    <hr>
-    <br>
+            <div class="inputDiv">
+                <label class="inputLabel" for="BLngBox">Longitude</label>
+                <input id="BLngBox" type="number">
 
-    <!-- The core Firebase JS SDK is always required and must be listed first -->
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
-    <script src="scripts/firebaseController.js"></script>
-    <script src="scripts/managebuilding.js"></script>
+            </div>
+
+            <div class="inputDiv buttons">
+                <button id="addBldBtn" class="form-btn">Add</button>
+
+                <button id="updateBldBtn" class="form-btn">Update</button>
+                <button id="deleteBldBtn" class="form-btn">Delete</button>
+
+            </div>
+            <br>
+            <div class="inputDiv"><button id="resetBValueBtn" class="form-btn">Reset</button></div>
+
+
+
+        </div>
+        <div class="cardStyle">
+            <h2 class="formTitle">Add Door Database:</h2>
+            <div class="inputDiv">
+                <label class="inputLabel" for="DBldCodeBox">Building Code</label>
+                <div class="input-group"><input id="DBldCodeBox" type="text"> (docID)</div>
+            </div>
+
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="DLatBox">Latitude</label>
+                <input id="DLatBox" type="number">
+
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="DLngBox">Longitude</label>
+                <input id="DLngBox" type="number">
+
+            </div>
+            <div class="inputDiv buttons">
+
+
+                <button id="addDoorBtn" class="form-btn">Add</button>
+
+
+            </div>
+
+            <br>
+            <div class="inputDiv"><button id="resetDValueBtn" class="form-btn">Reset</button></div>
+
+
+        </div>
+
+        <div class="cardStyle">
+            <h2 class="formTitle">Add Stairs:</h2>
+            <div class="inputDiv">
+                <label class="inputLabel" for="SLatBox">Latitude</label>
+                <input id="SLatBox" type="text">
+
+            </div>
+
+            <div class="inputDiv">
+                <label class="inputLabel" for="SLngBox">Longitude</label>
+                <input id="SLngBox" type="text">
+
+            </div>
+
+            <div class="inputDiv buttons">
+                <button id="addStairsBtn" class="form-btn">Add</button>
+            </div>
+
+            <br>
+            <div class="inputDiv"><button id="resetSValueBtn" class="form-btn">Reset</button></div>
+        </div>
+        <br>
+
+        <!-- The core Firebase JS SDK is always required and must be listed first -->
+        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+        <script src="scripts/firebaseController.js"></script>
+        <script src="scripts/managebuilding.js"></script>
 
 
 
 </body>
-</head>
+
 
 </html>
