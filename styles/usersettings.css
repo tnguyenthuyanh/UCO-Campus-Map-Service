@@ -90,6 +90,10 @@ body{
 	margin-top: 15px;
 	max-width: max-content;
   }
+  
+  .show-password{
+	margin-top: 8px;
+  }
   .submitButton {
 	width: 70%;
 	height: 40px;
