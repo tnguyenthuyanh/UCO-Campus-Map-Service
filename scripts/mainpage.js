@@ -1,5 +1,21 @@
 "use strict";
 
+window.onload = function () {
+	const URL_PARAM = new URLSearchParams(window.location.search);
+	const UID = URL_PARAM.get('session');
+
+	if (UID == null) {
+		window.location = "main.html?session=guest";
+	} else {
+		firebase.auth().onAuthStateChanged(function (user) {
+
+			if (UID != "guest" && !user) {
+				window.location = "main.html?session=guest";
+			}
+		});
+	}
+}
+
 var directionsService;
 var directionsDisplay;
 var directionsDisplayArray = [];
