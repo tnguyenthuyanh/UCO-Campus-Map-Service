@@ -75,8 +75,8 @@
 		/* display: none; */
 		position: absolute;
 		/* padding-left: 5.5%; */
-		padding-left: 9.5%;
-		width: 39.7%;
+		/* padding-left: 9.5%; */
+		/* width: 39.7%; */
 		z-index: 1;
 	  }
 	  
@@ -99,8 +99,9 @@
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
-		padding-left: 8.8%;
-		width: 39.7%;
+		/* padding-left: 5.5%; */
+		/* padding-left: 9.5%; */
+		/* width: 39.7%; */
 		z-index: 1;
 	  }
 	  
@@ -163,6 +164,7 @@
 	  }
 	  
 	  .searchbars-container {
+		margin-top: 0.7%;
 		height: 100%;
 		display: table;
 		float: left;

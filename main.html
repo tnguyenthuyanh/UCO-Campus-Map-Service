@@ -50,15 +50,21 @@
                 <!-- <form> -->
                 <!-- <span style="position: left; font-size:30px;cursor:pointer;font-weight: bold;" id="openNav">&#9776;
 				</span> -->
+
                 <label for="startBar">Start Location: </label>
-                <input class="search-marker-start" type="text" id="startBar" name="startBar"
+                <div>
+                    <input class="search-marker-start" type="text" id="startBar" name="startBar"
                     placeholder="Enter a building name" onfocus="searchStartOnFocus()"><br>
-                <div class="suggestions-start">
+                    <div class="suggestions-start"></div>
                 </div>
+            </div>
+            <div class="searchbars-container">
                 <label for="endBar">End Location: </label>
-                <input class="search-marker-end" type="text" id="endBar" name="endBar"
+                <div>
+                    <input class="search-marker-end" type="text" id="endBar" name="endBar"
                     placeholder="Enter a building name" onfocus="searchEndOnFocus()"><br>
-                <div class="suggestions-end"></div>
+                    <div class="suggestions-end"></div>
+                </div>
                 <!-- </form> -->
             </div>
             <div class="header-button">
