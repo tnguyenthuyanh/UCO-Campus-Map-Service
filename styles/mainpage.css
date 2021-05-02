@@ -43,7 +43,7 @@
 	  /* TODO: map body fills to rest of screen, not fixed size */
 	  .map-body {
 		width: 100%;
-		height: calc(100vh - 110px - 50px); /* viewport height - header height - menu height) */
+		height: calc(100vh - 110px); /* viewport height - header height - menu height) */
 	  }
 	  
 	  .header {
@@ -74,18 +74,21 @@
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
-		padding-left: 5.5%;
-		width: 26.2%;
+		/* padding-left: 5.5%; */
+		padding-left: 9.5%;
+		width: 39.7%;
 		z-index: 1;
 	  }
 	  
 	  .suggestions-start > div {
 		padding: 15px;
+		margin-bottom: 2px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
+		border-radius: 15px;
 	  }
 	  
 	  .suggestions-start > div:hover {
@@ -96,18 +99,20 @@
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
-		padding-left: 5.5%;
-		width: 26.2%;
+		padding-left: 8.8%;
+		width: 39.7%;
 		z-index: 1;
 	  }
 	  
 	  .suggestions-end > div {
 		padding: 15px;
+		margin-bottom: 2px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
+		border-radius: 15px;
 	  }
 	  
 	  .suggestions-end > div:hover {
@@ -303,14 +308,14 @@
 		z-index: 1;
 		top: 0;
 		left: 0;
-		background-color: black;
+		background-color: rgb(37, 37, 37);
 		overflow-x: hidden;
 		transition: 0.5s;
 		padding-top: 60px;
 	  }
 	  
 	  .sidenav a {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
@@ -331,7 +336,7 @@
 		margin-left: 50px;
 	  }
 	  .sidenav header {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 30px;
 		font-weight: bolder;
@@ -342,18 +347,18 @@
 	  }
 	  
 	  .sidenav h1 {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 35px;
-		color: greenyellow;
+		color: #004377;
 		display: block;
 		transition: 0.3s;
 	  }
 	  .sidenav h3 {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 15px;
-		color: yellow;
+		color: #EFC832;
 		display: block;
 		transition: 0.3s;
 	  }
