@@ -303,14 +303,14 @@
 		z-index: 1;
 		top: 0;
 		left: 0;
-		background-color: black;
+		background-color: rgb(37, 37, 37);
 		overflow-x: hidden;
 		transition: 0.5s;
 		padding-top: 60px;
 	  }
 	  
 	  .sidenav a {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		text-align: left;
 		font-size: 20px;
@@ -331,7 +331,7 @@
 		margin-left: 50px;
 	  }
 	  .sidenav header {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 30px;
 		font-weight: bolder;
@@ -342,18 +342,18 @@
 	  }
 	  
 	  .sidenav h1 {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 35px;
-		color: greenyellow;
+		color: #004377;
 		display: block;
 		transition: 0.3s;
 	  }
 	  .sidenav h3 {
-		padding: 8px 8px 8px 32px;
+		padding: 0.6% 8px 0.6% 32px;
 		text-decoration: none;
 		font-size: 15px;
-		color: yellow;
+		color: #EFC832;
 		display: block;
 		transition: 0.3s;
 	  }
