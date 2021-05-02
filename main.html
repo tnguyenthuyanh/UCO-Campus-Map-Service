@@ -1,8 +1,12 @@
 <!DOCTYPE html>
+<html lang="en">
+
+
 
 <head>
+    <meta charset="utf-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="styles/mainpage.css">
+    <link rel="stylesheet" href="styles/mainpage.css">
     <title>UCO Campus Map Service</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script src="scripts/mainpage.js"></script>
@@ -12,8 +16,6 @@
 
 <body onfocus="bodyOnFocus()">
     <div id="mySidenav" class="sidenav">
-        <h1 id="nameTitle"></h1>
-        <h3 id="emailTitle"></h3>
         <br><br>
         <header>Menu</header>
         <a href="javascript:void(0)" class="closebtn" id="closeNav">&times;</a>
@@ -22,10 +24,9 @@
         <a id="about" href="about_us.html">About</a>
         <a id="team" href="team.html">Our Team</a>
     </div>
-    <!-- <span style="text-align: left; font-size:30px;cursor:pointer;font-weight: bold;" id="openNav">&#9776; Menu</span> -->
+
     <div class="header">
-        <!-- <span style=" font-size:30px;cursor:pointer;font-weight: bold;" id="openNav">&#9776;
-		</span> -->
+        <!-- Styling the header menu icon for opening the side navigation -->
         <div class="inner-header">
             <span style="margin: 0;
 			padding: 19px 16px;
@@ -82,9 +83,7 @@
                 </div>
 
             </div>
-            <!-- <div>
-                <button class="showMarkers-btn" onclick="showMarkers()">Show Saved Markers</button>
-            </div> -->
+
         </div>
     </div>
     <div class="map-body">
@@ -96,7 +95,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
     <script src="scripts/firebaseController.js"></script>
-    <!-- <script src=></script> -->
+
     <script src="scripts/hintText.js"></script>
     <script src="scripts/mainpage.js"></script>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
