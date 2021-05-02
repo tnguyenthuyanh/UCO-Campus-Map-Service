@@ -15,8 +15,12 @@
 </head>
 
 <body onfocus="bodyOnFocus()">
+
     <div id="mySidenav" class="sidenav">
-        <br><br>
+        <br>
+        <a id="nameTitle"></a>
+        <a id="emailTitle"></a>
+        <br>
         <header>Menu</header>
         <a href="javascript:void(0)" class="closebtn" id="closeNav">&times;</a>
         <div id="sideNavItems"></div>
@@ -55,7 +59,7 @@
                 <label for="startBar">Start Location: </label>
                 <div>
                     <input class="search-marker-start" type="text" id="startBar" name="startBar"
-                    placeholder="Enter a building name" onfocus="searchStartOnFocus()"><br>
+                        placeholder="Enter a building name" onfocus="searchStartOnFocus()"><br>
                     <div class="suggestions-start"></div>
                 </div>
             </div>
@@ -63,7 +67,7 @@
                 <label for="endBar">End Location: </label>
                 <div>
                     <input class="search-marker-end" type="text" id="endBar" name="endBar"
-                    placeholder="Enter a building name" onfocus="searchEndOnFocus()"><br>
+                        placeholder="Enter a building name" onfocus="searchEndOnFocus()"><br>
                     <div class="suggestions-end"></div>
                 </div>
                 <!-- </form> -->
