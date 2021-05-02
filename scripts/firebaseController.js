@@ -160,7 +160,6 @@ async function updateProfileName(UID, oneName) {
         .get();
     var docID = snapShot.docs[0].id;
 
-    console.log(oneName);
     await cloudDatabase
         .collection("userProfile")
         .doc(docID)
