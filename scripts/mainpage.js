@@ -90,14 +90,19 @@ function initApp() {
 		placeMarker(map, e.latLng, infoLocs);
 	});
 	/* *********************************************************************************************** */
-
+	// Header Drawer
+	document.getElementById('openNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "300px";
+	}
+	document.getElementById('closeNav').onclick = function () {
+		document.getElementById("mySidenav").style.width = "0";
+	}
 	/* **************************************** DIRECTIONS **************************************** */
 	// initializing google maps route/directions variables
 	directionsService = new google.maps.DirectionsService();
 	directionsDisplay = new google.maps.DirectionsRenderer();
 	/* ******************************************************************************************** */
 	displayCampusBuildingMarkers(map);
-	showUserSavedLocMarkers()
 	/* ****************** This initilizes guest / user / admin access inside header drawer ************ */
 	initProfile();
 } // initApp()
@@ -119,9 +124,6 @@ async function displayCampusBuildingMarkers(map) {
 	allBuildingAutos = await retrieveAllBuildingAutos();
 	allStairs = await getAllStairs();
 	allUserSavedLocs = await getAllUserSavedLocs(UID);
-
-	// creating infowindow for markers
-	const infoWindow = new google.maps.InfoWindow();
 
 	// adding all user saved locations to the hint buildings
 	for (let i = 0; i < allUserSavedLocs.length; i++) {
@@ -156,8 +158,8 @@ async function displayCampusBuildingMarkers(map) {
 
 		// add click-event for each marker for infowindow pop up
 		marker.addListener("click", () => {
-			infoWindow.close();
-			infoWindow.setContent('<div style="text-align: center">' +
+			infoLocs.close();
+			infoLocs.setContent('<div style="text-align: center">' +
 				`<button id="set-start-btn" buildingName="${marker.title}"` +
 				`markerId="${marker.id}"> Start </button>` +
 				'<div class="divider"/></div>' +
@@ -165,10 +167,10 @@ async function displayCampusBuildingMarkers(map) {
 				`markerId="${marker.id}"> End </button>` +
 				'</div>'
 			);
-			infoWindow.open(marker.getMap(), marker);
+			infoLocs.open(marker.getMap(), marker);
 		});
 
-		google.maps.event.addListener(infoWindow, 'domready', function () {
+		google.maps.event.addListener(infoLocs, 'domready', function () {
 			if (document.getElementById('set-start-btn')) {
 
 				button = document.getElementById('set-start-btn');
@@ -219,10 +221,15 @@ function calculateAndDisplayRoute(directionsService) {
 	let endLocName = document.getElementById('endBar').value;
 	var startLoc;
 	var endLoc;
+	var realStartLoc = false;
+	var realEndLoc = false;
 
 	// error handling for empty search bars
 	if (startLocName.trim() == "" || endLocName.trim() == "") {
 		window.alert('Please enter a location!');
+		return;
+	} else if (startLocName == endLocName) {
+		window.alert('The same location has been entered for the Start Location and End Location.');
 		return;
 	}
 
@@ -234,6 +241,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realStartLoc = true;
 		}
 		if (e.BuildingName == endLocName) {
 			endLoc = {
@@ -241,6 +249,7 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
 
@@ -251,15 +260,21 @@ function calculateAndDisplayRoute(directionsService) {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
-			console.log('match!');
+			realStartLoc = true;
 		}
 		if (e.NameLocation == endLocName) {
 			endLoc = {
 				lat: e.Latitude,
 				lng: e.Longitude,
 			}
+			realEndLoc = true;
 		}
 	});
+
+	if (!realStartLoc || !realEndLoc) {
+		window.alert('Location(s) not recognized. Please enter the location name exactly as displayed or use the hint text.');
+		return;
+	}
 
 	// TODO: provide wheel chair accessible routes
 
@@ -367,23 +382,18 @@ function setEnd(buildingEndName) {
 
 function initProfile() {
 	/** ************************************************* INSIDE HTML BODY ********************************************/
-	// Header Drawer
-	document.getElementById('openNav').onclick = function () {
-		document.getElementById("mySidenav").style.width = "300px";
-	}
-	document.getElementById('closeNav').onclick = function () {
-		document.getElementById("mySidenav").style.width = "0";
-	}
 	// Find if one user is logging in
 	const URL_PARAM = new URLSearchParams(window.location.search);
 	const UID = URL_PARAM.get('session');
 
 	firebase.auth().onAuthStateChanged(function (user) {
 		// console.log(user.UID);
-		if (UID != null && user) // If user or admin
+		if (UID != null && user) { // If user or admin
 			// user activities loaded in here, such as retrieving user info, 
 			//		user's saved locations
 			getUserProfile(UID);
+			showUserSavedLocMarkers();
+		}
 		if (UID == "guest" || user.uid == null) { // If guest
 			document.getElementById("nameTitle")
 				.appendChild(document.createTextNode('Welcome, guest'));
@@ -422,15 +432,14 @@ async function getUserProfile(UID) {
 		buildingSettings
 			.appendChild(document.createTextNode('Building Settings'));
 		getSideNavItems.append(buildingSettings);
-		buildingSettings.href = "managebuilding.html?user=" + UID;
+		buildingSettings.href = "managebuilding.html?session=" + UID;
 	}
 
 	// Create Link to User Settings
 	var userSettings = document.createElement("a");
 	userSettings.appendChild(document.createTextNode('User Settings'));
 	getSideNavItems.append(userSettings);
-	userSettings.href = "usersettings.html";
-
+	userSettings.href = "usersettings.html?session=" + UID;
 	// Create Log Out Inside sideNavBar
 	var logOut = document.createElement("a");
 	logOut.appendChild(document.createTextNode('Log out'));
