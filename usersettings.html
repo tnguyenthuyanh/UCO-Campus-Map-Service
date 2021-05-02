@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>
+		User Settings - UCO Campus Map Service
+	</title>
+	<!-- <link rel="stylesheet" type="text/css" href="styles/usersettings.css"> -->
+
+
+<body>
+	<hr>
+	Edit Your Profile:
+	<hr>
+	<br><br>
+	Name: <input id="nameBox" type="text">
+	<button id="updateName">Update Name</button>
+	<br>
+	<hr>
+	Email: <input id="emailBox" type="text" disabled> <br>
+	New Email: <input id="newEmailBox" type="text"> <br>
+	Password: <input id="passForEmailBox" type="password">
+	<input type="checkbox" id="showOldPasswordForEmail"> Show Password
+	<br>
+	<br>
+	<button id="changeEmail">Change Email</button>
+	<br><br>
+	<button id="resetProfileValueBox">Reset</button>
+	<hr>
+	<br><br>
+	<hr>
+	Change Your Password:
+	<br><br>
+	Old Password: <input id="passwordForChangeBox" type="password">
+	<br>
+	New Password: <input id="newPasswordForChangeBox" type="password"> <br>
+	<input type="checkbox" id="showPasswordForChange"> Show Password
+	<br><br>
+	<button id="changePassword">Change Password</button>
+	<br><br>
+	<button id="resetPasswordValueBox">Reset</button>
+	<hr>
+	<br><br><br><br><br>
+
+	<hr>
+
+	Delete Account:
+	<br><br>
+	Password: <input id="passwordForDeletionBox" type="password">
+	<br>
+	Confirm Password: <input id="confirmPasswordBox" type="password">
+	<br>
+	<input type="checkbox" id="showPasswordForDeletion"> Show Password
+	<br><br>
+	<button id="deleteAccount">Delete</button>
+	<hr>
+
+
+	<!-- The core Firebase JS SDK is always required and must be listed first -->
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-app.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/8.3.3/firebase-firestore.js"></script>
+	<script src="scripts/firebaseController.js"></script>
+	<script src="scripts/usersettings.js"></script>
+
+
+
+</body>
+</head>
+
+</html>
