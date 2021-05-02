@@ -98,9 +98,7 @@ function signIn(email, password) {
     result.catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
-        console.log(errorCode);
-        console.log(errorMessage);
-        window.alert("Message : " + errorMessage);
+        window.alert(errorMessage);
     });
 }
 
@@ -117,12 +115,10 @@ function signUp(email, password, name) {
     authDatabase.createUserWithEmailAndPassword(email, password).
         then(data => {
             let uid = data.user.uid;
-            console.log("UID: " + uid);
             createUserProfile(uid, email, name, false);
             alert("Account created!");
-        }).
-        catch(function (e) {
-            console.log(e.errorCode + '...' + e.errorMessage);
+        }).catch(function () {
+            alert("This email has been used to register");
         });
 }
 
@@ -134,8 +130,7 @@ function createUserProfile(uid, email, name, admin_flag) {
             Name: name,
             Admin: admin_flag,
         }
-    ).then(function (docRef) {
-        console.log("User added!  ", docRef.id);
+    ).then(function () {
         window.location.href = "signin.html";
     }).catch(function (e) {
         console.error("Error adding", e);
