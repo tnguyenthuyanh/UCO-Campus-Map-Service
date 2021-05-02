@@ -8,22 +8,11 @@ window.onload = function () {
         if (UID == null || UID == '' || !user) {
             window.location = "signin.html";
         } else {
-            init(UID);
+            _init(UID);
         }
     });
 
 }
-
-/** init admin user */
-async function init(UID) {
-    var userProfile = await getOneProfile(UID);
-    if (userProfile.Admin == false) {
-        window.location = "signin.html";
-    }
-}
-
-//-------------------------------- HANDLE BUILDING DATA --------------------------------//
-
 let getBuildingNameBox = document.getElementById('BuildNameBox');
 let getBuildingCodeBox = document.getElementById('BuildCodeBox');
 let getBuildingLatitudeBox = document.getElementById('BLatBox');
@@ -33,103 +22,111 @@ let retrieveBuildingButton = document.getElementById('retrieveBldBtn');
 let updateBuildingButton = document.getElementById('updateBldBtn');
 let deleteBuildingButton = document.getElementById('deleteBldBtn');
 let resetBuildingValueButton = document.getElementById('resetBValueBtn');
-
 let oneBuilding = {
     BuildingName: '',
     BuildingCode: '',
     Latitude: Number,
     Longitude: Number,
 }
-getBuildingCodeBox.oninput = function () {
-    _updateBuildingBox();
-}
-getBuildingCodeBox.oninput = function () {
-    _updateBuildingBox();
-}
-getBuildingLatitudeBox.oninput = function () {
-    _updateBuildingBox();
-}
-getBuildingLongitudeBox.oninput = function () {
-    _updateBuildingBox();
-}
-addBuildingButton.onclick = function () {
-    _updateBuildingBox();
-    _addBuilding(oneBuilding);
-}
-retrieveBuildingButton.onclick = function () {
-    _updateBuildingBox();
-    _retrieveBuilding(oneBuilding);
-}
-updateBuildingButton.onclick = function () {
-    _updateBuildingBox();
-    _updateBuilding(oneBuilding);
-}
-deleteBuildingButton.onclick = function () {
-    _updateBuildingBox();
-    _deleteBuilding(oneBuilding);
-}
-resetBuildingValueButton.onclick = function () {
-    _resetBuildingValue();
-}
-
-//-------------------------------- HANDLE DOOR DATA --------------------------------//
 
 let getBuildingCodeOfDoorBox = document.getElementById('DBldCodeBox');
 let getDoorLatitudeBox = document.getElementById('DLatBox');
 let getDoorLongitudeBox = document.getElementById('DLngBox');
 let addDoorButton = document.getElementById('addDoorBtn');
 let resetDoorValueButton = document.getElementById('resetDValueBtn');
-
 let oneDoor = {
     BuildingCode: '',
     Latitude: Number,
     Longitude: Number,
 }
-getBuildingCodeOfDoorBox.oninput = function () {
-    _updateDoorBox();
-}
-getDoorLatitudeBox.oninput = function () {
-    _updateDoorBox();
-}
-getDoorLongitudeBox.oninput = function () {
-    _updateDoorBox();
-}
 
-addDoorButton.onclick = function () {
-    _updateDoorBox();
-    _addDoor(oneDoor);
-}
-
-resetDoorValueButton.onclick = function () {
-    _resetDoorValue();
-}
-
-//-------------------------------- HANDLE STAIRS DATA ------------------------------//
 
 let getStairsLatitudeBox = document.getElementById('SLatBox');
 let getStairsLongitudeBox = document.getElementById('SLngBox');
 let addStairsButton = document.getElementById('addStairsBtn');
 let resetStairsValueButton = document.getElementById('resetSValueBtn');
-
 let stairsLocation = {
     Latitude: Number,
     Longitude: Number,
 }
-getStairsLatitudeBox.oninput = function () {
-    _updateStairsBox();
-}
-getStairsLongitudeBox.oninput = function () {
-    _updateStairsBox();
+
+/** init admin user */
+async function _init(UID) {
+    var userProfile = await getOneProfile(UID);
+    if (userProfile.Admin == false) {
+        window.location = "signin.html";
+    }
+    //-------------------------------- HANDLE BUILDING DATA --------------------------------//
+
+    getBuildingCodeBox.oninput = function () {
+        _updateBuildingBox();
+    }
+    getBuildingCodeBox.oninput = function () {
+        _updateBuildingBox();
+    }
+    getBuildingLatitudeBox.oninput = function () {
+        _updateBuildingBox();
+    }
+    getBuildingLongitudeBox.oninput = function () {
+        _updateBuildingBox();
+    }
+    addBuildingButton.onclick = function () {
+        _updateBuildingBox();
+        _addBuilding(oneBuilding);
+    }
+    retrieveBuildingButton.onclick = function () {
+        _updateBuildingBox();
+        _retrieveBuilding(oneBuilding);
+    }
+    updateBuildingButton.onclick = function () {
+        _updateBuildingBox();
+        _updateBuilding(oneBuilding);
+    }
+    deleteBuildingButton.onclick = function () {
+        _updateBuildingBox();
+        _deleteBuilding(oneBuilding);
+    }
+    resetBuildingValueButton.onclick = function () {
+        _resetBuildingValue();
+    }
+
+    //-------------------------------- HANDLE DOOR DATA --------------------------------//
+
+    getBuildingCodeOfDoorBox.oninput = function () {
+        _updateDoorBox();
+    }
+    getDoorLatitudeBox.oninput = function () {
+        _updateDoorBox();
+    }
+    getDoorLongitudeBox.oninput = function () {
+        _updateDoorBox();
+    }
+    addDoorButton.onclick = function () {
+        _updateDoorBox();
+        _addDoor(oneDoor);
+    }
+    resetDoorValueButton.onclick = function () {
+        _resetDoorValue();
+    }
+
+    //-------------------------------- HANDLE STAIRS DATA ------------------------------//
+
+    getStairsLatitudeBox.oninput = function () {
+        _updateStairsBox();
+    }
+    getStairsLongitudeBox.oninput = function () {
+        _updateStairsBox();
+    }
+    addStairsButton.onclick = function () {
+        _updateStairsBox();
+        _addStairs(stairsLocation);
+    }
+    resetStairsValueButton.onclick = function () {
+        _resetStairsValue();
+    }
 }
 
-addStairsButton.onclick = function () {
-    _updateStairsBox();
-    _addStairs(stairsLocation);
-}
 
-resetStairsValueButton.onclick = function () {
-    _resetStairsValue();
-}
 
 
 // -------------------------------- Functions -------------------------------------- //
