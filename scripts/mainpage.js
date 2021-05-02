@@ -1,5 +1,15 @@
 "use strict";
 
+window.onload = function () {
+	const URL_PARAM = new URLSearchParams(window.location.search);
+	const UID = URL_PARAM.get('session');
+	if (UID == null) {
+		window.location = "main.html?session=guest";
+
+
+	}
+}
+
 var directionsService;
 var directionsDisplay;
 var directionsDisplayArray = [];
@@ -396,7 +406,7 @@ function initProfile() {
 		}
 		if (UID == "guest" || user.uid == null) { // If guest
 			document.getElementById("nameTitle")
-			getSideNavItems.appendChild(document.createTextNode('Welcome, guest'));
+				.appendChild(document.createTextNode('Welcome, guest'));
 			var getSideNavItems = document.getElementById("sideNavItems");
 			// Create Sign In Inside Drawer
 			var signIn = document.createElement("a");
