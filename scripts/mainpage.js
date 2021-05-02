@@ -6,13 +6,6 @@ window.onload = function () {
 
 	if (UID == null) {
 		window.location = "main.html?session=guest";
-	} else {
-		firebase.auth().onAuthStateChanged(function (user) {
-
-			if (UID != "guest" && !user) {
-				window.location = "main.html?session=guest";
-			}
-		});
 	}
 }
 
