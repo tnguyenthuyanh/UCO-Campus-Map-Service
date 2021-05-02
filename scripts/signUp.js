@@ -1,7 +1,6 @@
 // ----------------- sign Up Handler ----------------- //
 
 document.getElementById('btn-signup').onclick = function () {
-    console.log('pressed');
     let name = document.getElementById('signUp_name').value;
     let email = document.getElementById('signUp_email').value;
     let password = document.getElementById('signUp_password').value;

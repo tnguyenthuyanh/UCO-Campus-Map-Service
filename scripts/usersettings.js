@@ -143,7 +143,7 @@ async function _updatePassword(oldPassword, newPassword) {
     try {
         await updateUserPassword(oldPassword, newPassword);
     } catch (e) {
-        alert("Wrong old password!" + e);
+        alert("Wrong password!");
     }
 
 }
