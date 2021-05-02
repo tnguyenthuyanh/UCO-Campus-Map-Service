@@ -1,114 +1,134 @@
 /* Always set the map height explicitly to define the size of the div
 	* element that contains the map. */
-	#map {
+	@font-face {
+		font-family: "Poppins-Regular";
+		src: url("../design_files/fonts/poppins/Poppins-Regular.ttf");
+	  }
+	  @font-face {
+		font-family: "Poppins-SemiBold";
+		src: url("../design_files/fonts/poppins/Poppins-SemiBold.ttf");
+	  }
+	  #map {
 		height: 100%;
-	}
-
-	.hamburger-icon {
+	  }
+	  
+	  .hamburger-icon {
 		margin: 0;
 		padding: 19px 16px;
 		display: inline-block;
 		position: absolute;
 		top: 0;
 		left: 0;
-	}
-	.hamburger-icon span {
+	  }
+	  .hamburger-icon span {
 		width: 40px;
 		background-color: #000;
 		height: 5px;
 		display: block;
 		margin-bottom: 6px;
-	}
-	.hamburger-icon span:last-child {
-		margin-bottom:0px;
-	}
-	
-	/* Optional: Makes the sample page fill the window. */
-	.html,
-	body {
+	  }
+	  .hamburger-icon span:last-child {
+		margin-bottom: 0px;
+	  }
+	  
+	  /* Optional: Makes the sample page fill the window. */
+	  .html,
+	  body {
 		height: 100%;
 		margin: 0;
 		padding: 0;
-	}
-	
-	/* TODO: map body fills to rest of screen, not fixed size */
-	.map-body {
+		font-family: "Poppins-Regular";
+	  }
+	  
+	  /* TODO: map body fills to rest of screen, not fixed size */
+	  .map-body {
 		width: 100%;
-		height:calc(100vh - 110px - 50px); /* viewport height - header height - menu height) */
-	}
-	
-	.header {
+		height: calc(100vh - 110px - 50px); /* viewport height - header height - menu height) */
+	  }
+	  
+	  .header {
 		width: 100%;
 		height: 110px;
-		
-		background-color: #87CEFF;
-	}
-	
-	.inner-header {
-		width: 1000px;
+		background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+		background-size: 600% 600%;
+		animation: gradient 15s ease infinite;
+	  }
+	  
+	  .inner-header {
+		width: 100%;
 		height: 100%;
-		display: block;
+		display: flex;
+		  justify-content: center;
 		margin: 0 auto;
-		background-color:#87CEFF;
-	}
-
-	.suggestions-start {
+	  
+	  }
+	  
+	  .header-button {
+		  display: flex;
+		  align-items: center;
+		  flex-direction: column;
+		  justify-content: center;
+	  }
+	  
+	  .suggestions-start {
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
 		padding-left: 5.5%;
 		width: 26.2%;
 		z-index: 1;
-	}
-
-	.suggestions-start > div {
+	  }
+	  
+	  .suggestions-start > div {
 		padding: 15px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
-	}
-
-	.suggestions-start > div:hover {
+	  }
+	  
+	  .suggestions-start > div:hover {
 		background-color: rgb(121, 121, 121);
-	}
-
-	.suggestions-end {
+	  }
+	  
+	  .suggestions-end {
 		/* border-top: 2px solid #999; */
 		/* display: none; */
 		position: absolute;
 		padding-left: 5.5%;
 		width: 26.2%;
 		z-index: 1;
-	}
-
-	.suggestions-end > div {
+	  }
+	  
+	  .suggestions-end > div {
 		padding: 15px;
 		font-size: 20px;
 		color: white;
 		background-color: rgb(70, 70, 70);
 		border-top: 1px solid #666;
 		cursor: pointer;
-	}
-
-	.suggestions-end > div:hover {
+	  }
+	  
+	  .suggestions-end > div:hover {
 		background-color: rgb(207, 207, 207);
-	}
-	
-	input[type=text] {
-		background-color:#87CEFF;
+	  }
+	  
+	  input[type="text"] {
+		font-family: inherit;
+		background-color: #fff;
 		width: 500px;
-		padding: 8px 0px;
+		padding: 8px 12px;
 		margin: 8px;
 		border: none;
 		box-sizing: border-box;
-		border-bottom: 2px solid rgb(70, 70, 70);
 		outline: none;
-	}
-	
-	input[type=markerText] {
-		background-color:#ffffff;
+		  border-radius: 5px;
+	  }
+	  
+	  input[type="markerText"] {
+		font-family: inherit;
+		background-color: #ffffff;
 		width: 200px;
 		padding: 6px 4px;
 		margin: 8px;
@@ -116,11 +136,11 @@
 		box-sizing: border-box;
 		border-bottom: 2px solid rgb(70, 70, 70);
 		outline: none;
-	}
-
-	/* input box in infowindow*/
-	input[type="text"].input-save {
-		background-color:#dce1e4;
+	  }
+	  
+	  /* input box in infowindow*/
+	  input[type="text"].input-save {
+		background-color: #dce1e4;
 		width: 130px;
 		padding: 4px 0px;
 		margin: 8px;
@@ -128,22 +148,23 @@
 		box-sizing: border-box;
 		border-bottom: 2px solid rgb(70, 70, 70);
 		outline: none;
-	}
-
-	/* space btw buttons in infowindow*/
-	.divider{
-		width:10px;
-		height:auto;
-		display:inline-block;
-	}
-	
-	.searchbars-container {
+	  }
+	  
+	  /* space btw buttons in infowindow*/
+	  .divider {
+		width: 10px;
+		height: auto;
+		display: inline-block;
+	  }
+	  
+	  .searchbars-container {
 		height: 100%;
 		display: table;
 		float: left;
-	}
-	
-	#set-start-btn {
+		  color: #fff;
+	  }
+	  
+	  #set-start-btn {
 		width: 100px;
 		height: 30px;
 		margin-top: 5px;
@@ -155,13 +176,13 @@
 		font-weight: 600;
 		font-size: 18px;
 		padding-top: 2px;
-	}
-	
-	#set-start-btn:active {
+	  }
+	  
+	  #set-start-btn:active {
 		background-color: #00d32e;
-	}
-	
-	#set-end-btn {
+	  }
+	  
+	  #set-end-btn {
 		width: 100px;
 		height: 30px;
 		margin-top: 5px;
@@ -173,57 +194,61 @@
 		font-weight: 600;
 		font-size: 18px;
 		padding-top: 2px;
-	}
-	
-	#set-end-btn:active {
+	  }
+	  
+	  #set-end-btn:active {
 		background-color: #fc6161;
-	}
-	
-	.button-container {
-		display: table;
-		float: left;
-	}
-	
-	.switchroutes-btn {
-		outline: none;
-		height: 56px;
-		margin-top: 16%;
-		margin-left: 10px;
-		background-color: rgb(70, 70, 70);
-		border: none;
+	  }
+	  
+	  .button-container {
+		  display: flex;
+		  align-items: center;
+		  margin-bottom: 14px;
+	  }
+	  
+	  .switchroutes-btn {
+		  font-family: inherit;
+		  outline: none;
+		  height: 56px;
+	  
+		  margin-left: 10px;
+		  background-color: rgb(70, 70, 70);
+		  border: none;
 		  color: white;
-		  padding: 12px 16px;
-		  font-size: 16px; 
+		  padding: 5px 16px;
+		  font-size: 15px;
 		  cursor: pointer;
-		border-radius: 12px;
-	}
-	
-	.switchroutes-btn:hover {
+		  border-radius: 12px;
+	  
+	  }
+	  
+	  .switchroutes-btn:hover {
 		background-color: rgb(55, 55, 55);
-	}
-	
-	.directions-btn {
+	  }
+	  
+	  .directions-btn {
+		font-family: inherit;
 		outline: none;
 		height: 56px;
-		margin-top: 12%;
+	  
 		margin-left: 15px;
 		background-color: rgb(70, 70, 70);
 		border: none;
-		  color: white;
-		  padding: 12px 16px;
-		  font-size: 16px; 
-		  cursor: pointer;
+		color: white;
+		padding: 12px 16px;
+		font-size: 15px;
+		cursor: pointer;
 		border-radius: 12px;
-	}
-	
-	.wheelchair-checkbox {
-		position: absolute;
-		top: 12.6%;
-		left: 57.5%;
+	  }
+	  .button-checkbox {
+		  color: #fff;
+	  }
+	  .wheelchair-checkbox {
+	  
 		background-color: black;
-	}
-	
-	.wheelchair-checkbox:after {
+	  }
+	  
+	  .wheelchair-checkbox:after {
 		left: 9px;
 		top: 5px;
 		width: 5px;
@@ -233,20 +258,14 @@
 		-webkit-transform: rotate(45deg);
 		-ms-transform: rotate(45deg);
 		transform: rotate(45deg);
-	}
-
-	.wheelchair-checkbox-label {
-		position: absolute;
-		top: 12.6%;
-		left: 59.7%;
-	}
-	
-	.directions-btn:hover {
+	  }
+	  
+	  
+	  .directions-btn:hover {
 		background-color: rgb(55, 55, 55);
-	}
-	
-	
-	#floating-panel {
+	  }
+	  
+	  #floating-panel {
 		position: absolute;
 		top: 10px;
 		left: 25%;
@@ -258,9 +277,9 @@
 		font-family: "Roboto", "sans-serif";
 		line-height: 30px;
 		padding-left: 10px;
-	}
-	
-	#floating-panel {
+	  }
+	  
+	  #floating-panel {
 		position: absolute;
 		top: 5px;
 		left: 50%;
@@ -270,78 +289,98 @@
 		background-color: #fff;
 		padding: 5px;
 		border: 1px solid #999;
-	}
-	
-	#latlng {
+	  }
+	  
+	  #latlng {
 		width: 225px;
-	}
-
-/* Side Navigation Bar */
-.sidenav {
-	height: 100%;
-	width: 0;
-	position: fixed;
-	z-index: 1;
-	top: 0;
-	left: 0;
-	background-color:black;
-	overflow-x: hidden;
-	transition: 0.5s;
-	padding-top: 60px;
-  }
-  
-  .sidenav a {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	text-align: left;
-	font-size: 20px;
-	color: #818181;
-	display: block;
-	transition: 0.3s;
-  }
-
-  .sidenav a:hover {
-	color:brown;
-  }
-  
-  .sidenav .closebtn {
-	position: absolute;
-	top: 0;
-	right: 25px;
-	font-size: 36px;
-	margin-left: 50px;
-  }
-  .sidenav header {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	font-size: 30px;
-	font-weight: bolder;
-	color: #f1f1f1;
-	display: block;
-	transition: 0.3s;
-	text-align: left;
-
-  }
-  
-  
-
-  .sidenav h1 {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	font-size: 35px;
-	color:greenyellow;
-	display: block;
-	transition: 0.3s;
-  }
-  .sidenav h3 {
-	padding: 8px 8px 8px 32px;
-	text-decoration: none;
-	font-size: 15px;
-	color:yellow;
-	display: block;
-	transition: 0.3s;
-  }
-  @media screen and (max-height: 450px) {
-	.sidenav {padding-top: 15px;}
-	.sidenav a {font-size: 18px;}
-  }
+	  }
+	  
+	  /* Side Navigation Bar */
+	  .sidenav {
+		height: 100%;
+		width: 0;
+		position: fixed;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		background-color: black;
+		overflow-x: hidden;
+		transition: 0.5s;
+		padding-top: 60px;
+	  }
+	  
+	  .sidenav a {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		text-align: left;
+		font-size: 20px;
+		color: #818181;
+		display: block;
+		transition: 0.3s;
+	  }
+	  
+	  .sidenav a:hover {
+		color: brown;
+	  }
+	  
+	  .sidenav .closebtn {
+		position: absolute;
+		top: 0;
+		right: 25px;
+		font-size: 36px;
+		margin-left: 50px;
+	  }
+	  .sidenav header {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 30px;
+		font-weight: bolder;
+		color: #f1f1f1;
+		display: block;
+		transition: 0.3s;
+		text-align: left;
+	  }
+	  
+	  .sidenav h1 {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 35px;
+		color: greenyellow;
+		display: block;
+		transition: 0.3s;
+	  }
+	  .sidenav h3 {
+		padding: 8px 8px 8px 32px;
+		text-decoration: none;
+		font-size: 15px;
+		color: yellow;
+		display: block;
+		transition: 0.3s;
+	  }
+	  @media screen and (max-height: 450px) {
+		.sidenav {
+		  padding-top: 15px;
+		}
+		.sidenav a {
+		  font-size: 18px;
+		}
+	  }
+	  
+	  
+	  
+	  @keyframes spin {
+		  0% { transform: rotate(0deg); }
+		  100% { transform: rotate(360deg); }
+	  }
+	  
+	  @keyframes gradient {
+	  0% {
+		  background-position: 0% 50%;
+	  }
+	  50% {
+		  background-position: 100% 50%;
+	  }
+	  100% {
+		  background-position: 0% 50%;
+	  }
+	  }
